@@ -4,9 +4,11 @@ olddir=~/.dotfiles_old
 files="bashrc bash_aliases zshrc"
 
 # create $olddir in homedir
-echo -n "Creating $olddir for backup of any existing dotfiles in ~ ..."
-mkdir -p $olddir
-echo "done"
+if [ ! -d $olddir ]; then 
+  echo -n "Creating $olddir for backup of any existing dotfiles in ~ ..."
+  mkdir -p $olddir
+  echo "done"
+fi
 
 for file in $files; do
     echo "Moving any existing dotfiles from ~ to $olddir"
