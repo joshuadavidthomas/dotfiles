@@ -46,6 +46,27 @@ ZSH_THEME="robbyrussell"
 # much, much faster.
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
 
+# [oh-my-zsh] Insecure completion-dependent directories detected:
+# drwxr-xr-x  11 josh josh  4096 Feb 28 18:32 /home/josh/.oh-my-zsh
+# drwxr-xr-x 262 josh josh 12288 Feb 28 18:32 /home/josh/.oh-my-zsh/plugins
+# drwxr-xr-x   2 josh josh  4096 Feb 28 18:32 /home/josh/.oh-my-zsh/plugins/git
+# drwxr-xr-x   2 josh josh  4096 Feb 28 18:32 /home/josh/.oh-my-zsh/plugins/vscode
+
+# [oh-my-zsh] For safety, we will not load completions from these directories until
+# [oh-my-zsh] you fix their permissions and ownership and restart zsh.
+# [oh-my-zsh] See the above list for directories with group or other writability.
+
+# [oh-my-zsh] To fix your permissions you can do so by disabling
+# [oh-my-zsh] the write permission of "group" and "others" and making sure that the
+# [oh-my-zsh] owner of these directories is either root or your current user.
+# [oh-my-zsh] The following command may help:
+# [oh-my-zsh]     compaudit | xargs chmod g-w,o-w
+
+# [oh-my-zsh] If the above didn't help or you want to skip the verification of
+# [oh-my-zsh] insecure directories you can set the variable ZSH_DISABLE_COMPFIX to
+# [oh-my-zsh] "true" before oh-my-zsh is sourced in your zshrc file.
+ZSH_DISABLE_COMPFIX="true"
+
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
 # You can set one of the optional three formats:
