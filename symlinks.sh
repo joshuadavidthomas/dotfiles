@@ -1,7 +1,7 @@
 #!/bin/bash
 dir=~/.dotfiles
 olddir=~/.dotfiles_old
-files="bashrc zshrc"
+files="bashrc bash_aliases zshrc"
 
 # create $olddir in homedir
 echo -n "Creating $olddir for backup of any existing dotfiles in ~ ..."
