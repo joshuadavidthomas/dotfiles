@@ -128,3 +128,7 @@ if [ -f /usr/bin/screenfetch ] && [ $EUID -ne 0 ]; then screenfetch; fi
 
 # Spaceship ZSH theme customization
 SPACESHIP_PROMPT_ADD_NEWLINE='false'
+
+# Install Ruby Gems to ~/gems
+export GEM_HOME="$HOME/gems"
+export PATH="$HOME/gems/bin:$PATH"
