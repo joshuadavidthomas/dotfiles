@@ -1,7 +1,7 @@
 #!/bin/bash
 dir=~/.dotfiles
 olddir=~/.dotfiles_old
-files="bashrc bash_aliases gitconfig zshrc"
+files="bashrc bash_aliases gitconfig vimrc zshrc"
 
 # create $olddir in homedir
 if [ ! -d $olddir ]; then 
