@@ -117,3 +117,4 @@ if ! shopt -oq posix; then
 fi
 
 screenfetch
+gam() { "/home/josh/bin/gam/gam" "$@" ; }
