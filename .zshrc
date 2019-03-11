@@ -86,6 +86,7 @@ ZSH_DISABLE_COMPFIX="true"
 plugins=(
   git
   vscode
+  virtualenv
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -128,6 +129,7 @@ if [ -f /usr/bin/screenfetch ] && [ $EUID -ne 0 ]; then screenfetch; fi
 
 # Spaceship ZSH theme customization
 SPACESHIP_PROMPT_ADD_NEWLINE='false'
+SPACESHIP_VENV_PREFIX='(venv) '
 
 # Install Ruby Gems to ~/gems
 export GEM_HOME="$HOME/gems"
