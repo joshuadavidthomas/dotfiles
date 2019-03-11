@@ -120,7 +120,7 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 if [ -f ~/.aliases ]; then
-    . ~/.aliases
+  source $HOME/.aliases
 fi
 
 # Screenfetch
