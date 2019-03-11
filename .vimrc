@@ -15,6 +15,9 @@ call vundle#end()
 filetype plugin indent on
 " End Vundle
 
+inoremap jk <ESC>
+let mapleader = ","
+
 syntax enable " enable syntax processing
 colorscheme badwolf
 set termguicolors 
