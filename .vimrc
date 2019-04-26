@@ -15,6 +15,8 @@ Plugin 'vim-scripts/indentpython.vim'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'nvie/vim-flake8'
 Plugin 'scrooloose/nerdtree'
+Plugin 'christoomey/vim-tmux-navigator'
+Bundle "myusuf3/numbers.vim"
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 
 call vundle#end()
@@ -24,7 +26,6 @@ filetype plugin indent on
 inoremap jk <ESC>
 let mapleader = ","
 
-syntax enable " enable syntax processing
 colorscheme badwolf
 set termguicolors
 
@@ -52,7 +53,6 @@ syntax on
 
 " Line numbering
 set nu
-
 
 " Get off my lawn - helpful when learning Vim :)
 nnoremap <Left> :echoe "Use h"<CR>
