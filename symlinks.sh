@@ -1,7 +1,7 @@
 #!/bin/bash
 dir=~/.dotfiles
 olddir=~/.dotfiles_old
-files="aliases bashrc gitconfig vimrc zshrc"
+files="aliases bashrc gitconfig vimrc zshrc tmux.conf"
 
 # create $olddir in homedir
 if [ ! -d $olddir ]; then 
