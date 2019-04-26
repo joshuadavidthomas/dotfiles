@@ -15,6 +15,7 @@ Plugin 'vim-scripts/indentpython.vim'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'nvie/vim-flake8'
 Plugin 'scrooloose/nerdtree'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
 
 call vundle#end()
 filetype plugin indent on
@@ -58,3 +59,12 @@ nnoremap <Left> :echoe "Use h"<CR>
 nnoremap <Right> :echoe "Use l"<CR>
 nnoremap <Up> :echoe "Use k"<CR>
 nnoremap <Down> :echoe "Use j"<CR>
+
+" Open NERDTree on vim launch by default
+autocmd vimenter * NERDTree
+
+" NERDTreeToggle map to Ctrl-n
+map <C-n> :NERDTreeToggle<CR>
+
+" close vim if the only window left open is a NERDTree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
