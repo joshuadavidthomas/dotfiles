@@ -125,7 +125,10 @@ if [ -f ~/.aliases ]; then
 fi
 
 # Screenfetch
-if [ -f /usr/bin/screenfetch ] && [ $EUID -ne 0 ]; then screenfetch; fi
+# if [ -f /usr/bin/screenfetch ] && [ $EUID -ne 0 ]; then screenfetch; fi
+
+# Neofetch
+if [ -f /usr/bin/neofetch ] && [ $EUID -ne 0 ]; then neofetch; fi
 
 # Spaceship ZSH theme customization
 SPACESHIP_PROMPT_ADD_NEWLINE='false'

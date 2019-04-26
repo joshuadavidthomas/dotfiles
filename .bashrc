@@ -116,5 +116,5 @@ if ! shopt -oq posix; then
   fi
 fi
 
-screenfetch
+if [ -f /usr/bin/neofetch ] && [ $EUID -ne 0 ]; then neofetch; fi
 gam() { "/home/josh/bin/gam/gam" "$@" ; }
