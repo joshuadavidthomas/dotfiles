@@ -87,6 +87,7 @@ plugins=(
   git
   vscode
   virtualenv
+  vundle
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -128,7 +129,7 @@ fi
 # if [ -f /usr/bin/screenfetch ] && [ $EUID -ne 0 ]; then screenfetch; fi
 
 # Neofetch
-if [ -f /usr/bin/neofetch ] && [ $EUID -ne 0 ]; then neofetch; fi
+# if [ -f /usr/bin/neofetch ] && [ $EUID -ne 0 ]; then neofetch; fi
 
 # Spaceship ZSH theme customization
 SPACESHIP_PROMPT_ADD_NEWLINE='false'
