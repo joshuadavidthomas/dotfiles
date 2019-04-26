@@ -1,3 +1,6 @@
 [user]
         name = josh
-        email = josh@joshuadavidthomas.com
+	email = git@joshuadavidthomas.com
+	signingkey = 4F460011B7232C0D
+[commit]
+	gpgsign = true
