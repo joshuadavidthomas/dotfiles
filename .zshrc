@@ -139,4 +139,6 @@ SPACESHIP_VENV_PREFIX='(venv) '
 export GEM_HOME="$HOME/gems"
 export PATH="$HOME/gems/bin:$PATH"
 
-gam() { "/home/josh/bin/gam/gam" "$@" ; }
+# fix for gpg error: "gpg failed to sign the data"
+# https://github.com/keybase/keybase-issues/issues/2798
+export GPG_TTY=$(tty)
