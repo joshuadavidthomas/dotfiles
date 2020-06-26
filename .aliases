@@ -1,5 +1,3 @@
 alias gogh='bash -c "$(wget -qO- https://git.io/vQgMr)"'
 alias exe='chmod +x'
-alias tmux="TERM=screen-256color-bce tmux -2"
-alias ta='tmux a'
 alias la='ls -a'
