@@ -6,7 +6,7 @@ if [ -z "$SSH_AUTH_SOCK" ]; then
   RUNNING_AGENT="`ps -ax | grep 'ssh-agent -s' | grep -v grep | wc -l | tr -d '[:space:]'`"
   if [ "$RUNNING_AGENT" = "0" ]; then
       # Launch a new instance of the agent
-      ssh-agent -s &> $HOME/.ssh/ssh-agent
+      ssh-agent -s &> $HOME/.ssh/ssh-agent > /dev/null 2>&1
   fi
   eval `cat $HOME/.ssh/ssh-agent`
 fi
