@@ -1,5 +1,3 @@
-[core]
-  sshCommand = "ssh -i ~/.ssh/id_ed25519"
 [user]
-  name = josh
-	email = josh@joshthomas.dev
+  name = Josh
+  email = josh@joshthomas.dev
