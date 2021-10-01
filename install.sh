@@ -16,6 +16,8 @@ ln -sf ${INSTALL_DIR}/.zprofile ${HOME}/.zprofile
 ln -sf ${INSTALL_DIR}/.zshenv ${HOME}/.zshenv 
 ln -sf ${INSTALL_DIR}/.zshrc ${HOME}/.zshrc 
 
-for binary in ${INSTALL_DIR}/bin/*; do
-  ln -sf ${INSTALL_DIR}/${binary} ${HOME}/${binary} 
+for binary in ${INSTALL_DIR}/bin/*
+do
+  FILENAME=$(basename ${binary})
+  ln -sf ${INSTALL_DIR}/bin/${FILENAME} ${HOME}/${FILENAME} 
 done
