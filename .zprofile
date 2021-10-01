@@ -17,9 +17,6 @@ export PIP_CERT=$HOME/.certs/cacert.pem
 
 export REQUESTS_CA_BUNDLE=$HOME/.certs/cacert.pem
 
-export CLOCKIFY_API_KEY="MmUzNDc4NDEtY2QxMS00MjljLWFiNTUtNGYzYWUwNjZiMzBl"
-export CLOCKIFY_WORKSPACE_ID="601d5c14f6e38832491f2f05"
-
 export ORACLE_HOME=/opt/oracle/instantclient_21_1
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ORACLE_HOME
 
