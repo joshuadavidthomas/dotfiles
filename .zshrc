@@ -10,6 +10,9 @@ export ZSH="/home/josh/.oh-my-zsh"
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="spaceship"
 
+SPACESHIP_PROMPT_ADD_NEWLINE='false'
+SPACESHIP_VENV_PREFIX='(venv) '
+
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
 # a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
@@ -84,10 +87,10 @@ ZSH_DISABLE_COMPFIX="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
+  docker
   git
-  vscode
+  pyenv
   virtualenv
-  vundle
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -112,33 +115,6 @@ source $ZSH/oh-my-zsh.sh
 # ssh
 # export SSH_KEY_PATH="~/.ssh/rsa_id"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
 if [ -f ~/.aliases ]; then
   source $HOME/.aliases
 fi
-
-# Screenfetch
-# if [ -f /usr/bin/screenfetch ] && [ $EUID -ne 0 ]; then screenfetch; fi
-
-# Neofetch
-# if [ -f /usr/bin/neofetch ] && [ $EUID -ne 0 ]; then neofetch; fi
-
-# Spaceship ZSH theme customization
-SPACESHIP_PROMPT_ADD_NEWLINE='false'
-SPACESHIP_VENV_PREFIX='(venv) '
-
-# Install Ruby Gems to ~/gems
-export GEM_HOME="$HOME/gems"
-export PATH="$HOME/gems/bin:$PATH"
-
-# fix for gpg error: "gpg failed to sign the data"
-# https://github.com/keybase/keybase-issues/issues/2798
-export GPG_TTY=$(tty)
