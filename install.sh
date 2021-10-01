@@ -19,5 +19,5 @@ ln -sf ${INSTALL_DIR}/.zshrc ${HOME}/.zshrc
 for binary in ${INSTALL_DIR}/bin/*
 do
   FILENAME=$(basename ${binary})
-  ln -sf ${INSTALL_DIR}/bin/${FILENAME} ${HOME}/${FILENAME} 
+  ln -sf ${INSTALL_DIR}/bin/${FILENAME} ${HOME}/.local/bin/${FILENAME} 
 done
