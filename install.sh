@@ -10,3 +10,7 @@ ln -sf ${INSTALL_DIR}/.npmrc ${HOME}/.npmrc
 ln -sf ${INSTALL_DIR}/.zprofile ${HOME}/.zprofile 
 ln -sf ${INSTALL_DIR}/.zshenv ${HOME}/.zshenv 
 ln -sf ${INSTALL_DIR}/.zshrc ${HOME}/.zshrc 
+
+for binary in ${INSTALL_DIR}/bin/*; do
+  ln -sf ${INSTALL_DIR}/${binary} ${HOME}/${binary} 
+done
