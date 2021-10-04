@@ -11,6 +11,15 @@ if [ -z "$SSH_AUTH_SOCK" ]; then
   eval `cat $HOME/.ssh/ssh-agent`
 fi
 
+if [ -d "$HOME/.pyenv" ] ; then
+  export PYENV_ROOT="$HOME/.pyenv"
+  export PATH="$PYENV_ROOT/bin:$PATH"
+  eval "$(pyenv init --path)"
+fi
+
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
 export GPG_TTY=$(tty)
 
 export PIP_CERT=$HOME/.certs/cacert.pem
