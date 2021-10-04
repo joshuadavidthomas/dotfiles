@@ -93,6 +93,8 @@ ZSH_DISABLE_COMPFIX="true"
 plugins=(
   docker
   git
+  nvm
+  python
   pyenv
   virtualenv
 )
