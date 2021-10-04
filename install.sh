@@ -7,7 +7,15 @@ set -o errtrace
 
 INSTALL_DIR=${HOME}/.dotfiles
 
-git clone git@github.com:joshuadavidthomas/dotfiles.git ${INSTALL_DIR}
+if [ ! -d $INSTALL_DIR ]; then
+  echo "Cloning dotfiles in to $INSTALL_DIR"
+  mkdir -p $INSTALL_DIR
+  git clone git@github.com:joshuadavidthomas/dotfiles.git ${INSTALL_DIR}
+else
+  echo "Updating dotfiles"
+  cd ${INSTALL_DIR}
+  git pull
+fi
 
 ln -sf ${INSTALL_DIR}/.aliases ${HOME}/.aliases
 ln -sf ${INSTALL_DIR}/.gitconfig ${HOME}/.gitconfig
