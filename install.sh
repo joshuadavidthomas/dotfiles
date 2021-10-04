@@ -20,3 +20,8 @@ for binary in ${INSTALL_DIR}/bin/*
 do
   ln -sf ${binary} ${HOME}/.local/bin
 done
+
+for config in ${INSTALL_DIR}/.config/*
+do
+  ln -sf ${config} ${HOME}/.config
+done

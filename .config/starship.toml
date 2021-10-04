@@ -1,0 +1,12 @@
+add_newline = true
+
+[character]
+error_symbol = '[➜](bold red)'
+success_symbol = '[➜](bold green)'
+
+[nodejs]
+format = '[${symbol}(${version} )]($style)'
+
+[python]
+format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+symbol = ' '
