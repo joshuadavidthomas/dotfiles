@@ -1,2 +1,2 @@
 alias exe='chmod +x'
-alias gprune="git branch --v | grep '\[gone\]' | awk '{print $1}' | xargs git branch -D"
+alias gprune="git fetch --prune && git branch --v | grep '\[gone\]' | awk '{print $1}' | xargs git branch -D"
