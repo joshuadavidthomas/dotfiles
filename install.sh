@@ -32,7 +32,7 @@ else
   git pull
 fi
 
-sh -c "$(curl -fsSL https://starship.rs/install.sh)"
+sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- -y
 
 ln -sf ${INSTALL_DIR}/.aliases ${HOME}/.aliases
 ln -sf ${INSTALL_DIR}/.gitconfig ${HOME}/.gitconfig
