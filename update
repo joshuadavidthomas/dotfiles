@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+function is_update_available() {
+  # compare local git HEAD to remote git HEAD and return 0 if they are different
+
+  local local_head=$(git rev-parse HEAD)
+  
+  local remote_head=$(git ls-remote origin HEAD | cut -f 1)
+
+  [[ "$local_head" != "$remote_head"]]
+}
+
+is_update_available && echo "Update available" || echo "No update available"
