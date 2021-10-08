@@ -1,3 +1,4 @@
-alias exe='chmod +x'
+alias exe="chmod +x"
+alias gexe="git update-index --chmod=+x"
 alias gprune="git fetch --prune && git branch --v | grep '\[gone\]' | awk '{print $1}' | xargs git branch -D"
 alias redis="docker run --name redis -d -p 0.0.0.0:6379:6379 redis"
