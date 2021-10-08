@@ -53,6 +53,7 @@ symbol = " "
 format = '[${symbol}(${version} )]($style)'
 
 [package]
+format = '[${symbol}${version}]($style) '
 symbol = " "
 
 [perl]
