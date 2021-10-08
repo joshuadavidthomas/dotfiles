@@ -3,7 +3,6 @@
 set -o errexit
 set -o pipefail
 set -o nounset
-set -o errtrace
 
 function is_update_available() {
   # compare local git HEAD to remote git HEAD and return 0 if they are different
