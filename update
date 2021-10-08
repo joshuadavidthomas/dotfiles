@@ -7,7 +7,7 @@ function is_update_available() {
   
   local remote_head=$(git ls-remote origin HEAD | cut -f 1)
 
-  [[ "$local_head" != "$remote_head"]]
+  [[ "$local_head" != "$remote_head" ]]
 }
 
 is_update_available && echo "Update available" || echo "No update available"
