@@ -8,7 +8,7 @@ if [ -z "$SSH_AUTH_SOCK" ]; then
       # Launch a new instance of the agent
       ssh-agent -s &> $HOME/.ssh/ssh-agent
   fi
-  # eval `cat $HOME/.ssh/ssh-agent`
+  eval `cat $HOME/.ssh/ssh-agent`
 fi
 
 if [ -d "$HOME/.pyenv" ] ; then
