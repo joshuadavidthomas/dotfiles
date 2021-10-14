@@ -33,6 +33,7 @@ else
 fi
 
 sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- --force --bin-dir ${LOCAL_BIN_DIR}
+curl -sfL https://direnv.net/install.sh | bash
 
 ln -sf ${INSTALL_DIR}/.aliases ${HOME}/.aliases
 ln -sf ${INSTALL_DIR}/.gitconfig ${HOME}/.gitconfig
