@@ -100,6 +100,7 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
+source $DOTFILES/utils/update
 
 # User configuration
 
