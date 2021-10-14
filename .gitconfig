@@ -1,3 +1,6 @@
 [user]
   name = Josh
   email = josh@joshthomas.dev
+
+[pull]
+  rebase = false
