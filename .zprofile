@@ -37,3 +37,5 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ORACLE_HOME
 export SPACESHIP_BATTERY_SHOW=false
 
 export NVM_DIR="$HOME/.nvm"
+
+export PYTHONSTARTUP=$HOME/.pythonrc

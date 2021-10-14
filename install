@@ -36,6 +36,7 @@ sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- -y
 ln -sf ${INSTALL_DIR}/.aliases ${HOME}/.aliases
 ln -sf ${INSTALL_DIR}/.gitconfig ${HOME}/.gitconfig
 ln -sf ${INSTALL_DIR}/.npmrc ${HOME}/.npmrc
+ln -sf ${INSTALL_DIR}/.pythonrc ${HOME}/.pythonrc
 ln -sf ${INSTALL_DIR}/.zprofile ${HOME}/.zprofile
 ln -sf ${INSTALL_DIR}/.zshenv ${HOME}/.zshenv
 ln -sf ${INSTALL_DIR}/.zshrc ${HOME}/.zshrc
