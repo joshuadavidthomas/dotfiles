@@ -11,7 +11,7 @@ LOCAL_BIN_DIR=${HOME}/.local/bin
 if [[ ! -d ${INSTALL_DIR} ]]; then
   echo "Cloning dotfiles in to ${INSTALL_DIR}"
   mkdir -p ${INSTALL_DIR}
-  git clone git@github.com:joshuadavidthomas/dotfiles.git ${INSTALL_DIR}
+  git clone https://github.com/joshuadavidthomas/dotfiles.git ${INSTALL_DIR}
 else
   echo "Updating dotfiles"
   cd ${INSTALL_DIR}
