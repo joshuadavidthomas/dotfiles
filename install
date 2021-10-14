@@ -6,6 +6,7 @@ set -o nounset
 
 INSTALL_DIR=${HOME}/.dotfiles
 OH_MY_ZSH_DIR=${HOME}/.oh-my-zsh
+LOCAL_BIN_DIR=${HOME}/.local/bin
 
 if [[ ! -d $INSTALL_DIR ]]; then
   echo "Cloning dotfiles in to $INSTALL_DIR"
@@ -31,7 +32,7 @@ else
   git pull
 fi
 
-sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- -y
+sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- --force --bin-dir ${LOCAL_BIN_DIR}
 
 ln -sf ${INSTALL_DIR}/.aliases ${HOME}/.aliases
 ln -sf ${INSTALL_DIR}/.gitconfig ${HOME}/.gitconfig
