@@ -32,6 +32,8 @@ else
   git pull
 fi
 
+[[ -d ${LOCAL_BIN_DIR} ]] || mkdir -p ${LOCAL_BIN_DIR}
+
 sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- --force --bin-dir ${LOCAL_BIN_DIR}
 curl -sfL https://direnv.net/install.sh | bash
 curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --force --to ${LOCAL_BIN_DIR}
