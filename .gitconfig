@@ -1,6 +1,9 @@
-[user]
-  name = Josh
-  email = josh@joshthomas.dev
+[init]
+  defaultBranch = main
 
 [pull]
   rebase = false
+
+[user]
+  name = Josh
+  email = josh@joshthomas.dev
