@@ -98,10 +98,13 @@ plugins=(
   python
   pyenv
   virtualenv
+  zsh-z
 )
 
 source $ZSH/oh-my-zsh.sh
 source $DOTFILES/utils/update
+
+zstyle ':completion:*' menu select
 
 # User configuration
 
