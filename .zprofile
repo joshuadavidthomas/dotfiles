@@ -39,3 +39,6 @@ export SPACESHIP_BATTERY_SHOW=false
 export NVM_DIR="$HOME/.nvm"
 
 export PYTHONSTARTUP=$HOME/.pythonrc
+
+# https://askubuntu.com/a/454663
+stty icrnl
