@@ -4,6 +4,7 @@ export DOTFILES=${HOME}/.dotfiles
 ZSH_DISABLE_COMPFIX="true"
 
 plugins=(
+  colorize
   docker
   git
   nvm
@@ -14,28 +15,21 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
-source $DOTFILES/utils/update
+
+for file in ${DOTFILES}/utils/*; do
+  source $file
+done
 
 zstyle ':completion:*' menu select
 
-# User configuration
+ZSH_COLORIZE_STYLE="material"
 
-# export MANPATH="/usr/local/man:$MANPATH"
+if [[ -n $SSH_CONNECTION ]]; then
+   export EDITOR='vim'
+else
+  export EDITOR='nvim'
+fi
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# ssh
 export SSH_KEY_PATH="~/.ssh/id_ed25519:~/.ssh/id_ed25519_twc:~/.ssh/id_ed25519_do"
 
 if [ -f ~/.aliases ]; then
