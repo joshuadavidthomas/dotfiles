@@ -3,6 +3,10 @@ export DOTFILES=${HOME}/.dotfiles
 
 ZSH_DISABLE_COMPFIX="true"
 
+if [ ! -d ${ZSH_CUSTOM}/plugins/zsh-z ]; then
+  git clone https://github.com/agkozak/zsh-z $ZSH_CUSTOM/plugins/zsh-z
+fi
+
 plugins=(
   colorize
   docker
