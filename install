@@ -39,6 +39,7 @@ curl -sfL https://direnv.net/install.sh | bash
 curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --force --to ${LOCAL_BIN_DIR}
 
 ln -sf ${INSTALL_DIR}/.aliases ${HOME}/.aliases
+ln -sf ${INSTALL_DIR}/.functions ${HOME}/.functions
 ln -sf ${INSTALL_DIR}/.gitconfig ${HOME}/.gitconfig
 ln -sf ${INSTALL_DIR}/.npmrc ${HOME}/.npmrc
 ln -sf ${INSTALL_DIR}/.pythonrc ${HOME}/.pythonrc
