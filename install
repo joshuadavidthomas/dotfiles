@@ -32,6 +32,16 @@ else
   git pull
 fi
 
+if [ ! -d "${ZSH_CUSTOM}/plugins/zsh-autosuggestions" ]; then
+  echo "Installing zsh-autosuggestions"
+  git clone --depth 1 -- https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
+fi
+
+if [ ! -d "${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting" ]; then
+  echo "Installing zsh-syntax-highlighting"
+  git clone --depth 1 -- https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
+fi
+
 [[ -d ${LOCAL_BIN_DIR} ]] || mkdir -p ${LOCAL_BIN_DIR}
 
 sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- --force --bin-dir ${LOCAL_BIN_DIR}
