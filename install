@@ -44,6 +44,8 @@ sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- --force --bin-dir ${LOCA
 curl -sfL https://direnv.net/install.sh | bash
 curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --force --to ${LOCAL_BIN_DIR}
 
+[[ -d ${HOME}/.fzf ]] || git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install --key-bindings --completion --update-rc --no-bash
+
 ln -sf ${INSTALL_DIR}/.aliases ${HOME}/.aliases
 ln -sf ${INSTALL_DIR}/.functions ${HOME}/.functions
 ln -sf ${INSTALL_DIR}/.gitconfig ${HOME}/.gitconfig
