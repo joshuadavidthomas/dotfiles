@@ -1,0 +1,7 @@
+shell:
+  program: 'C:\Windows\System32\wsl.exe -d Ubuntu'
+working_directory: '\\wsl$\Ubuntu\home\josh'
+font:
+  normal:
+    family: FiraCode Nerd Font
+  size: 11.0

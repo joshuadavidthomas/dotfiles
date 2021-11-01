@@ -65,3 +65,7 @@ for config in ${INSTALL_DIR}/.config/*
 do
   ln -sf ${config} ${HOME}/.config
 done
+
+if [[ -d /mnt/c ]]; then
+    cp -f ${INSTALL_DIR}/mnt/c/Users/jthomas/AppData/Roaming/Alacritty/alacritty.yml /mnt/c/Users/jthomas/AppData/Roaming/Alacritty/alacritty.yml
+fi
