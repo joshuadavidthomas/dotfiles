@@ -7,3 +7,5 @@ export PATH="$HOME/gems/bin:$PATH"
 export PATH="/usr/local/go/bin:$PATH"
 export GOPATH="$HOME/go"
 export PATH="$GOPATH/bin:$PATH"
+
+skip_global_compinit=1

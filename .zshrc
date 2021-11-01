@@ -12,7 +12,8 @@ plugins=(
   pyenv
   virtualenv
   z
-  zsh-autosuggestions
+  # zsh-autosuggestions
+  zsh-autocomplete
   zsh-syntax-highlighting
 )
 
@@ -22,7 +23,7 @@ for file in ${DOTFILES}/utils/*; do
   source $file
 done
 
-zstyle ':completion:*' menu select
+# zstyle ':completion:*' menu select
 
 ZSH_COLORIZE_STYLE="material"
 
@@ -49,3 +50,6 @@ eval "$(starship init zsh)"
 eval "$(direnv hook zsh)"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# zsh-autocomplete
+zstyle ':autocomplete:*' min-input 1
