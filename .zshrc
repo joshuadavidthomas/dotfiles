@@ -51,5 +51,14 @@ eval "$(direnv hook zsh)"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# github cli
+if [[ ! -d "$ZSH/completions" || ! -f "$ZSH/completions/_gh" ]]; then
+    mkdir -pv $ZSH/completions
+    gh completion --shell zsh > $ZSH/completions/_gh
+    echo "gh added completions: gh completion --shell zsh > $ZSH/completions/_gh"
+fi
+# autoload -U compinit
+# compinit -i
+
 # zsh-autocomplete
 zstyle ':autocomplete:*' min-input 1
