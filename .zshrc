@@ -13,8 +13,8 @@ plugins=(
   virtualenv
   z
   # zsh-autosuggestions
-  zsh-autocomplete
-  zsh-syntax-highlighting
+  # zsh-autocomplete
+  # zsh-syntax-highlighting
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -61,4 +61,6 @@ fi
 # compinit -i
 
 # zsh-autocomplete
-zstyle ':autocomplete:*' min-input 1
+# zstyle ':autocomplete:*' min-input 1
+
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
