@@ -23,6 +23,8 @@ def get_base_commit(branch, base):
 
 
 def rebase(branch: str, base: str, interactive: bool = True) -> None:
+    subprocess.run(["git", "rebase", base, branch], check=True)
+
     base_commit = get_base_commit(branch, base)
 
     if interactive:
