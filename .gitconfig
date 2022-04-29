@@ -1,14 +1,14 @@
 [init]
-  defaultBranch = main
+    defaultBranch = main
 
 [pull]
-  rebase = false
+    rebase = false
 
 [user]
-  name = Josh
-  email = josh@joshthomas.dev
+    name = Josh
+    email = josh@joshthomas.dev
 
 [alias]
-  branch-name = "!git rev-parse --abbrev-ref HEAD"
-  publish = "!git push -u origin $(git branch-name)"
+    branch-name = "!git rev-parse --abbrev-ref HEAD"
+    publish = "!git push -u origin $(git branch-name)"
 
