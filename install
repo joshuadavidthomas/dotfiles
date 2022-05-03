@@ -114,7 +114,7 @@ install_gh_cli () {
     curl -sSL https://github.com/cli/cli/releases/download/v${version}/gh_${version}_${KERNAL}_${MACHINE}.tar.gz -o gh_${version}_${KERNAL}_${MACHINE}.tar.gz
     tar xvf gh_${version}_${KERNAL}_${MACHINE}.tar.gz
     mv gh_${version}_${KERNAL}_${MACHINE}/bin/gh ${LOCAL_BIN_DIR}/gh
-    mv gh_${version}_${KERNAL}_${MACHINE}/share/man/man1/* /usr/share/man/man1/
+    sudo mv gh_${version}_${KERNAL}_${MACHINE}/share/man/man1/* /usr/share/man/man1/
     chmod +x "${LOCAL_BIN_DIR}/gh"
 }
 
