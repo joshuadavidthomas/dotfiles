@@ -15,4 +15,5 @@
     cob = "checkout -b"
     del = "branch -D"
     patch = "add -p"
-
+    main = "checkout main"
+    br = "branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate"
