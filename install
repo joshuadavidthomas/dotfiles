@@ -110,15 +110,10 @@ install_fzf () {
 
 install_gh_cli () {
     set_kernal_and_machine_env_var
-    download_url=$(
-        curl -fL https://api.github.com/repos/cli/cli/releases/latest \
-        | grep browser_download_url \
-        | cut -d '"' -f 4 \
-        | grep "gh_[0-9].*.$KERNAL.$MACHINE.tar.gz"
-      )
-    curl -sSL $download_url -o gh_${KERNAL}_${MACHINE}.tar.gz
-    tar xvf gh_${KERNAL}_${MACHINE}.tar.gz
-    mv gh_${KERNAL}_${MACHINE}/bin/gh ${LOCAL_BIN_DIR}/gh
+    version=`curl  "https://api.github.com/repos/cli/cli/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/' | cut -c2-`
+    curl -sSL https://github.com/cli/cli/releases/download/v${version}/gh_${version}_${KERNAL}_${MACHINE}.tar.gz -o gh_${version}_${KERNAL}_${MACHINE}.tar.gz
+    tar xvf gh_${version}_${KERNAL}_${MACHINE}.tar.gz
+    mv gh_${version}_${KERNAL}_${MACHINE}/bin/gh ${LOCAL_BIN_DIR}/gh
     chmod +x "${LOCAL_BIN_DIR}/gh"
 }
 
