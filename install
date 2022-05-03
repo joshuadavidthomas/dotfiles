@@ -21,6 +21,26 @@ fi
 
 [[ -d ${LOCAL_BIN_DIR} ]] || mkdir -p ${LOCAL_BIN_DIR}
 
+set_kernal_and_machine_env_var () {
+    KERNAL=$(uname -s | tr "[:upper:]" "[:lower:]")
+    case "$(uname -m)" in
+    x86_64)
+        MACHINE=amd64
+        ;;
+      i686 | i386)
+        MACHINE=386
+        ;;
+      aarch64)
+        MACHINE=arm64
+        ;;
+      *)
+        echo "Machine $(uname -m) not supported by the installer.\n" \
+          "Go to https://direnv for alternate installation methods."
+        exit 1
+        ;;
+    esac
+}
+
 create_sym_links () {
     ln -sf ${INSTALL_DIR}/.aliases ${HOME}/.aliases
     ln -sf ${INSTALL_DIR}/.functions ${HOME}/.functions
@@ -69,28 +89,11 @@ install_starship () {
 }
 
 install_direnv () {
-    kernel=$(uname -s | tr "[:upper:]" "[:lower:]")
-    case "$(uname -m)" in
-    x86_64)
-        machine=amd64
-        ;;
-      i686 | i386)
-        machine=386
-        ;;
-      aarch64)
-        machine=arm64
-        ;;
-      *)
-        echo "Machine $(uname -m) not supported by the installer.\n" \
-          "Go to https://direnv for alternate installation methods."
-        exit 1
-        ;;
-    esac
     download_url=$(
         curl -fL https://api.github.com/repos/direnv/direnv/releases/latest \
         | grep browser_download_url \
         | cut -d '"' -f 4 \
-        | grep "direnv.$kernel.$machine"
+        | grep "direnv.$KERNAL.$MACHINE"
       )
     curl -o "${LOCAL_BIN_DIR}/direnv" -fL "$download_url"
     chmod +x "${LOCAL_BIN_DIR}/direnv"
@@ -104,12 +107,24 @@ install_fzf () {
     [[ -d ${HOME}/.fzf ]] || git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install --key-bindings --completion --update-rc --no-bash
 }
 
+install_gh_cli () {
+    download_url=$(
+        curl -fL https://api.github.com/repos/cli/cli/releases/latest \
+        | grep browser_download_url \
+        | cut -d '"' -f 4 \
+        | grep "gh_[0-9].*.$KERNAL.$MACHINE.tar.gz"
+      )
+    curl -o "${LOCAL_BIN_DIR}/gh" -fL "$download_url"
+    chmod +x "${LOCAL_BIN_DIR}/gh"
+}
+
 copy_alacritty_config () {
     if [[ -d /mnt/c ]]; then
         cp -f ${INSTALL_DIR}/mnt/c/Users/jthomas/AppData/Roaming/Alacritty/alacritty.yml /mnt/c/Users/jthomas/AppData/Roaming/Alacritty/alacritty.yml
     fi
 }
 
+set_kernal_and_machine_env_var
 create_sym_links
 install_oh_my_zsh
 install_tmux_plugin_manager
@@ -117,4 +132,5 @@ install_starship
 install_direnv
 install_just
 install_fzf
+install_gh_cli
 copy_alacritty_config
