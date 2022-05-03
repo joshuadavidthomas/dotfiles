@@ -114,7 +114,7 @@ install_gh_cli () {
         | cut -d '"' -f 4 \
         | grep "gh_[0-9].*.$KERNAL.$MACHINE.tar.gz"
       )
-    curl -sSL $DOWNLOAD_URL -o gh_$KERNAL_$MACHINE.tar.gz
+    curl -sSL $download_url -o gh_$KERNAL_$MACHINE.tar.gz
     tar xvf gh_$KERNAL_$MACHINE.tar.gz
     mv gh_$KERNAL_$MACHINE/bin/gh ${LOCAL_BIN_DIR}/gh
     chmod +x "${LOCAL_BIN_DIR}/gh"
