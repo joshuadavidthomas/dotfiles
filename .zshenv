@@ -8,4 +8,7 @@ export PATH="/usr/local/go/bin:$PATH"
 export GOPATH="$HOME/go"
 export PATH="$GOPATH/bin:$PATH"
 
+export FLYCTL_INSTALL="/home/josh/.fly"
+export PATH="$FLYCTL_INSTALL/bin:$PATH"
+
 skip_global_compinit=1
