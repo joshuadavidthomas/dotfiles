@@ -19,76 +19,102 @@ else
   git pull
 fi
 
-if [[ ! -d $OH_MY_ZSH_DIR ]]; then
-  echo "Cloning oh-my-zsh in to ${OH_MY_ZSH_DIR}"
-  umask g-w,o-w
-  git clone -c core.eol=lf -c core.autocrlf=false \
-    -c fsck.zeroPaddedFilemode=ignore \
-    -c fetch.fsck.zeroPaddedFilemode=ignore \
-    -c receive.fsck.zeroPaddedFilemode=ignore \
-    --depth=1 --branch master https://github.com/ohmyzsh/ohmyzsh ${OH_MY_ZSH_DIR}
-else
-  echo "Updating oh-my-zsh"
-  cd ${OH_MY_ZSH_DIR}
-  git pull
-fi
-
-[[ -d "${HOME}/.tmux/plugins/tpm" ]] || git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-
 [[ -d ${LOCAL_BIN_DIR} ]] || mkdir -p ${LOCAL_BIN_DIR}
 
-sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- --force --bin-dir ${LOCAL_BIN_DIR}
+create_sym_links () {
+    ln -sf ${INSTALL_DIR}/.aliases ${HOME}/.aliases
+    ln -sf ${INSTALL_DIR}/.functions ${HOME}/.functions
+    ln -sf ${INSTALL_DIR}/.gitconfig ${HOME}/.gitconfig
+    ln -sf ${INSTALL_DIR}/.npmrc ${HOME}/.npmrc
+    ln -sf ${INSTALL_DIR}/.pythonrc ${HOME}/.pythonrc
+    ln -sf ${INSTALL_DIR}/.tmux.conf ${HOME}/.tmux.conf
+    ln -sf ${INSTALL_DIR}/.zprofile ${HOME}/.zprofile
+    ln -sf ${INSTALL_DIR}/.zshenv ${HOME}/.zshenv
+    ln -sf ${INSTALL_DIR}/.zshrc ${HOME}/.zshrc
 
-kernel=$(uname -s | tr "[:upper:]" "[:lower:]")
-case "$(uname -m)" in
-  x86_64)
-    machine=amd64
-    ;;
-  i686 | i386)
-    machine=386
-    ;;
-  aarch64)
-    machine=arm64
-    ;;
-  *)
-    echo "Machine $(uname -m) not supported by the installer.\n" \
-      "Go to https://direnv for alternate installation methods."
-    exit 1
-    ;;
-esac
-download_url=$(
-    curl -fL https://api.github.com/repos/direnv/direnv/releases/latest \
-    | grep browser_download_url \
-    | cut -d '"' -f 4 \
-    | grep "direnv.$kernel.$machine"
-  )
-curl -o "${LOCAL_BIN_DIR}/direnv" -fL "$download_url"
-chmod +x "${LOCAL_BIN_DIR}/direnv"
+    for binary in ${INSTALL_DIR}/bin/*
+    do
+      ln -sf ${binary} ${LOCAL_BIN_DIR}
+    done
 
-curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --force --to ${LOCAL_BIN_DIR}
+    for config in ${INSTALL_DIR}/.config/*
+    do
+      ln -sf ${config} ${HOME}/.config
+    done
+}
 
-[[ -d ${HOME}/.fzf ]] || git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install --key-bindings --completion --update-rc --no-bash
+install_oh_my_zsh () {
+    if [[ ! -d $OH_MY_ZSH_DIR ]]; then
+      echo "Cloning oh-my-zsh in to ${OH_MY_ZSH_DIR}"
+      umask g-w,o-w
+      git clone -c core.eol=lf -c core.autocrlf=false \
+        -c fsck.zeroPaddedFilemode=ignore \
+        -c fetch.fsck.zeroPaddedFilemode=ignore \
+        -c receive.fsck.zeroPaddedFilemode=ignore \
+        --depth=1 --branch master https://github.com/ohmyzsh/ohmyzsh ${OH_MY_ZSH_DIR}
+    else
+      echo "Updating oh-my-zsh"
+      cd ${OH_MY_ZSH_DIR}
+      git pull
+    fi
+}
 
-ln -sf ${INSTALL_DIR}/.aliases ${HOME}/.aliases
-ln -sf ${INSTALL_DIR}/.functions ${HOME}/.functions
-ln -sf ${INSTALL_DIR}/.gitconfig ${HOME}/.gitconfig
-ln -sf ${INSTALL_DIR}/.npmrc ${HOME}/.npmrc
-ln -sf ${INSTALL_DIR}/.pythonrc ${HOME}/.pythonrc
-ln -sf ${INSTALL_DIR}/.tmux.conf ${HOME}/.tmux.conf
-ln -sf ${INSTALL_DIR}/.zprofile ${HOME}/.zprofile
-ln -sf ${INSTALL_DIR}/.zshenv ${HOME}/.zshenv
-ln -sf ${INSTALL_DIR}/.zshrc ${HOME}/.zshrc
+install_tmux_plugin_manager () {
+    [[ -d "${HOME}/.tmux/plugins/tpm" ]] || git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+}
 
-for binary in ${INSTALL_DIR}/bin/*
-do
-  ln -sf ${binary} ${HOME}/.local/bin
-done
 
-for config in ${INSTALL_DIR}/.config/*
-do
-  ln -sf ${config} ${HOME}/.config
-done
+install_starship () {
+    sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- --force --bin-dir ${LOCAL_BIN_DIR}
+}
 
-if [[ -d /mnt/c ]]; then
-    cp -f ${INSTALL_DIR}/mnt/c/Users/jthomas/AppData/Roaming/Alacritty/alacritty.yml /mnt/c/Users/jthomas/AppData/Roaming/Alacritty/alacritty.yml
-fi
+install_direnv () {
+    kernel=$(uname -s | tr "[:upper:]" "[:lower:]")
+    case "$(uname -m)" in
+    x86_64)
+        machine=amd64
+        ;;
+      i686 | i386)
+        machine=386
+        ;;
+      aarch64)
+        machine=arm64
+        ;;
+      *)
+        echo "Machine $(uname -m) not supported by the installer.\n" \
+          "Go to https://direnv for alternate installation methods."
+        exit 1
+        ;;
+    esac
+    download_url=$(
+        curl -fL https://api.github.com/repos/direnv/direnv/releases/latest \
+        | grep browser_download_url \
+        | cut -d '"' -f 4 \
+        | grep "direnv.$kernel.$machine"
+      )
+    curl -o "${LOCAL_BIN_DIR}/direnv" -fL "$download_url"
+    chmod +x "${LOCAL_BIN_DIR}/direnv"
+}
+
+install_just () {
+    curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --force --to ${LOCAL_BIN_DIR}
+}
+
+install_fzf () {
+    [[ -d ${HOME}/.fzf ]] || git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install --key-bindings --completion --update-rc --no-bash
+}
+
+copy_alacritty_config () {
+    if [[ -d /mnt/c ]]; then
+        cp -f ${INSTALL_DIR}/mnt/c/Users/jthomas/AppData/Roaming/Alacritty/alacritty.yml /mnt/c/Users/jthomas/AppData/Roaming/Alacritty/alacritty.yml
+    fi
+}
+
+create_sym_links
+install_oh_my_zsh
+install_tmux_plugin_manager
+install_starship
+install_direnv
+install_just
+install_fzf
+copy_alacritty_config
