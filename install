@@ -8,6 +8,7 @@ INSTALL_DIR=${HOME}/.dotfiles
 OH_MY_ZSH_DIR=${HOME}/.oh-my-zsh
 ZSH_CUSTOM=${OH_MY_ZSH_DIR}/custom
 LOCAL_BIN_DIR=${HOME}/.local/bin
+LOCAL_SHARE_DIR=${HOME}/.local/share
 
 if [[ ! -d ${INSTALL_DIR} ]]; then
   echo "Cloning dotfiles in to ${INSTALL_DIR}"
@@ -114,6 +115,7 @@ install_gh_cli () {
     curl -sSL https://github.com/cli/cli/releases/download/v${version}/gh_${version}_${KERNAL}_${MACHINE}.tar.gz -o gh_${version}_${KERNAL}_${MACHINE}.tar.gz
     tar xvf gh_${version}_${KERNAL}_${MACHINE}.tar.gz
     mv gh_${version}_${KERNAL}_${MACHINE}/bin/gh ${LOCAL_BIN_DIR}/gh
+    mv gh_${version}_${KERNAL}_${MACHINE}/share/man/man1/* ${LOCAL_SHARE_DIR}/man/man1/
     chmod +x "${LOCAL_BIN_DIR}/gh"
 }
 
