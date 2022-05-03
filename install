@@ -89,6 +89,7 @@ install_starship () {
 }
 
 install_direnv () {
+    set_kernal_and_machine_env_var
     download_url=$(
         curl -fL https://api.github.com/repos/direnv/direnv/releases/latest \
         | grep browser_download_url \
@@ -108,6 +109,7 @@ install_fzf () {
 }
 
 install_gh_cli () {
+    set_kernal_and_machine_env_var
     download_url=$(
         curl -fL https://api.github.com/repos/cli/cli/releases/latest \
         | grep browser_download_url \
@@ -115,7 +117,7 @@ install_gh_cli () {
         | grep "gh_[0-9].*.$KERNAL.$MACHINE.tar.gz"
       )
     curl -sSL $download_url -o gh_${KERNAL}_${MACHINE}.tar.gz
-    tar xvf gh_$KERNAL_$MACHINE.tar.gz
+    tar xvf gh_${KERNAL}_${MACHINE}.tar.gz
     mv gh_${KERNAL}_${MACHINE}/bin/gh ${LOCAL_BIN_DIR}/gh
     chmod +x "${LOCAL_BIN_DIR}/gh"
 }
@@ -126,7 +128,6 @@ copy_alacritty_config () {
     fi
 }
 
-set_kernal_and_machine_env_var
 create_sym_links
 install_oh_my_zsh
 install_tmux_plugin_manager
