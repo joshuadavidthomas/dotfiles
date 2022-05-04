@@ -11,4 +11,6 @@ export PATH="$GOPATH/bin:$PATH"
 export FLYCTL_INSTALL="/home/josh/.fly"
 export PATH="$FLYCTL_INSTALL/bin:$PATH"
 
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
 skip_global_compinit=1

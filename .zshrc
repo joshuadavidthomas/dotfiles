@@ -64,4 +64,3 @@ fi
 
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
