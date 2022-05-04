@@ -53,9 +53,8 @@ eval "$(direnv hook zsh)"
 
 # github cli
 if [[ ! -d "$ZSH/completions" || ! -f "$ZSH/completions/_gh" ]]; then
-    mkdir -pv $ZSH/completions
+    mkdir -pv $ZSH/completions >/dev/null 2>&1
     gh completion --shell zsh > $ZSH/completions/_gh
-    echo "gh added completions: gh completion --shell zsh > $ZSH/completions/_gh"
 fi
 # autoload -U compinit
 # compinit -i
