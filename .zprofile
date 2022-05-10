@@ -42,3 +42,5 @@ export PYTHONSTARTUP=$HOME/.pythonrc
 
 # https://askubuntu.com/a/454663
 stty icrnl
+
+export DISABLE_AUTO_TITLE='true'
