@@ -85,15 +85,13 @@ install_tmux_plugin_manager () {
 
 
 install_starship () {
-    starship --version >/dev/null 2>&1
-    if [[ $? -ne 0 ]]; then
+    if ! [-x "$(command -v starship)"]; then
         sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- --force --bin-dir ${LOCAL_BIN_DIR}
     fi
 }
 
 install_direnv () {
-    direnv --version >/dev/null 2>&1
-    if [[ $? -ne 0 ]]; then
+    if ! [ -x "$(command -v direnv)" ]; then
         set_kernal_and_machine_env_var
         download_url=$(
             curl -fL https://api.github.com/repos/direnv/direnv/releases/latest \
@@ -107,10 +105,9 @@ install_direnv () {
 }
 
 install_just () {
-    just --version >/dev/null 2>&1
-    if [[ $? -ne 0 ]]; then
-        curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --force --to ${LOCAL_BIN_DIR}
-    fi
+  if ! [ -x "$(command -v just)" ]; then
+      curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --force --to ${LOCAL_BIN_DIR}
+  fi
 }
 
 install_fzf () {
@@ -118,8 +115,7 @@ install_fzf () {
 }
 
 install_gh_cli () {
-    gh --version >/dev/null 2>&1
-    if [[ $? -ne 0 ]]; then
+    if ! [ -x "$(command -v gh)" ]; then
         set_kernal_and_machine_env_var
         version=`curl  "https://api.github.com/repos/cli/cli/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/' | cut -c2-`
         curl -sSL https://github.com/cli/cli/releases/download/v${version}/gh_${version}_${KERNAL}_${MACHINE}.tar.gz -o gh_${version}_${KERNAL}_${MACHINE}.tar.gz
