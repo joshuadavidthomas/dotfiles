@@ -69,6 +69,6 @@ fi
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 
 # tmuxp autocompletions
-if ! [ -x "$(command -v tmuxp)" ]; then
+if [ -x "$(command -v tmuxp)" ]; then
     eval "$(_TMUXP_COMPLETE=zsh_source tmuxp)"
 fi
