@@ -14,4 +14,5 @@ export PATH="$FLYCTL_INSTALL/bin:$PATH"
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 skip_global_compinit=1
-. "$HOME/.cargo/env"
+
+[ -d "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
