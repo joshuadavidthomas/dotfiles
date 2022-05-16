@@ -10,12 +10,16 @@ plugins=(
   nvm
   python
   pyenv
+  ssh-agent
   virtualenv
   z
   # zsh-autosuggestions
   # zsh-autocomplete
   # zsh-syntax-highlighting
 )
+
+# ssh-agent plugin config
+zstyle :omz:plugins:ssh-agent identities hetzner id_ed25519 id_ed25519_do id_ed25519_twc
 
 source $ZSH/oh-my-zsh.sh
 
@@ -33,7 +37,7 @@ else
   export EDITOR='nvim'
 fi
 
-export SSH_KEY_PATH="~/.ssh/id_ed25519:~/.ssh/id_ed25519_twc:~/.ssh/id_ed25519_do"
+# export SSH_KEY_PATH="~/.ssh/id_ed25519:~/.ssh/id_ed25519_twc:~/.ssh/id_ed25519_do"
 
 if [ -f ~/.aliases ]; then
   source ${HOME}/.aliases
