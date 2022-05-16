@@ -85,7 +85,7 @@ install_tmux_plugin_manager () {
 
 
 install_starship () {
-    if ! [-x "$(command -v starship)"]; then
+    if ! [ -x "$(command -v starship)" ]; then
         sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- --force --bin-dir ${LOCAL_BIN_DIR}
     fi
 }
