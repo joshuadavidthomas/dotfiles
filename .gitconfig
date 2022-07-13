@@ -19,3 +19,6 @@
     br = "branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate"
     wip = "commit -am 'wip'"
     wip-reset = "!git reset $(git merge-base origin/main HEAD)"
+
+[push]
+	autoSetupRemote = true
