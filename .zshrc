@@ -1,5 +1,4 @@
 export ZSH=${HOME}/.oh-my-zsh
-export DOTFILES=${HOME}/.dotfiles
 
 ZSH_DISABLE_COMPFIX="true"
 
@@ -22,10 +21,6 @@ plugins=(
 zstyle :omz:plugins:ssh-agent identities hetzner id_ed25519 id_ed25519_do id_ed25519_twc
 
 source $ZSH/oh-my-zsh.sh
-
-for file in ${DOTFILES}/utils/*; do
-  source $file
-done
 
 # zstyle ':completion:*' menu select
 
