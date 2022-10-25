@@ -39,6 +39,10 @@ fi
 
 # export SSH_KEY_PATH="~/.ssh/id_ed25519:~/.ssh/id_ed25519_twc:~/.ssh/id_ed25519_do"
 
+if [ -x "$(command -v 1password)" ]; then
+  export SSH_AUTH_SOCK="$HOME/.1password/agent.sock"
+fi
+
 if [ -f ~/.aliases ]; then
   source ${HOME}/.aliases
 fi
