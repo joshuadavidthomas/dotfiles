@@ -50,13 +50,6 @@ install_zsh () {
   fi
 }
 
-install_zsh () {
-  if [[ ! -x $(command -v zsh) ]]; then
-    echo "Installing zsh"
-    sudo apt install zsh
-  fi
-}
-
 install_oh_my_zsh () {
     if [[ ! -d $OH_MY_ZSH_DIR ]]; then
       echo "Cloning oh-my-zsh in to ${OH_MY_ZSH_DIR}"
