@@ -43,26 +43,11 @@ set_kernal_and_machine_env_var () {
     esac
 }
 
-create_sym_links () {
-    ln -sf ${INSTALL_DIR}/.aliases ${HOME}/.aliases
-    ln -sf ${INSTALL_DIR}/.functions ${HOME}/.functions
-    ln -sf ${INSTALL_DIR}/.gitconfig ${HOME}/.gitconfig
-    ln -sf ${INSTALL_DIR}/.npmrc ${HOME}/.npmrc
-    ln -sf ${INSTALL_DIR}/.pythonrc ${HOME}/.pythonrc
-    ln -sf ${INSTALL_DIR}/.tmux.conf ${HOME}/.tmux.conf
-    ln -sf ${INSTALL_DIR}/.zprofile ${HOME}/.zprofile
-    ln -sf ${INSTALL_DIR}/.zshenv ${HOME}/.zshenv
-    ln -sf ${INSTALL_DIR}/.zshrc ${HOME}/.zshrc
-
-    for binary in ${INSTALL_DIR}/bin/*
-    do
-      ln -sf ${binary} ${LOCAL_BIN_DIR}
-    done
-
-    for config in ${INSTALL_DIR}/.config/*
-    do
-      ln -sf ${config} ${HOME}/.config
-    done
+install_zsh () {
+  if [[ ! -x $(command -v zsh) ]]; then
+    echo "Installing zsh"
+    sudo apt install zsh
+  fi
 }
 
 install_zsh () {
