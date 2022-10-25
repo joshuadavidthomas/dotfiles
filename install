@@ -6,20 +6,32 @@ set -o nounset
 
 export DEBIAN_FRONTEND=noninteractive
 
-INSTALL_DIR=${HOME}/.dotfiles
+INSTALL_DIR=${HOME}/.cfg
 OH_MY_ZSH_DIR=${HOME}/.oh-my-zsh
 ZSH_CUSTOM=${OH_MY_ZSH_DIR}/custom
 LOCAL_BIN_DIR=${HOME}/.local/bin
 
-if [[ ! -d ${INSTALL_DIR} ]]; then
-  echo "Cloning dotfiles in to ${INSTALL_DIR}"
-  mkdir -p ${INSTALL_DIR}
-  git clone https://github.com/joshuadavidthomas/dotfiles.git ${INSTALL_DIR}
-else
-  echo "Updating dotfiles"
-  cd ${INSTALL_DIR}
-  git pull
-fi
+config () {
+    /usr/bin/git --git-dir=${INSTALL_DIR}/ --work-tree=${HOME} $@
+}
+
+install_bare_dotfiles () {
+  git clone --bare https://github.com/joshuadavidthomas/dotfiles.git ${INSTALL_DIR}
+  mkdir -p .config-backup
+  config checkout
+  if [ $? = 0 ]; then
+    echo "Checked out config.";
+    else
+      echo "Backing up pre-existing dot files.";
+      config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
+  fi;
+  config checkout
+  config config status.showUntrackedFiles no
+}
+
+update_bare_dotfiles () {
+  config pull
+}
 
 [[ -d ${LOCAL_BIN_DIR} ]] || mkdir -p ${LOCAL_BIN_DIR}
 
@@ -112,6 +124,12 @@ install_gh_cli () {
         chmod +x "${LOCAL_BIN_DIR}/gh"
     fi
 }
+
+if [[ ! -d ${INSTALL_DIR} ]]; then
+  install_bare_dotfiles
+else
+  update_bare_dotfiles
+fi
 
 install_zsh
 install_oh_my_zsh
