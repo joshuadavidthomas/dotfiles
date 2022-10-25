@@ -4,6 +4,8 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
+export DEBIAN_FRONTEND=noninteractive
+
 INSTALL_DIR=${HOME}/.dotfiles
 OH_MY_ZSH_DIR=${HOME}/.oh-my-zsh
 ZSH_CUSTOM=${OH_MY_ZSH_DIR}/custom
@@ -61,6 +63,13 @@ create_sym_links () {
     do
       ln -sf ${config} ${HOME}/.config
     done
+}
+
+install_zsh () {
+  if [[ ! -x $(command -v zsh) ]]; then
+    echo "Installing zsh"
+    sudo apt install zsh
+  fi
 }
 
 install_oh_my_zsh () {
@@ -126,13 +135,7 @@ install_gh_cli () {
     fi
 }
 
-copy_alacritty_config () {
-    if [[ -d /mnt/c ]]; then
-        cp -f ${INSTALL_DIR}/mnt/c/Users/jthomas/AppData/Roaming/Alacritty/alacritty.yml /mnt/c/Users/jthomas/AppData/Roaming/Alacritty/alacritty.yml
-    fi
-}
-
-create_sym_links
+install_zsh
 install_oh_my_zsh
 install_tmux_plugin_manager
 install_starship
@@ -140,4 +143,3 @@ install_direnv
 install_just
 install_fzf
 install_gh_cli
-copy_alacritty_config
