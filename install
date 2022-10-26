@@ -1,15 +1,6 @@
 #!/usr/bin/env bash
 
-set -o errexit
-set -o pipefail
-set -o nounset
-
-export DEBIAN_FRONTEND=noninteractive
-
 INSTALL_DIR=${HOME}/.cfg
-OH_MY_ZSH_DIR=${HOME}/.oh-my-zsh
-ZSH_CUSTOM=${OH_MY_ZSH_DIR}/custom
-LOCAL_BIN_DIR=${HOME}/.local/bin
 
 config () {
     /usr/bin/git --git-dir=${INSTALL_DIR}/ --work-tree=${HOME} $@
@@ -28,7 +19,17 @@ install_bare_dotfiles () {
 
 update_bare_dotfiles () {
   config pull
-}
+}z
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+export DEBIAN_FRONTEND=noninteractive
+
+OH_MY_ZSH_DIR=${HOME}/.oh-my-zsh
+ZSH_CUSTOM=${OH_MY_ZSH_DIR}/custom
+LOCAL_BIN_DIR=${HOME}/.local/bin
 
 [[ -d ${LOCAL_BIN_DIR} ]] || mkdir -p ${LOCAL_BIN_DIR}
 
