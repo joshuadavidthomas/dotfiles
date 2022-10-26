@@ -19,7 +19,13 @@ install_bare_dotfiles () {
 
 update_bare_dotfiles () {
   config pull
-}z
+}
+
+if [ ! -d ${INSTALL_DIR} ]; then
+  install_bare_dotfiles
+else
+  update_bare_dotfiles
+fi
 
 set -o errexit
 set -o pipefail
@@ -122,12 +128,6 @@ install_gh_cli () {
         chmod +x "${LOCAL_BIN_DIR}/gh"
     fi
 }
-
-if [[ ! -d ${INSTALL_DIR} ]]; then
-  install_bare_dotfiles
-else
-  update_bare_dotfiles
-fi
 
 install_zsh
 install_oh_my_zsh
