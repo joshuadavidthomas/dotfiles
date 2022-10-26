@@ -18,7 +18,7 @@ config () {
 install_bare_dotfiles () {
   git clone --bare https://github.com/joshuadavidthomas/dotfiles.git ${INSTALL_DIR}
   mkdir -p .config-backup
-  config checkout > /dev/null 2>&1 || true
+  config checkout 2>&1
   if [ $? = 0 ]; then
     echo "Checked out config.";
   else
