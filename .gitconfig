@@ -22,3 +22,5 @@
 
 [push]
 	autoSetupRemote = true
+[core]
+	excludesFile = ~/.gitignore
