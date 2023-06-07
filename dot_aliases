@@ -4,3 +4,4 @@ alias gprune="git fetch --prune && git branch --v | grep '\[gone\]' | awk '{prin
 alias redis="docker run --name redis -d -p 0.0.0.0:6379:6379 redis"
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 alias pup="python -m pip install --upgrade pip"
+alias lg='lazygit'
