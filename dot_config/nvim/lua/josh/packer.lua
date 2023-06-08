@@ -29,11 +29,30 @@ return require('packer').startup(function(use)
   -- features.
   use("github/copilot.vim")
 
-  -- Vim-Fugitive is a Git wrapper so awesome, it should be illegal (according
+  -- obligatory tpope section of plugins
+  --
+  -- sensible.vim is a plugin that provides a set of defaults that everyone can
+  -- agree on.
+  use('tpope/vim-sensible')
+  -- fugitive.vim is a Git wrapper so awesome, it should be illegal (according
   -- to the author). It provides a Git porcelain inside Vim. It provides a set
   -- of commands that allow you to do almost everything you can do with Git
   -- from the command line, but from inside Vim.
   use('tpope/vim-fugitive')
+  -- commentary.vim is a plugin that allows you to quickly comment and
+  -- uncomment lines in Vim. It supports commenting out a single line, a
+  -- visual selection, or a motion.
+  use('tpope/vim-commentary')
+  -- surround.vim is a plugin that allows you to easily surround text with
+  -- quotes, parentheses, brackets, and more. It provides mappings to easily
+  -- delete, change, and add such surroundings in pairs.
+  use('tpope/vim-surround')
+  -- repeat.vim is a plugin that enables repeating supported plugin maps with
+  -- the dot command. It provides a :Repeat command that can be used to repeat
+  -- a plugin map.
+  use('tpope/vim-repeat')
+  --
+  -- end of obligatory tpope section of plugins
 
   -- Harpoon is a plugin that allows you to mark files and jump to them easily.
   use('ThePrimeagen/harpoon')
