@@ -2,10 +2,14 @@
 
 set -euo pipefail
 
-export DEBIAN_FRONTEND=noninteractive
-
 sudo apt-get update
 
 sudo apt-get install -y --no-install-recommends \
-    curl \
-    tmux
+	build-essential \
+	curl \
+	ripgrep \
+	tmux \
+	unzip \
+	zsh
+
+chsh -s $(which zsh)

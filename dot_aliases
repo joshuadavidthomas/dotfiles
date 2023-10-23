@@ -6,4 +6,4 @@ alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 alias pup="python -m pip install --upgrade pip"
 alias lg='lazygit'
 alias vim='nvim'
-alias dt='chezmoi'
+alias moi='chezmoi'
