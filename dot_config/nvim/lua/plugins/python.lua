@@ -14,11 +14,7 @@ return {
     "stevearc/conform.nvim",
     opts = {
       formatters_by_ft = {
-        python = { "black", "ruff_fix", "rust_format" },
-      },
-      format_on_save = {
-        lsp_fallback = true,
-        timeout_ms = 500,
+        python = { "black", "ruff_fix", "ruff_format" },
       },
     },
   },
