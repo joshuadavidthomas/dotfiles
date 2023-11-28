@@ -4,6 +4,7 @@ local LazyUtil = require("lazy.core.util")
 ---@field lsp lazyvim.util.lsp
 ---@field plugin lazyvim.util.plugin
 ---@field root lazyvim.util.root
+---@field ui lazyvim.util.ui
 local M = {}
 
 ---@type table<string, string|string[]>

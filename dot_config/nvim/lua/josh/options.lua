@@ -1,5 +1,6 @@
 local opt = vim.opt
 local window = vim.wo
+local global = vim.g
 
 -- Set highlight on search
 opt.hlsearch = false
@@ -43,3 +44,12 @@ opt.autowrite = true
 
 -- Confirm to save changes before exiting modified buffer
 opt.confirm = true
+
+-- views can only be fully collapsed with the global statusline
+opt.laststatus = 3
+-- Default splitting will cause your main splits to jump when opening an edgebar.
+-- To prevent this, set `splitkeep` to either `screen` or `topline`.
+opt.splitkeep = "screen"
+
+-- python setup
+global.python3_host_prog = "/home/josh/.pyenv/versions/py3nvim/bin/python"
