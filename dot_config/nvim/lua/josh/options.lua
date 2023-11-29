@@ -1,12 +1,12 @@
 local opt = vim.opt
-local window = vim.wo
-local global = vim.g
+local wo = vim.wo
+local g = vim.g
 
 -- Set highlight on search
 opt.hlsearch = false
 
 -- Make line numbers default
-window.number = true
+wo.number = true
 
 -- Enable mouse mode
 opt.mouse = "a"
@@ -52,4 +52,4 @@ opt.laststatus = 3
 opt.splitkeep = "screen"
 
 -- python setup
-global.python3_host_prog = "/home/josh/.pyenv/versions/py3nvim/bin/python"
+g.python3_host_prog = "/home/josh/.pyenv/versions/py3nvim/bin/python"

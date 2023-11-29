@@ -135,7 +135,7 @@ return {
             Util.info("Enabled auto pairs", { title = "Option" })
           end
         end,
-        desc = "Toggle auto pairs",
+        desc = "Toggle auto [p]airs",
       },
     },
   },

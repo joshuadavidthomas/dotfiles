@@ -13,16 +13,16 @@ function M.get()
   end
     -- stylua: ignore
     M._keys =  {
-      { "<leader>cl", "<cmd>LspInfo<cr>", desc = "Lsp Info" },
-      { "gd", function() require("telescope.builtin").lsp_definitions({ reuse_win = true }) end, desc = "Goto Definition", has = "definition" },
-      { "gr", "<cmd>Telescope lsp_references<cr>", desc = "References" },
-      { "gD", vim.lsp.buf.declaration, desc = "Goto Declaration" },
-      { "gI", function() require("telescope.builtin").lsp_implementations({ reuse_win = true }) end, desc = "Goto Implementation" },
+      { "<leader>cl", "<cmd>LspInfo<cr>", desc = "[l]sp Info" },
+      { "gd", function() require("telescope.builtin").lsp_definitions({ reuse_win = true }) end, desc = "Goto [d]efinition", has = "definition" },
+      { "gr", "<cmd>Telescope lsp_references<cr>", desc = "Goto [r]eferences" },
+      { "gD", vim.lsp.buf.declaration, desc = "Goto [D]eclaration" },
+      { "gI", function() require("telescope.builtin").lsp_implementations({ reuse_win = true }) end, desc = "Goto [I]mplementation" },
       { "gy", function() require("telescope.builtin").lsp_type_definitions({ reuse_win = true }) end, desc = "Goto T[y]pe Definition" },
       { "K", vim.lsp.buf.hover, desc = "Hover" },
       { "gK", vim.lsp.buf.signature_help, desc = "Signature Help", has = "signatureHelp" },
       { "<c-k>", vim.lsp.buf.signature_help, mode = "i", desc = "Signature Help", has = "signatureHelp" },
-      { "<leader>ca", vim.lsp.buf.code_action, desc = "Code Action", mode = { "n", "v" }, has = "codeAction" },
+      { "<leader>ca", vim.lsp.buf.code_action, desc = "Code [a]ction", mode = { "n", "v" }, has = "codeAction" },
       {
         "<leader>cA",
         function()
@@ -35,7 +35,7 @@ function M.get()
             },
           })
         end,
-        desc = "Source Action",
+        desc = "Source [A]ction",
         has = "codeAction",
       }
     }
@@ -47,11 +47,11 @@ function M.get()
         return ":" .. inc_rename.config.cmd_name .. " " .. vim.fn.expand("<cword>")
       end,
       expr = true,
-      desc = "Rename",
+      desc = "[r]ename",
       has = "rename",
     }
   else
-    M._keys[#M._keys + 1] = { "<leader>cr", vim.lsp.buf.rename, desc = "Rename", has = "rename" }
+    M._keys[#M._keys + 1] = { "<leader>cr", vim.lsp.buf.rename, desc = "[r]ename", has = "rename" }
   end
   return M._keys
 end

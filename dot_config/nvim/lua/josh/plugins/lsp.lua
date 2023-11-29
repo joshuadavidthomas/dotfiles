@@ -206,7 +206,7 @@ return {
     "williamboman/mason.nvim",
     cmd = "Mason",
     build = ":MasonUpdate",
-    keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
+    keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "[m]ason" } },
     opts = {
       ensure_installed = {
         "stylua",

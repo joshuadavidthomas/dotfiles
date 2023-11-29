@@ -1,3 +1,4 @@
+local Util = require("lazyvim.util")
 local map = vim.keymap.set
 
 map({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
@@ -49,6 +50,13 @@ map("n", "<leader>w-", "<C-W>s", { desc = "[-] Split window below", remap = true
 map("n", "<leader>w|", "<C-W>v", { desc = "[|] Split window right", remap = true })
 map("n", "<leader>-", "<C-W>s", { desc = "[-] Split window below", remap = true })
 map("n", "<leader>|", "<C-W>v", { desc = "[|] Split window right", remap = true })
+
+-- toggle
+-- stylua: ignore
+map("n", "<leader>uL", function() Util.toggle("relativenumber") end, { desc = "Toggle relative [L]ine numbers" })
+map("n", "<leader>ul", function()
+  Util.toggle.number()
+end, { desc = "Toggle [l]ine numbers" })
 
 -- quit
 map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "[q]uit all" })

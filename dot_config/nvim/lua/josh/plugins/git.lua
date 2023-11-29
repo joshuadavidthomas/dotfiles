@@ -10,6 +10,7 @@ return {
   },
   {
     "lewis6991/gitsigns.nvim",
+    event = "LazyFile",
     opts = {
       signs = {
         add = { text = "+" },
@@ -18,34 +19,19 @@ return {
         topdelete = { text = "‾" },
         changedelete = { text = "~" },
       },
-      on_attach = function(bufnr)
-        vim.keymap.set(
-          "n",
-          "<leader>hp",
-          require("gitsigns").preview_hunk,
-          { buffer = bufnr, desc = "Preview git hunk" }
-        )
-
-        -- don't override the built-in and fugitive keymaps
+      on_attach = function(buffer)
         local gs = package.loaded.gitsigns
-        vim.keymap.set({ "n", "v" }, "]c", function()
-          if vim.wo.diff then
-            return "]c"
-          end
-          vim.schedule(function()
-            gs.next_hunk()
-          end)
-          return "<Ignore>"
-        end, { expr = true, buffer = bufnr, desc = "Jump to next hunk" })
-        vim.keymap.set({ "n", "v" }, "[c", function()
-          if vim.wo.diff then
-            return "[c"
-          end
-          vim.schedule(function()
-            gs.prev_hunk()
-          end)
-          return "<Ignore>"
-        end, { expr = true, buffer = bufnr, desc = "Jump to previous hunk" })
+
+        local function map(mode, l, r, desc)
+          vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })
+        end
+
+        map("n", "<leader>gp", gs.preview_hunk, "[p]review git hunk")
+        map({ "n", "v" }, "<leader>gs", ":Gitsigns stage_hunk<CR>", "[s]tage Hunk")
+        map({ "n", "v" }, "<leader>gr", ":Gitsigns reset_hunk<CR>", "[r]eset Hunk")
+        map("n", "<leader>gS", gs.stage_buffer, "[S]tage buffer")
+        map("n", "<leader>gu", gs.undo_stage_hunk, "[u]ndo stage hunk")
+        map("n", "<leader>gR", gs.reset_buffer, "[R]eset buffer")
       end,
     },
   },

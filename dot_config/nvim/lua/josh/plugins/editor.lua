@@ -23,41 +23,54 @@ return {
         end,
       },
     },
+    -- stylua: ignore
     keys = {
-      -- { "<leader><space>", "<leader>ff", desc = "[ ] Find Files", remap = true },
-      {
-        "<leader><space>",
-        function()
-          require("telescope.builtin").buffers()
-        end,
-        desc = "[ ] Find existing buffers",
-        remap = true,
-      },
-      {
-        "<leader>/",
-        function()
-          require("telescope.builtin").live_grep()
-        end,
-        desc = "[/] Grep Files",
-      },
-      {
-        "<leader>ff",
-        function()
-          require("telescope.builtin").find_files()
-        end,
-        desc = "find [f]iles",
-      },
+      { "<leader><space>", function() require("telescope.builtin").buffers() end, desc = "[ ] Find existing buffers" },
+      { "<leader>/", function() require("telescope.builtin").live_grep() end, desc = "[/] Grep Files" },
+      { "<leader>sf", function() require("telescope.builtin").find_files() end, desc = "[f]iles" },
+      { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "[h]elp" },
+      { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "[k]eymaps" },
     },
-    opts = {
-      defaults = {
-        mappings = {
-          i = {
-            ["<C-u>"] = false,
-            ["<C-d>"] = false,
+    opts = function()
+      local actions = require("telescope.actions")
+
+      local function flash(prompt_bufnr)
+        require("flash").jump({
+          pattern = "^",
+          label = { after = { 0, 0 } },
+          search = {
+            mode = "search",
+            exclude = {
+              function(win)
+                return vim.bo[vim.api.nvim_win_get_buf(win)].filetype ~= "TelescopeResults"
+              end,
+            },
+          },
+          action = function(match)
+            local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
+            picker:set_selection(match.pos[1] - 1)
+          end,
+        })
+      end
+
+      return {
+        defaults = {
+          mappings = {
+            i = {
+              ["<C-Down>"] = actions.cycle_history_next,
+              ["<C-Up>"] = actions.cycle_history_prev,
+              ["<C-f>"] = actions.preview_scrolling_down,
+              ["<C-b>"] = actions.preview_scrolling_up,
+              ["<c-s>"] = flash,
+            },
+            n = {
+              ["s"] = flash,
+              ["q"] = actions.close,
+            },
           },
         },
-      },
-    },
+      }
+    end,
   },
   -- file explorer
   -- {
@@ -137,57 +150,60 @@ return {
   -- mini.files explorer
   {
     "echasnovski/mini.files",
-    opts = {
-      windows = {
-        preview = true,
-        width_focus = 30,
-        width_preview = 30,
-      },
-      options = {
-        -- Whether to use for editing directories
-        -- Disabled by default in LazyVim because neo-tree is used for that
-        use_as_default_explorer = false,
-      },
-    },
-    keys = function(_, keys)
-      local minifiles_toggle = function(...)
-        if not require("mini.files").close() then
-          require("mini.files").open(...)
+    opts = function()
+      local function width_preview(ratio)
+        return math.ceil(vim.o.columns * ratio)
+      end
+      return {
+        mappings = {
+          close = "",
+          go_in_plus = "",
+        },
+        windows = {
+          preview = true,
+          width_focus = 30,
+          width_preview = width_preview(0.65),
+        },
+        options = {
+          -- Whether to use for editing directories
+          -- Disabled by default in LazyVim because neo-tree is used for that
+          use_as_default_explorer = false,
+        },
+      }
+    end,
+    keys = function()
+      local MiniFiles = require("mini.files")
+      local function minifiles_toggle(args)
+        return function()
+          if not MiniFiles.close() then
+            MiniFiles.open(unpack(args))
+          end
         end
       end
       return {
-        {
-          "<leader>fe",
-          -- minifiles_toggle(Util.root(), true),
-          function()
-            if not require("mini.files").close() then
-              require("mini.files").open(Util.root(), true)
-            end
-          end,
-          desc = "File [e]xplorer",
-        },
         { "<leader>e", "<leader>fe", desc = "File [e]xplorer", remap = true },
         {
-          "<leader>fm",
-          -- minifiles_toggle(vim.api.nvim_buf_get_name(0), true),
-          function()
-            if not require("mini.files").close() then
-              require("mini.files").open(vim.api.nvim_buf_get_name(0), true)
-            end
-          end,
-          desc = "Open mini.files (directory of current file)",
+          "<leader>fe",
+          minifiles_toggle({ Util.root(), true }),
+          desc = "File [e]xplorer (root)",
         },
         {
-          "<leader>fM",
+          "<leader>ff",
+          minifiles_toggle({ vim.api.nvim_buf_get_name(0), true }),
+          desc = "File explorer (current [f]ile)",
+        },
+        {
+          "<leader>fc",
           function()
             require("mini.files").open(vim.loop.cwd(), true)
           end,
-          desc = "Open mini.files (cwd)",
+          desc = "File explorer (current [c]wd)",
         },
       }
     end,
     config = function(_, opts)
-      require("mini.files").setup(opts)
+      local MiniFiles = require("mini.files")
+      MiniFiles.setup(opts)
 
       local show_dotfiles = true
       local filter_show = function(fs_entry)
@@ -200,15 +216,35 @@ return {
       local toggle_dotfiles = function()
         show_dotfiles = not show_dotfiles
         local new_filter = show_dotfiles and filter_show or filter_hide
-        require("mini.files").refresh({ content = { filter = new_filter } })
+        MiniFiles.refresh({ content = { filter = new_filter } })
+      end
+
+      local go_in_plus = function()
+        for _ = 1, vim.v.count1 - 1 do
+          MiniFiles.go_in()
+        end
+        local fs_entry = MiniFiles.get_fs_entry()
+        local is_at_file = fs_entry ~= nil and fs_entry.fs_type == "file"
+        MiniFiles.go_in()
+        if is_at_file then
+          MiniFiles.close()
+        end
       end
 
       vim.api.nvim_create_autocmd("User", {
         pattern = "MiniFilesBufferCreate",
         callback = function(args)
-          local buf_id = args.data.buf_id
-          -- Tweak left-hand side of mapping to your liking
-          vim.keymap.set("n", "g.", toggle_dotfiles, { buffer = buf_id })
+          local map_buf = function(lhs, rhs, desc)
+            vim.keymap.set("n", lhs, rhs, { buffer = args.data.buf_id, desc = desc })
+          end
+
+          map_buf("g.", toggle_dotfiles, "Toggle dot[.]files")
+
+          map_buf("L", go_in_plus, "Go in p[L]us")
+          map_buf("<CR>", go_in_plus, "Go in p[L]us")
+
+          map_buf("q", MiniFiles.close, "Close")
+          map_buf("<Esc>", MiniFiles.close, "Close")
         end,
       })
 
@@ -228,9 +264,15 @@ return {
       plugins = { spelling = true },
       defaults = {
         mode = { "n", "v" },
+        ["<leader>b"] = { name = "+[b]uffer" },
+        ["<leader>c"] = { name = "+[c]ode" },
+        ["<leader>g"] = { name = "+[g]it" },
         ["<leader>f"] = { name = "+[f]ile/[f]ind" },
+        ["<leader>s"] = { name = "+[s]earch" },
         ["<leader>u"] = { name = "+[u]i" },
         ["<leader>w"] = { name = "+[w]indow" },
+        ["<leader>t"] = { name = "+[t]est" },
+        ["<leader>x"] = { name = "+diagnostics/quickfi[x]" },
         ["<leader>q"] = { name = "+[q]uit/session" },
       },
     },
@@ -375,10 +417,10 @@ return {
             bd(0)
           end
         end,
-        desc = "Delete Buffer",
+        desc = "[d]elete buffer",
       },
       -- stylua: ignore
-      { "<leader>bD", function() require("mini.bufremove").delete(0, true) end, desc = "Delete Buffer (Force)" },
+      { "<leader>bD", function() require("mini.bufremove").delete(0, true) end, desc = "[D]elete buffer (force)" },
     },
   },
   {
@@ -409,6 +451,169 @@ return {
     opts = {
       shading_factor = "-10",
       close_on_exit = true, -- close the terminal window when the process exits
+      size = function(term)
+        if term.direction == "horizontal" then
+          return vim.o.lines * 0.4
+        elseif term.direction == "vertical" then
+          return vim.o.columns * 0.4
+        end
+      end,
+    },
+  },
+  -- Flash enhances the built-in search functionality by showing labels
+  -- at the end of each match, letting you quickly jump to a specific
+  -- location.
+  {
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    keys = {
+      {
+        "<leader>ss",
+        mode = { "n", "o", "x" },
+        function()
+          require("flash").jump()
+        end,
+        desc = "Flash",
+      },
+      {
+        "<leader>sS",
+        mode = { "n", "o", "x" },
+        function()
+          require("flash").treesitter()
+        end,
+        desc = "Flash Treesitter",
+      },
+      {
+        "<leader>sr",
+        mode = "o",
+        function()
+          require("flash").remote()
+        end,
+        desc = "Remote Flash",
+      },
+      {
+        "<leader>sR",
+        mode = { "o", "x" },
+        function()
+          require("flash").treesitter_search()
+        end,
+        desc = "Treesitter Search",
+      },
+      {
+        "<c-s>",
+        mode = { "c" },
+        function()
+          require("flash").toggle()
+        end,
+        desc = "Toggle Flash Search",
+      },
+    },
+  },
+  -- Automatically highlights other instances of the word under your cursor.
+  -- This works with LSP, Treesitter, and regexp matching to find the other
+  -- instances.
+  {
+    "RRethy/vim-illuminate",
+    event = "LazyFile",
+    opts = {
+      delay = 200,
+      large_file_cutoff = 2000,
+      large_file_overrides = {
+        providers = { "lsp" },
+      },
+    },
+    config = function(_, opts)
+      require("illuminate").configure(opts)
+
+      local function map(key, dir, buffer)
+        vim.keymap.set("n", key, function()
+          require("illuminate")["goto_" .. dir .. "_reference"](false)
+        end, { desc = dir:sub(1, 1):upper() .. dir:sub(2) .. " Reference", buffer = buffer })
+      end
+
+      map("]]", "next")
+      map("[[", "prev")
+
+      -- also set it after loading ftplugins, since a lot overwrite [[ and ]]
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function()
+          local buffer = vim.api.nvim_get_current_buf()
+          map("]]", "next", buffer)
+          map("[[", "prev", buffer)
+        end,
+      })
+    end,
+    keys = {
+      { "]]", desc = "Next Reference" },
+      { "[[", desc = "Prev Reference" },
+    },
+  },
+  -- better diagnostics list and others
+  {
+    "folke/trouble.nvim",
+    cmd = { "TroubleToggle", "Trouble" },
+    opts = { use_diagnostic_signs = true },
+    keys = {
+      { "<leader>xx", "<cmd>TroubleToggle document_diagnostics<cr>", desc = "[x] Document Diagnostics (Trouble)" },
+      { "<leader>xX", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "[X] Workspace Diagnostics (Trouble)" },
+      { "<leader>xL", "<cmd>TroubleToggle loclist<cr>", desc = "[L]ocation List (Trouble)" },
+      { "<leader>xQ", "<cmd>TroubleToggle quickfix<cr>", desc = "[Q]uickfix List (Trouble)" },
+      {
+        "[q",
+        function()
+          if require("trouble").is_open() then
+            require("trouble").previous({ skip_groups = true, jump = true })
+          else
+            local ok, err = pcall(vim.cmd.cprev)
+            if not ok then
+              vim.notify(err, vim.log.levels.ERROR)
+            end
+          end
+        end,
+        desc = "Previous trouble/quickfix item",
+      },
+      {
+        "]q",
+        function()
+          if require("trouble").is_open() then
+            require("trouble").next({ skip_groups = true, jump = true })
+          else
+            local ok, err = pcall(vim.cmd.cnext)
+            if not ok then
+              vim.notify(err, vim.log.levels.ERROR)
+            end
+          end
+        end,
+        desc = "Next trouble/quickfix item",
+      },
+    },
+    -- Finds and lists all of the TODO, HACK, BUG, etc comment
+    -- in your project and loads them into a browsable list.
+    {
+      "folke/todo-comments.nvim",
+      cmd = { "TodoTrouble", "TodoTelescope" },
+      event = "LazyFile",
+      config = true,
+      keys = {
+        {
+          "]t",
+          function()
+            require("todo-comments").jump_next()
+          end,
+          desc = "Next todo comment",
+        },
+        {
+          "[t",
+          function()
+            require("todo-comments").jump_prev()
+          end,
+          desc = "Previous todo comment",
+        },
+        { "<leader>xt", "<cmd>TodoTrouble<cr>", desc = "[t]odo (Trouble)" },
+        { "<leader>xT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>", desc = "All [T]odo/Fix/Fixme (Trouble)" },
+        { "<leader>st", "<cmd>TodoTelescope<cr>", desc = "[t]odo" },
+        { "<leader>sT", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>", desc = "All [T]odo/Fix/Fixme" },
+      },
     },
   },
 }

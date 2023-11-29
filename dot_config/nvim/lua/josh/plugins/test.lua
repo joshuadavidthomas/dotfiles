@@ -1,14 +1,5 @@
 return {
   {
-    "folke/which-key.nvim",
-    optional = true,
-    opts = {
-      defaults = {
-        ["<leader>t"] = { name = "+test" },
-      },
-    },
-  },
-  {
     "nvim-neotest/neotest",
     opts = {
       -- Can be a list of adapters like what neotest expects,
@@ -107,13 +98,13 @@ return {
     end,
     -- stylua: ignore
     keys = {
-      { "<leader>tt", function() require("neotest").run.run(vim.fn.expand("%")) end, desc = "Run File" },
-      { "<leader>tT", function() require("neotest").run.run(vim.loop.cwd()) end, desc = "Run All Test Files" },
-      { "<leader>tr", function() require("neotest").run.run() end, desc = "Run Nearest" },
-      { "<leader>ts", function() require("neotest").summary.toggle() end, desc = "Toggle Summary" },
-      { "<leader>to", function() require("neotest").output.open({ enter = true, auto_close = true }) end, desc = "Show Output" },
-      { "<leader>tO", function() require("neotest").output_panel.toggle() end, desc = "Toggle Output Panel" },
-      { "<leader>tS", function() require("neotest").run.stop() end, desc = "Stop" },
+      { "<leader>tt", function() require("neotest").run.run(vim.fn.expand("%")) end, desc = "Run [t]est file" },
+      { "<leader>tT", function() require("neotest").run.run(vim.loop.cwd()) end, desc = "Run all [T]est files" },
+      { "<leader>tr", function() require("neotest").run.run() end, desc = "Run nea[r]est test" },
+      { "<leader>ts", function() require("neotest").summary.toggle() end, desc = "Toggle [s]ummary" },
+      { "<leader>to", function() require("neotest").output.open({ enter = true, auto_close = true }) end, desc = "Show [o]utput" },
+      { "<leader>tO", function() require("neotest").output_panel.toggle() end, desc = "Toggle [O]utput panel" },
+      { "<leader>tS", function() require("neotest").run.stop() end, desc = "[S]top" },
     },
   },
   {
@@ -121,7 +112,7 @@ return {
     optional = true,
     -- stylua: ignore
     keys = {
-      { "<leader>td", function() require("neotest").run.run({strategy = "dap"}) end, desc = "Debug Nearest" },
+      { "<leader>td", function() require("neotest").run.run({strategy = "dap"}) end, desc = "[d]ebug nearest" },
     },
   },
 }
