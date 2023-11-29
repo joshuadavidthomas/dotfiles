@@ -28,6 +28,7 @@ return {
       { "<leader><space>", function() require("telescope.builtin").buffers() end, desc = "[ ] Find existing buffers" },
       { "<leader>/", function() require("telescope.builtin").live_grep() end, desc = "[/] Grep Files" },
       { "<leader>sf", function() require("telescope.builtin").find_files() end, desc = "[f]iles" },
+      { "<leader>sg", function() require("telescope.builtin").git_files() end, desc = "[g]it files" },
       { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "[h]elp" },
       { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "[k]eymaps" },
     },

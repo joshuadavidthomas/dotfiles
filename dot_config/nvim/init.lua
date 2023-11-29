@@ -27,9 +27,6 @@ if ok then
 end
 
 require("lazyvim.util.plugin").setup()
-require("josh.options")
-require("josh.keymaps")
-require("josh.autocmds")
 
 require("lazy").setup({
   spec = {
@@ -63,3 +60,7 @@ require("lazy").setup({
     },
   },
 })
+
+require("josh.options")
+require("josh.keymaps")
+require("josh.autocmds")
