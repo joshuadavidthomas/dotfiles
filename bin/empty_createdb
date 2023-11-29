@@ -1,0 +1,113 @@
+#!/usr/bin/env python
+from __future__ import annotations
+
+import os
+import shutil
+import socket
+import subprocess
+import time
+from pathlib import Path
+
+VERSION = 15
+
+
+def get_git_repo_folder():
+    try:
+        top_level = (
+            subprocess.check_output(["git", "rev-parse", "--show-toplevel"])
+            .decode("utf-8")
+            .strip()
+        )
+        folder_name = Path(top_level).name
+        return folder_name
+    except subprocess.CalledProcessError:
+        return None
+
+
+def is_port_open(port: int) -> bool:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        return s.connect_ex(("127.0.0.1", port)) != 0
+
+
+def main():
+    if not shutil.which("docker"):
+        print("Docker is not installed")
+        return
+
+    repo_name = get_git_repo_folder()
+
+    if subprocess.getoutput(f"docker ps -q -f name={repo_name}"):
+        print(f"Postgres container {repo_name} is already running")
+    else:
+        if subprocess.getoutput(f"docker ps -aq -f status=exited -f name={repo_name}"):
+            print(f"Starting postgres container {repo_name}")
+            subprocess.run(["docker", "start", repo_name], check=True)
+        else:
+            print(f"Creating postgres container {repo_name}")
+            port = 5432
+            while not is_port_open(port):
+                print(f"Port {port} is already in use")
+                print("Incrementing port number by 1")
+                port += 1
+            subprocess.run(
+                [
+                    "docker",
+                    "run",
+                    "--name",
+                    repo_name,
+                    "-e",
+                    "POSTGRES_USER=postgres",
+                    "-e",
+                    "POSTGRES_PASSWORD=postgres",
+                    "-e",
+                    "POSTGRES_DB=postgres",
+                    "-p",
+                    f"{port}:5432",
+                    "-d",
+                    f"postgres:{VERSION}",
+                ],
+                check=True,
+            )
+
+    port_output = subprocess.getoutput(f"docker port {repo_name} 5432")
+    port = port_output.split(":")[1]
+    DATABASE_URL = f"postgres://postgres:postgres@localhost:{port}/postgres"
+    os.environ["DATABASE_URL"] = DATABASE_URL
+
+    env_file = Path(".env")
+    if env_file.exists():
+        print("Updating DATABASE_URL in .env file")
+        content = env_file.read_text()
+        content = content.replace("DATABASE_URL=.*", f"DATABASE_URL={DATABASE_URL}")
+        env_file.write_text(content)
+    else:
+        print("Creating .env file")
+        env_file.write_text(f"DATABASE_URL={DATABASE_URL}\n")
+
+    while True:
+        ready = (
+            subprocess.run(
+                [
+                    "docker",
+                    "exec",
+                    "-it",
+                    repo_name,
+                    "pg_isready",
+                    "-U",
+                    "postgres",
+                    "-q",
+                ]
+            ).returncode
+            == 0
+        )
+        if ready:
+            break
+        print("Waiting for postgres to start")
+        time.sleep(1)
+
+    subprocess.run(["just", "manage", "migrate"], check=True)
+    subprocess.run(["just", "createsuperuser"], check=True)
+
+
+print("running createdb.py")
+raise SystemExit(main())
