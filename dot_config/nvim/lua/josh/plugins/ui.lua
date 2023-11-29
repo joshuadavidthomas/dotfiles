@@ -45,9 +45,10 @@ return {
           header = vim.split(logo, "\n"),
           -- stylua: ignore
           center = {
-            { action = "LazyExtras",                                               desc = " Lazy Extras",     icon = " ", key = "x" },
-            { action = "Lazy",                                                     desc = " Lazy",            icon = "󰒲 ", key = "l" },
-            { action = "qa",                                                       desc = " Quit",            icon = " ", key = "q" },
+            { action = "lua require('telescope.builtin').oldfiles({ only_cwd = true })", desc = " Recent files",    icon = " ", key = "r" },
+            { action = "LazyExtras",                                                     desc = " Lazy Extras",     icon = " ", key = "x" },
+            { action = "Lazy",                                                           desc = " Lazy",            icon = "󰒲 ", key = "l" },
+            { action = "qa",                                                             desc = " Quit",            icon = " ", key = "q" },
           },
           footer = function()
             local stats = require("lazy").stats()

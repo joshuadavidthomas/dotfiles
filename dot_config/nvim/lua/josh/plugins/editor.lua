@@ -5,6 +5,7 @@ return {
   {
     "nvim-telescope/telescope.nvim",
     branch = "0.1.x",
+    cmd = "Telescope",
     dependencies = {
       "nvim-lua/plenary.nvim",
       -- Fuzzy Finder Algorithm which requires local dependencies to be built.
@@ -24,14 +25,24 @@ return {
       },
     },
     -- stylua: ignore
-    keys = {
-      { "<leader><space>", function() require("telescope.builtin").buffers() end, desc = "[ ] Find existing buffers" },
+    keys = function()
+      local exclude_test_py_files = {
+        "fd", "--type", "f", "--exclude", "test_*.py"
+      }
+      return {
+      { "<leader><space>", "<leader>sb", desc = "[ ] Find existing buffers", remap = true },
       { "<leader>/", function() require("telescope.builtin").live_grep() end, desc = "[/] Grep Files" },
-      { "<leader>sf", function() require("telescope.builtin").find_files() end, desc = "[f]iles" },
+      { "<leader>sf", function() require("telescope.builtin").find_files({ hidden = true }) end, desc = "[f]iles" },
       { "<leader>sg", function() require("telescope.builtin").git_files() end, desc = "[g]it files" },
+      { "<leader>sb", function() require("telescope.builtin").buffers() end, desc = "[b]uffers" },
       { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "[h]elp" },
       { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "[k]eymaps" },
-    },
+      { "<leader>sda", function() require("telescope.builtin").live_grep({ glob_pattern = { "admin.py", "!test_*.py"} }) end, desc = "[a]dmin" },
+      { "<leader>sdf", function() require("telescope.builtin").find_files({ search_file = "forms.py", find_command=exclude_test_py_files }) end, desc = "[f]orms" },
+      { "<leader>sdm", function() require("telescope.builtin").live_grep({ glob_pattern = { "models.py", "!test_*.py " } }) end, desc = "[m]odels" },
+      { "<leader>sdv", function() require("telescope.builtin").find_files({ search_file = "views.py", find_command=exclude_test_py_files }) end, desc = "[v]iews" },
+    }
+    end,
     opts = function()
       local actions = require("telescope.actions")
 
@@ -270,6 +281,8 @@ return {
         ["<leader>g"] = { name = "+[g]it" },
         ["<leader>f"] = { name = "+[f]ile/[f]ind" },
         ["<leader>s"] = { name = "+[s]earch" },
+        ["<leader>sr"] = { name = "+[r]eplace" },
+        ["<leader>sd"] = { name = "+[d]jango" },
         ["<leader>u"] = { name = "+[u]i" },
         ["<leader>w"] = { name = "+[w]indow" },
         ["<leader>t"] = { name = "+[t]est" },
@@ -432,19 +445,13 @@ return {
       { "<esc><esc>", "<c-\\><c-n>", mode = "t", desc = "Enter Normal Mode" },
       {
         "<c-/>",
-        function()
-          local count = vim.v.count1
-          require("toggleterm").toggle(count, 10, vim.loop.cwd(), "horizontal")
-        end,
+        "<cmd>ToggleTerm<CR>",
         mode = { "n", "t" },
         desc = "ToggleTerm (horizontal)",
       },
       {
         "<c-_>",
-        function()
-          local count = vim.v.count1
-          require("toggleterm").toggle(count, 10, vim.loop.cwd(), "horizontal")
-        end,
+        "<cmd>ToggleTerm<CR>",
         mode = { "n", "t" },
         desc = "which_key_ignore",
       },
@@ -615,6 +622,23 @@ return {
         { "<leader>st", "<cmd>TodoTelescope<cr>", desc = "[t]odo" },
         { "<leader>sT", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>", desc = "All [T]odo/Fix/Fixme" },
       },
+    },
+  },
+  -- search/replace in multiple files
+  {
+    "nvim-pack/nvim-spectre",
+    build = false,
+    cmd = "Spectre",
+    opts = {
+      open_cmd = "noswapfile vnew",
+    },
+    -- stylua: ignore
+    keys = {
+      { "<leader>srr", function() require("spectre").toggle() end, desc = "[r] all files" },
+      { "<leader>srf", function() require("spectre").open_file_search() end, desc = "current [f]ile" },
+      { "<leader>srF", function() require("spectre").open_file_search({ select_word=true }) end, desc = "current word in [F]ile" },
+      { "<leader>srw", function() require("spectre").open_visual({ select_word=true }) end, desc = "current [w]ord", mode = "n" },
+      { "<leader>srw", function() require("spectre").open_visual() end, desc = "current [w]ord", mode = "v" },
     },
   },
 }
