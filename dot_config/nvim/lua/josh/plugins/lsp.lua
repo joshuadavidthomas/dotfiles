@@ -10,6 +10,9 @@ return {
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
 
+      -- Useful status updates for LSP
+      "j-hui/fidget.nvim",
+
       -- Additional lua configuration, makes nvim stuff amazing!
       "folke/neodev.nvim",
       { "folke/neoconf.nvim", cmd = "Neoconf", config = false, dependencies = { "nvim-lspconfig" } },
