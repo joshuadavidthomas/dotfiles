@@ -11,16 +11,19 @@
 #   eval `cat $HOME/.ssh/ssh-agent`
 # fi
 
-if [ -d "$HOME/.pyenv" ] ; then
-  export PYENV_ROOT="$HOME/.pyenv"
-  export PATH="$PYENV_ROOT/bin:$PATH"
+export PYENV_DIR="$HOME/.pyenv"
+if [ -d "$PYENV_DIR" ] ; then
+  export PATH="$PYENV_DIR/bin:$PATH"
   eval "$(pyenv init --path)"
+  eval "$(pyenv init -)"
   eval "$(pyenv virtualenv-init -)"
 fi
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+if [ -d "$NVM_DIR" ] ; then
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+fi
 
 export NODE_EXTRA_CA_CERTS=$HOME/.certs/cacert.pem
 
@@ -45,5 +48,8 @@ export PYTHONSTARTUP=$HOME/.pythonrc
 stty icrnl
 
 export DISABLE_AUTO_TITLE='true'
-# Set PATH, MANPATH, etc., for Homebrew.
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+if [ -d "$HOME/linuxbrew" ] ; then
+  # Set PATH, MANPATH, etc., for Homebrew.
+  eval "$($HOME/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
