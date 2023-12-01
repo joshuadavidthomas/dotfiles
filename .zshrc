@@ -76,7 +76,7 @@ fi
 # bun
 if [ -d "$HOME/.bun" ]; then
   # bun completions
-  [ -s "$ZSH/completions/_bun" ] && source "$ZSH/completions/_bun"
+  [ -s "/home/josh/.bun/_bun" ] && source "/home/josh/.bun/_bun"
   export BUN_INSTALL="$HOME/.bun"
   export PATH="$BUN_INSTALL/bin:$PATH"
 fi
