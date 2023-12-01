@@ -1,6 +1,6 @@
 export ZSH=${HOME}/.oh-my-zsh
 
-ZSH_DISABLE_COMPFIX="true"
+# ZSH_DISABLE_COMPFIX="true"
 
 # update oh-my-zsh automatically without asking
 zstyle ':omz:update' mode auto
@@ -76,7 +76,12 @@ fi
 # bun
 if [ -d "$HOME/.bun" ]; then
   # bun completions
-  [ -s "/home/josh/.oh-my-zsh/completions/_bun" ] && source "/home/josh/.oh-my-zsh/completions/_bun"
+  [ -s "$ZSH/completions/_bun" ] && source "$ZSH/completions/_bun"
   export BUN_INSTALL="$HOME/.bun"
   export PATH="$BUN_INSTALL/bin:$PATH"
 fi
+
+# yadm completions
+# doesn't seem to work atm
+# TODO: investigate further
+# [ -x "$(command -v yadm)" ] && [ -f "$ZSH/completions/_yadm" ] && source "$ZSH/completions/_yadm"
