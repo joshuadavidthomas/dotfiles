@@ -8,7 +8,7 @@ if [ -d "$PYENV_DIR" ] ; then
   eval "$(pyenv init -)"
   eval "$(pyenv virtualenv-init -)"
   # load pyenv completions
-  [ -s "$PYENV_DIR/completions/pyenv.zsh"] && source "$PYENV_DIR/completions/pyenv.zsh"
+  [ -s "$PYENV_DIR/completions/pyenv.zsh" ] && source "$PYENV_DIR/completions/pyenv.zsh"
 fi
 
 export NVM_DIR="$HOME/.nvm"
