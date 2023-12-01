@@ -16,3 +16,7 @@ export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 skip_global_compinit=1
 
 [ -d "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+
+export PATH="$HOME/.luarocks/bin:$PATH"
+
+export PATH="$HOME/.local/bin:$PATH"
