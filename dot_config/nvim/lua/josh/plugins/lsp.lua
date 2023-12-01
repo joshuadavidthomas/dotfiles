@@ -58,11 +58,14 @@ return {
           -- keys = {},
           settings = {
             Lua = {
-              workspace = {
-                checkThirdParty = false,
-              },
               completion = {
                 callSnippet = "Replace",
+              },
+              diagnostics = {
+                globals = { "vim" },
+              },
+              workspace = {
+                checkThirdParty = false,
               },
             },
           },

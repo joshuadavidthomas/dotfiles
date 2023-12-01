@@ -2,6 +2,7 @@ local LazyUtil = require("lazy.core.util")
 
 ---@class lazyvim.util: LazyUtilCore
 ---@field lsp lazyvim.util.lsp
+---@field lualine lazyvim.util.lualine
 ---@field plugin lazyvim.util.plugin
 ---@field root lazyvim.util.root
 ---@field ui lazyvim.util.ui

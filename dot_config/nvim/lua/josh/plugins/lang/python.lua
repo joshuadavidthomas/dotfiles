@@ -58,11 +58,11 @@ return {
   },
   {
     "stevearc/conform.nvim",
-    opts = function(_, opts)
-      vim.list_extend(opts.formatters_by_ft, {
+    opts = {
+      formatters_by_ft = {
         python = { "black", "ruff_fix", "ruff_format" },
-      })
-    end,
+      },
+    },
   },
 
   {

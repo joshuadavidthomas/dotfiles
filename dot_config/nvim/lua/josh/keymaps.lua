@@ -50,6 +50,9 @@ map("n", "<leader>w-", "<C-W>s", { desc = "[-] Split window below", remap = true
 map("n", "<leader>w|", "<C-W>v", { desc = "[|] Split window right", remap = true })
 map("n", "<leader>-", "<C-W>s", { desc = "[-] Split window below", remap = true })
 map("n", "<leader>|", "<C-W>v", { desc = "[|] Split window right", remap = true })
+map("n", "<leader>wo", "<C-W>o", { desc = "f[o]cus window", remap = true })
+map("n", "<leader>w=", "<C-W>=", { desc = "[=] Equalize windows", remap = true })
+map("n", "<leader>ws", "<C-W><C-r><C-W>", { desc = "[s]wap windows", remap = true })
 
 -- toggle
 -- stylua: ignore
@@ -57,6 +60,11 @@ map("n", "<leader>uL", function() Util.toggle("relativenumber") end, { desc = "T
 map("n", "<leader>ul", function()
   Util.toggle.number()
 end, { desc = "Toggle [l]ine numbers" })
+map("n", "<leader>us", function() Util.toggle("spell") end, { desc = "Toggle [s]pell" })
+map("n", "<leader>uS", function() Util.toggle("spelllang") end, { desc = "Toggle [S]pell language" })
+map("n", "<leader>uW", function() Util.toggle("wrap") end, { desc = "Toggle [W]rap" })
+map("n", "<leader>uw", function() Util.toggle("cursorline") end, { desc = "Toggle [w]rap" })
+map("n", "<leader>uc", function() Util.toggle("list") end, { desc = "Toggle whitespace [c]haracters" })
 
 -- quit
 map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "[q]uit all" })

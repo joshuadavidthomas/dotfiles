@@ -218,16 +218,17 @@ return {
       MiniFiles.setup(opts)
 
       local show_dotfiles = true
-      local filter_show = function(fs_entry)
+
+      local filter_show = function(_)
         return true
       end
-      local filter_hide = function(fs_entry)
+      local filter_hide_dotfiles = function(fs_entry)
         return not vim.startswith(fs_entry.name, ".")
       end
 
       local toggle_dotfiles = function()
         show_dotfiles = not show_dotfiles
-        local new_filter = show_dotfiles and filter_show or filter_hide
+        local new_filter = show_dotfiles and filter_show or filter_hide_dotfiles
         MiniFiles.refresh({ content = { filter = new_filter } })
       end
 
@@ -250,7 +251,7 @@ return {
             vim.keymap.set("n", lhs, rhs, { buffer = args.data.buf_id, desc = desc })
           end
 
-          map_buf("g.", toggle_dotfiles, "Toggle dot[.]files")
+          map_buf("g.", toggle_dotfiles, "To[g]gle [.]dotfiles")
 
           map_buf("L", go_in_plus, "Go in p[L]us")
           map_buf("<CR>", go_in_plus, "Go in p[L]us")
@@ -267,6 +268,39 @@ return {
         end,
       })
     end,
+  },
+  {
+    "nvim-telescope/telescope-file-browser.nvim",
+    dependencies = {
+      {
+        "nvim-telescope/telescope.nvim",
+        config = function()
+          require("telescope").setup({
+            extensions = {
+              file_browser = {
+                theme = "ivy",
+                grouped = true,
+                sorting_strategy = "ascending",
+              },
+            },
+          })
+          require("telescope").load_extension("file_browser")
+        end,
+      },
+      "nvim-lua/plenary.nvim",
+    },
+    keys = {
+      {
+        "<leader>fb",
+        function()
+          require("telescope").extensions.file_browser.file_browser({
+            path = "%:p:h",
+            select_buffer = true,
+          })
+        end,
+        desc = "File [b]rowser",
+      },
+    },
   },
   -- Displays a popup with possible key bindings of the command you started typing
   {

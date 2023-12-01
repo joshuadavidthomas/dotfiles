@@ -8,6 +8,9 @@ opt.hlsearch = false
 -- Make line numbers default
 wo.number = true
 
+-- relativenumbers by default
+wo.relativenumber = true
+
 -- Enable mouse mode
 opt.mouse = "a"
 
@@ -53,3 +56,15 @@ opt.splitkeep = "screen"
 
 -- python setup
 g.python3_host_prog = "/home/josh/.pyenv/versions/py3nvim/bin/python"
+
+-- enable list mode to see whitespace
+opt.list = true
+opt.listchars = {
+  tab = "» ",
+  trail = "·",
+  nbsp = "␣",
+  extends = "»",
+  precedes = "«",
+  eol = "↲",
+  space = "·",
+}
