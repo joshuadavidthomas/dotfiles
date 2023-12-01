@@ -3,15 +3,18 @@
 export PYENV_DIR="$HOME/.pyenv"
 if [ -d "$PYENV_DIR" ] ; then
   export PATH="$PYENV_DIR/bin:$PATH"
+  # load pyenv and plugins
   eval "$(pyenv init --path)"
   eval "$(pyenv init -)"
   eval "$(pyenv virtualenv-init -)"
+  # load pyenv completions
+  [-s "$PYENV_DIR/completions/pyenv.zsh"] && source "$PYENV_DIR/completions/pyenv.zsh"
 fi
 
 export NVM_DIR="$HOME/.nvm"
 if [ -d "$NVM_DIR" ] ; then
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+  [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"  # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 fi
 
 if [ -f "$HOME/.certs/cacert.pem" ] ; then
