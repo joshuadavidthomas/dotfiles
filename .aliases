@@ -2,5 +2,8 @@ alias exe="chmod +x"
 alias gexe="git update-index --chmod=+x"
 alias gprune="git fetch --prune && git branch --v | grep '\[gone\]' | awk '{print $1}' | xargs git branch -D"
 alias redis="docker run --name redis -d -p 0.0.0.0:6379:6379 redis"
-alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+alias config="$(command -v git) --git-dir=$HOME/.cfg/ --work-tree=$HOME"
 alias pup="python -m pip install --upgrade pip"
+alias lg='lazygit'
+alias vim='nvim'
+alias moi='chezmoi'

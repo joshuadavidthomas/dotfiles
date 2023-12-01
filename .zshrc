@@ -52,6 +52,11 @@ eval "$(starship init zsh)"
 # direnv
 eval "$(direnv hook zsh)"
 
+# atuin
+if [ -x "$(command -v atuin)" ]; then
+  eval "$(atuin init zsh)"
+fi
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # github cli
@@ -68,6 +73,14 @@ fi
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 
 # tmuxp autocompletions
-if [ -x "$(command -v tmuxp)" ]; then
-    eval "$(_TMUXP_COMPLETE=zsh_source tmuxp)"
-fi
+# if [ -x "$(command -v tmuxp)" ]; then
+#    eval "$(_TMUXP_COMPLETE=zsh_source tmuxp)"
+# fi
+
+# bun completions
+[ -s "/home/josh/.oh-my-zsh/completions/_bun" ] && source "/home/josh/.oh-my-zsh/completions/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
