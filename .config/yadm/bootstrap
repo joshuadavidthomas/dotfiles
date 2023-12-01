@@ -7,4 +7,4 @@ chmod 700 ~/.cache ~/.config
 
 # sparse checkout
 yadm gitconfig core.sparseCheckout true
-yadm sparse-checkout set '/*' '!README.md' '!LICENSE' '.github/workflows/'
+yadm sparse-checkout set '/*' '!README.md' '!LICENSE' '!.github/workflows/*'
