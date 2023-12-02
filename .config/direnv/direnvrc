@@ -1,28 +1,28 @@
 #!/bin/sh
 
 if [ -f ".env" ]; then
-  dotenv
+	dotenv
 fi
 
 # use a certain pyenv version
 use_python() {
-    if [ -n "$(which pyenv)" ]; then
-        local pyversion=$1
-        pyenv local ${pyversion}
-    fi
+	if [ -n "$(which pyenv)" ]; then
+		local pyversion=$1
+		pyenv local ${pyversion}
+	fi
 }
 
 layout_virtualenv() {
-    local pyversion=$1
-    local pvenv=$2
-    if [ -n "$(which pyenv virtualenv)" ]; then
-        pyenv virtualenv --force --quiet ${pyversion} ${pvenv}-${pyversion}
-    fi
-    pyenv local --unset
+	local pyversion=$1
+	local pvenv=$2
+	if [ -n "$(which pyenv virtualenv)" ]; then
+		pyenv virtualenv --force --quiet ${pyversion} ${pvenv}-${pyversion}
+	fi
+	pyenv local --unset
 }
 
 layout_activate() {
-    if [ -n "$(which pyenv)" ]; then
-        source $(pyenv root)/versions/$1/bin/activate
-    fi
+	if [ -n "$(which pyenv)" ]; then
+		source $(pyenv root)/versions/$1/bin/activate
+	fi
 }

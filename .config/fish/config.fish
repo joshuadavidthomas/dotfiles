@@ -1,6 +1,14 @@
 if status is-interactive
-    # Commands to run in interactive sessions can go here
+    # automatically start tmux if not already started
+    and not set -q TMUX
+        exec tmux
 end
+
+# disable intro fish greeting
+set -g fish_greeting
+
+# add ~/.local/bin to path
+fish_add_path -m {$HOME}/.local/bin
 
 # starship
 starship init fish | source
@@ -14,3 +22,6 @@ zoxide init fish | source
 # pyenv
 pyenv init - | source
 status --is-interactive; and pyenv virtualenv-init - | source
+
+# asdf
+# source {$HOME}/.asdf/asdf.fish
