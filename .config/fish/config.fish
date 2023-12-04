@@ -7,9 +7,6 @@ end
 # disable intro fish greeting
 set -g fish_greeting
 
-# add ~/.local/bin to path
-fish_add_path -m {$HOME}/.local/bin
-
 # starship
 starship init fish | source
 
