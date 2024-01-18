@@ -36,6 +36,7 @@
 	navigate = true
 	syntax-theme = Monokai Extended
 [diff]
+	algorithm = histogram
 	colorMoved = default
 [interactive]
 	diffFilter = delta --color-only
