@@ -13,6 +13,7 @@
 	del = "branch -D"
 	exe = "update-index --chmod=+x"
 	patch = "add -p"
+	pdiff = "-c 'core.pager=less' diff"
 	main = "checkout main"
 	br = "branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate"
 	wip = "commit -am 'wip'"
