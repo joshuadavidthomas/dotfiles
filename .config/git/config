@@ -30,6 +30,7 @@
 	autoCorrect = immediate
 [core]
 	pager = delta
+	editor = nvim
 [delta]
 	# https://dandavison.github.io/delta/configuration.html
 	hyperlinks = true
@@ -44,3 +45,6 @@
 [merge]
 	conflictStyle = zdiff3
 
+[rerere]
+	enabled = true
+	autoUpdate = true
