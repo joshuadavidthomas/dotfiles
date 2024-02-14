@@ -20,5 +20,3 @@ zoxide init fish | source
 pyenv init - | source
 status --is-interactive; and pyenv virtualenv-init - | source
 
-# asdf
-# source {$HOME}/.asdf/asdf.fish
