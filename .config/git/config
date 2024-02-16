@@ -6,16 +6,22 @@
 	name = Josh
 	email = josh@joshthomas.dev
 [alias]
+	br = "branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate"
 	branch-name = "!git rev-parse --abbrev-ref HEAD"
-	publish = "!git push -u origin $(git branch-name)"
 	co = "checkout"
 	cob = "checkout -b"
 	del = "branch -D"
 	exe = "update-index --chmod=+x"
+	main = "checkout main"
 	patch = "add -p"
 	pdiff = "-c 'core.pager=less' diff"
-	main = "checkout main"
-	br = "branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate"
+	publish = "!git push -u origin $(git branch-name)"
+	runs = "!f() { \
+		watch_gha_runs $@ \
+			--wait-for-start \
+			\"$(git remote get-url origin)\" \
+			\"$(git rev-parse --abbrev-ref HEAD)\"; \
+		}; f"
 	wip = "commit -am 'wip'"
 	wip-reset = "!git reset $(git merge-base origin/main HEAD)"
 [push]
