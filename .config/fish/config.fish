@@ -13,10 +13,9 @@ starship init fish | source
 # direnv
 direnv hook fish | source
 
-# zoxide
-zoxide init fish | source
-
 # pyenv
 pyenv init - | source
 status --is-interactive; and pyenv virtualenv-init - | source
 
+# zoxide
+zoxide init --cmd cd fish | source
