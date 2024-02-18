@@ -22,6 +22,7 @@
 			\"$(git remote get-url origin)\" \
 			\"$(git rev-parse --abbrev-ref HEAD)\"; \
 		}; f"
+	wdiff = "diff --word-diff"
 	wip = "commit -am 'wip'"
 	wip-reset = "!git reset $(git merge-base origin/main HEAD)"
 [push]
