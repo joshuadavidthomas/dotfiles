@@ -57,3 +57,6 @@
 	autoUpdate = true
 [branch]
 	sort = -committerdate
+[http]
+	sslVerify = true
+	sslCAInfo = /home/josh/.certs/cacert.pem
