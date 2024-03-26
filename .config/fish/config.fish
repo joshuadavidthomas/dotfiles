@@ -1,7 +1,9 @@
 if status is-interactive
-    # automatically start tmux if not already started
-    and not set -q TMUX
-        exec tmux
+    # Check if we are not already in a tmux session and if the terminal is not WezTerm
+    if not set -q TMUX; and not string match -q WezTerm $TERM_PROGRAM
+        exec tmux # Start tmux
+    end
+    # If the terminal is WezTerm or already in a tmux session, continue with normal fish initialization
 end
 
 # disable intro fish greeting
