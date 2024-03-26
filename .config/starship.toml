@@ -52,6 +52,7 @@ symbol = " "
 
 [nodejs]
 format = '[${symbol}(${version} )]($style)'
+symbol = " "
 
 [package]
 format = '[${symbol}${version}]($style) '
