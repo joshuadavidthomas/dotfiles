@@ -1,0 +1,31 @@
+# fly.toml app configuration file generated for atuin-dunbrookweb on 2024-03-27T16:42:24-05:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'atuin-dunbrookweb'
+primary_region = 'atl'
+
+[build]
+image = "ghcr.io/atuinsh/atuin:v18.1.0"
+
+[env]
+ATUIN_HOST = "0.0.0.0"
+ATUIN_PORT = "8888"
+ATUIN_OPEN_REGISTRATION = "false"
+
+[http_service]
+internal_port = 8888
+force_https = true
+auto_stop_machines = true
+auto_start_machines = true
+min_machines_running = 0
+processes = ['app']
+
+[processes]
+app = "server start"
+
+[[vm]]
+memory = '256mb'
+cpu_kind = 'shared'
+cpus = 1
