@@ -28,15 +28,15 @@
 [push]
 	autoSetupRemote = true
 [credential "https://github.com"]
-	helper = 
+	helper =
 	helper = !$(which gh) auth git-credential
 [credential "https://gist.github.com"]
-	helper = 
+	helper =
 	helper = !$(which gh) auth git-credential
 [help]
 	autoCorrect = immediate
 [core]
-	pager = delta
+	pager = DELTA_FEATURES=+side-by-side delta
 	editor = nvim
 [delta]
 	# https://dandavison.github.io/delta/configuration.html
