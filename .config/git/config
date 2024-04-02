@@ -1,10 +1,7 @@
 [init]
 	defaultBranch = main
-[pull]
-	rebase = false
-[user]
-	name = Josh
-	email = josh@joshthomas.dev
+[include]
+  path = config-local
 [alias]
 	br = "branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate"
 	branch-name = "!git rev-parse --abbrev-ref HEAD"
@@ -25,19 +22,18 @@
 	wdiff = "diff --word-diff"
 	wip = "commit -am 'wip'"
 	wip-reset = "!git reset $(git merge-base origin/main HEAD)"
-[push]
-	autoSetupRemote = true
+[branch]
+	sort = -committerdate
+[core]
+	pager = DELTA_FEATURES=+side-by-side delta
+	editor = nvim
+	sshCommand = ssh.exe
 [credential "https://github.com"]
 	helper =
 	helper = !$(which gh) auth git-credential
 [credential "https://gist.github.com"]
 	helper =
 	helper = !$(which gh) auth git-credential
-[help]
-	autoCorrect = immediate
-[core]
-	pager = DELTA_FEATURES=+side-by-side delta
-	editor = nvim
 [delta]
 	# https://dandavison.github.io/delta/configuration.html
 	hyperlinks = true
@@ -47,16 +43,22 @@
 [diff]
 	algorithm = histogram
 	colorMoved = default
+[help]
+	autoCorrect = immediate
+[http]
+	sslVerify = true
+	sslCAInfo = /home/josh/.certs/cacert.pem
 [interactive]
 	diffFilter = delta --color-only
 [merge]
 	conflictStyle = zdiff3
-
+[pull]
+	rebase = false
+[push]
+	autoSetupRemote = true
 [rerere]
 	enabled = true
 	autoUpdate = true
-[branch]
-	sort = -committerdate
-[http]
-	sslVerify = true
-	sslCAInfo = /home/josh/.certs/cacert.pem
+[user]
+	name = Josh
+	email = josh@joshthomas.dev

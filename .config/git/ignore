@@ -1,4 +1,5 @@
 .dotfiles/
+.envrc.local
+.nvmrc
 .python-version
 pyrightconfig.json
-.nvmrc
