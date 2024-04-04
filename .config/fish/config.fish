@@ -24,3 +24,6 @@ zoxide init --cmd cd fish | source
 
 # atuin
 status --is-interactive; and atuin init fish | source
+
+# mise
+mise activate fish | source
