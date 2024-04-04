@@ -1,5 +1,7 @@
 #!/bin/sh
 
+export UV_NATIVE_TLS="true"
+
 if [ -f ".env" ]; then
     dotenv
 fi
