@@ -1,4 +1,5 @@
 .dotfiles/
+.quicknote/
 .envrc.local
 .nvmrc
 .python-version
