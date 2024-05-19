@@ -1,6 +1,7 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
 SETUVAR EDITOR:nvim
+SETUVAR --export HOMEBREW_NO_ENV_HINTS:True
 SETUVAR --export LG_CONFIG_FILE:/home/josh/\x2econfig/lazygit/config\x2eyml\x2c/home/josh/\x2ecache/nvim/lazygit\x2dtheme\x2eyml
 SETUVAR --export PYENV_ROOT:/home/josh/\x2epyenv
 SETUVAR --export XDG_CACHE_HOME:/home/josh/\x2ecache
@@ -8,7 +9,9 @@ SETUVAR --export XDG_CONFIG_HOME:/home/josh/\x2econfig
 SETUVAR --export XDG_DATA_HOME:/home/josh/\x2elocal/share
 SETUVAR --export XDG_STATE_HOME:/home/josh/\x2elocal/state
 SETUVAR __fish_initialized:3400
-SETUVAR _fisher_jorgebucaran_2F_fisher_files:\x7e/\x2econfig/fish/functions/fisher\x2efish\x1e\x7e/\x2econfig/fish/completions/fisher\x2efish
+SETUVAR _fish_abbr__2D_:cd\x20\x2d
+SETUVAR _fish_abbr_dotdot:\x2d\x2dregex\x20\x5e\x5c\x2e\x5c\x2e\x2b\x24\x20\x2d\x2dfunction\x20multicd
+SETUVAR _fisher_jorgebucaran_2F_fisher_files:/home/josh/\x2econfig/fish/functions/fisher\x2efish\x1e/home/josh/\x2econfig/fish/completions/fisher\x2efish
 SETUVAR _fisher_plugins:jorgebucaran/fisher
 SETUVAR _fisher_upgraded_to_4_4:\x1d
 SETUVAR fish_color_autosuggestion:555\x1ebrblack
