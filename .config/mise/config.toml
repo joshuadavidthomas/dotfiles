@@ -1,5 +1,10 @@
 [tools]
+go = "latest"
+lua = "latest"
 node = "lts"
+python = "latest"
+perl = "latest"
+usage = "latest"
 
 [settings]
 experimental = true
