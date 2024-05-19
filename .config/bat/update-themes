@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if ! command -v bat &>/dev/null; then
+  echo "`bat` is not installed"
+  exit 1
+fi
+
+if ! command -v curl &>/dev/null; then
+  echo "`curl` must be installed to update `bat` themes"
+fi
+
+cd "$HOME/.config/bat"
+mkdir -p themes
+curl -LO --output-dir themes https://raw.githubusercontent.com/folke/tokyonight.nvim/main/extras/sublime/tokyonight_storm.tmTheme
+bat cache --build
