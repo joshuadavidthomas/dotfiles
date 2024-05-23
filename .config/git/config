@@ -9,6 +9,12 @@
 	cob = "checkout -b"
 	del = "branch -D"
 	exe = "update-index --chmod=+x"
+	fork = "!f() { \
+			git clone $1 \
+			&& cd \"$(basename $1 .git)\" \
+			&& git remote add upstream $2 \
+			&& cd -; \
+		}; f"
 	main = "checkout main"
 	patch = "add -p"
 	pdiff = "-c 'core.pager=less' diff"
