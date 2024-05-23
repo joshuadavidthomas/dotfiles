@@ -1,7 +1,5 @@
 [init]
 	defaultBranch = main
-[include]
-	path = config-local
 [alias]
 	br = "branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate"
 	branch-name = "!git rev-parse --abbrev-ref HEAD"
@@ -69,3 +67,5 @@
 [user]
 	name = Josh
 	email = josh@joshthomas.dev
+[include]
+	path = config.local
