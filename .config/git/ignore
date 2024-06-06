@@ -1,5 +1,6 @@
 .dotfiles/
 .quicknote/
+.scratch/
 .envrc
 .mise.local.toml
 .nvmrc
