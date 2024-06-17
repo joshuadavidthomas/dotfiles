@@ -68,6 +68,10 @@ function M.setup(config)
     { key = "d", mods = M.mod.LEADER, action = act.ShowDebugOverlay },
     { key = "p", mods = M.mod.LEADER, action = act.ActivateCommandPalette },
     { key = "F11", action = act.ToggleFullScreen },
+    -- font size
+    { key = "-", mods = M.mod.CTRL, action = act.DecreaseFontSize },
+    { key = "=", mods = M.mod.CTRL, action = act.IncreaseFontSize },
+    { key = "0", mods = M.mod.CTRL, action = act.ResetFontSize },
     -- clipboard
     { key = "v", mods = M.mod.CTRL, action = act.PasteFrom("Clipboard") },
     -- new tab
