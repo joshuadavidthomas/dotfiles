@@ -1,6 +1,6 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
-SETUVAR EDITOR:nvim
+SETUVAR --export EDITOR:vim
 SETUVAR --export HOMEBREW_NO_ENV_HINTS:True
 SETUVAR --export LG_CONFIG_FILE:/home/josh/\x2econfig/lazygit/config\x2eyml\x2c/home/josh/\x2ecache/nvim/lazygit\x2dtheme\x2eyml
 SETUVAR --export PYENV_ROOT:/home/josh/\x2epyenv
