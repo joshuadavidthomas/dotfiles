@@ -8,6 +8,7 @@ end
 
 # disable intro fish greeting
 set -g fish_greeting
+set -gx EDITOR vim
 
 # starship
 starship init fish | source
