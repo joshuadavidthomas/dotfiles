@@ -13,6 +13,9 @@ set -gx EDITOR vim
 # starship
 starship init fish | source
 
+# mise
+mise activate fish | source
+
 # direnv
 direnv hook fish | source
 
@@ -21,6 +24,3 @@ zoxide init --cmd cd fish | source
 
 # atuin
 status --is-interactive; and atuin init fish | source
-
-# mise
-mise activate fish | source
