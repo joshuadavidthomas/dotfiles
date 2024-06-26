@@ -23,7 +23,7 @@ fi
 
 # install programming languages
 if command -v mise &>/dev/null; then
-        mise install
+        mise install --yes
 fi
 
 if command -v nvim &>/dev/null; then
