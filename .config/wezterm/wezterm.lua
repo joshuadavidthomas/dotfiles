@@ -60,7 +60,7 @@ end
 
 config.front_end = "WebGpu"
 config.front_end = "OpenGL" -- current work-around for https://github.com/wez/wezterm/issues/4825
-config.enable_wayland = true
+config.enable_wayland = false -- current work-around for https://github.com/wez/wezterm/issues/3121
 config.webgpu_power_preference = "HighPerformance"
 config.default_cursor_style = "BlinkingBar"
 config.force_reverse_video_cursor = true
