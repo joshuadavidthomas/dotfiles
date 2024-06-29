@@ -5,6 +5,8 @@ node = "lts"
 python = "latest"
 perl = "latest"
 usage = "latest"
+rust = "latest"
+bun = "latest"
 
 [settings]
 experimental = true
