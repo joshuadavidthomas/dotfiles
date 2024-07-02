@@ -1,5 +1,5 @@
 keymap_mode = "vim-insert"
-sync_address = "https://atuin-dunbrookweb.fly.dev"
+sync_address = "https://atuin.app.joshthomas.cool"
 
 [sync]
 records = true
