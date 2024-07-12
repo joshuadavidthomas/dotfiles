@@ -13,11 +13,11 @@ set -gx EDITOR vim
 # starship
 starship init fish | source
 
-# mise
-mise activate fish | source
-
 # direnv
 direnv hook fish | source
+
+# mise
+mise activate fish | source
 
 # zoxide
 zoxide init --cmd cd fish | source
