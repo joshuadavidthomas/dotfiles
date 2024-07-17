@@ -9,9 +9,9 @@ layout_uv() {
     log_status "No virtual environment exists. Executing \`uv venv\` to create one."
     if [[ -f ".mise*.toml" ]]; then
       log_status "mise detected, using it's Python version"
-      uv venv --python-preference installed
+      uv venv --python-preference installed --seed
     else
-      uv venv
+      uv venv --seed
     fi
     VIRTUAL_ENV="$(pwd)/.venv"
   fi
