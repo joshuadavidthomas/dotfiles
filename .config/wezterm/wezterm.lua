@@ -1,3 +1,4 @@
+local icons = require("icons")
 local wezterm = require("wezterm")
 local act = wezterm.action
 local mux = wezterm.mux
@@ -67,9 +68,9 @@ config.force_reverse_video_cursor = true
 config.cursor_blink_ease_in = "Constant"
 config.cursor_blink_ease_out = "Constant"
 
-config.color_scheme_dirs = { wezterm.home_dir .. "/.local/share/nvim/lazy/tokyonight.nvim/extras/wezterm" }
+-- config.color_scheme_dirs = { wezterm.home_dir .. "/.local/share/nvim/lazy/tokyonight.nvim/extras/wezterm" }
 config.color_scheme = "tokyonight_storm"
-wezterm.add_to_config_reload_watch_list(config.color_scheme_dirs[1] .. config.color_scheme .. ".toml")
+-- wezterm.add_to_config_reload_watch_list(config.color_scheme_dirs[1] .. config.color_scheme .. ".toml")
 
 if wezterm.target_triple:find("windows") then
   config.default_domain = "WSL:Ubuntu"
