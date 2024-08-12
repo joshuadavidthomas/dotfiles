@@ -1,44 +1,7 @@
 local w = require("wezterm")
+local icons = require("icons")
 
 local M = {}
-
-M.arrow_solid = ""
-M.arrow_thin = ""
-M.icons = {
-  ["C:\\WINDOWS\\system32\\cmd.exe"] = w.nerdfonts.md_console_line,
-  ["Topgrade"] = w.nerdfonts.md_rocket_launch,
-  ["bash"] = w.nerdfonts.cod_terminal_bash,
-  ["btm"] = w.nerdfonts.mdi_chart_donut_variant,
-  ["cargo"] = w.nerdfonts.dev_rust,
-  ["curl"] = w.nerdfonts.mdi_flattr,
-  ["docker"] = w.nerdfonts.linux_docker,
-  ["docker-compose"] = w.nerdfonts.linux_docker,
-  ["fish"] = w.nerdfonts.md_fish,
-  ["gh"] = w.nerdfonts.dev_github_badge,
-  ["git"] = w.nerdfonts.dev_git,
-  ["go"] = w.nerdfonts.seti_go,
-  ["htop"] = w.nerdfonts.md_chart_areaspline,
-  ["ipython"] = w.nerdfonts.dev_python,
-  ["btop"] = w.nerdfonts.md_chart_areaspline,
-  ["kubectl"] = w.nerdfonts.linux_docker,
-  ["kuberlr"] = w.nerdfonts.linux_docker,
-  ["lazydocker"] = w.nerdfonts.linux_docker,
-  ["lua"] = w.nerdfonts.seti_lua,
-  ["make"] = w.nerdfonts.seti_makefile,
-  ["node"] = w.nerdfonts.mdi_hexagon,
-  ["nvim"] = w.nerdfonts.custom_vim,
-  ["pacman"] = "󰮯 ",
-  ["paru"] = "󰮯 ",
-  ["psql"] = w.nerdfonts.dev_postgresql,
-  ["pwsh.exe"] = w.nerdfonts.md_console,
-  ["python"] = w.nerdfonts.dev_python,
-  ["ruby"] = w.nerdfonts.cod_ruby,
-  ["sudo"] = w.nerdfonts.fa_hashtag,
-  ["vim"] = w.nerdfonts.custom_vim,
-  ["wget"] = w.nerdfonts.mdi_arrow_down_box,
-  ["zsh"] = w.nerdfonts.dev_terminal,
-  ["lazygit"] = w.nerdfonts.cod_github,
-}
 
 ---@param tab MuxTabObj
 ---@param max_width number
@@ -49,8 +12,8 @@ function M.title(tab, max_width)
   w.log_info("process: ", process)
   w.log_info("other: ", other)
 
-  if M.icons[process] then
-    title = M.icons[process] .. " " .. (other or "")
+  if icons.icons[process] then
+    title = icons.icons[process] .. " " .. (other or "")
   end
 
   local is_zoomed = false
@@ -61,7 +24,7 @@ function M.title(tab, max_width)
     end
   end
   if is_zoomed then -- or (#tab.panes > 1 and not tab.is_active) then
-    title = " " .. title
+    title = icons.hamburger .. " " .. title
   end
 
   title = w.truncate_right(title, max_width - 3)
@@ -92,7 +55,7 @@ function M.setup(config)
     local is_last = tab_idx == #tabs
     local next_tab = tabs[tab_idx + 1]
     local next_is_active = next_tab and next_tab.is_active
-    local arrow = (tab.is_active or is_last or next_is_active) and M.arrow_solid or M.arrow_thin
+    local arrow = (tab.is_active or is_last or next_is_active) and icons.arrows.right.solid or icons.arrows.right.thin
     local arrow_bg = inactive_bg
     local arrow_fg = colors.tab_bar.inactive_tab_edge
 
@@ -118,6 +81,32 @@ function M.setup(config)
     ret[#ret + 1] = { Background = { Color = arrow_bg } }
     ret[#ret + 1] = { Text = arrow }
     return ret
+  end)
+
+  w.on("update-status", function(window)
+    -- Grab the current window's configuration, and from it the
+    -- palette (this is the combination of your chosen colour scheme
+    -- including any overrides).
+    local color_scheme = window:effective_config().resolved_palette
+    local bg = color_scheme.brights[1]
+    local fg = color_scheme.brights[5]
+
+    window:set_right_status(w.format({
+      { Background = { Color = "none" } },
+      { Foreground = { Color = color_scheme.ansi[1] } },
+      { Text = icons.arrows.left.solid },
+      { Background = { Color = color_scheme.ansi[1] } },
+      { Foreground = { Color = color_scheme.ansi[8] } },
+      { Text = " " .. window:active_workspace() .. " " },
+      -- First, we draw the arrow...
+      { Background = { Color = "none" } },
+      { Foreground = { Color = bg } },
+      { Text = icons.arrows.left.solid },
+      -- Then we draw our text
+      { Background = { Color = bg } },
+      { Foreground = { Color = fg } },
+      { Text = " " .. w.hostname() .. " " },
+    }))
   end)
 end
 
