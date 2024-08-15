@@ -74,6 +74,7 @@ function M.setup(config)
     { key = "0", mods = M.mod.CTRL, action = act.ResetFontSize },
     -- clipboard
     { key = "v", mods = M.mod.CTRL, action = act.PasteFrom("Clipboard") },
+    { key = "X", mods = M.mod.CTRL .. "|" .. M.mod.SHIFT, action = act.ActivateCopyMode },
     -- new tab
     { key = "c", mods = M.mod.LEADER, action = act.SpawnTab("CurrentPaneDomain") },
     { key = "w", mods = M.mod.LEADER, action = act.CloseCurrentPane({ confirm = false }) },
