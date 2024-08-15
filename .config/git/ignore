@@ -1,6 +1,8 @@
 .dotfiles/
 .quicknote/
-.envrc.local
+.scratch/
+.envrc
+.mise.local.toml
 .nvmrc
 .python-version
 pyrightconfig.json

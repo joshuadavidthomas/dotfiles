@@ -1,56 +1,7 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-export UV_NATIVE_TLS="true"
-
-if [ -f ".env" ]; then
-    dotenv
+if [[ -f .env ]] && command dotenv-linter --version >&/dev/null; then
+  dotenv-linter .env || echo 'ERROR|https://dotenv-linter.github.io'
 fi
 
-if [ -e .envrc.local ]; then
-    source .envrc.local
-fi
-
-# use a certain pyenv version
-use_python() {
-    if [ -n "$(which pyenv)" ]; then
-        local pyversion=$1
-        pyenv local ${pyversion}
-    fi
-}
-
-layout_virtualenv() {
-    local pyversion=$1
-    local pvenv=$2
-    if [ -n "$(which pyenv virtualenv)" ]; then
-        pyenv virtualenv --force --quiet ${pyversion} ${pvenv}-${pyversion}
-    fi
-    pyenv local --unset
-}
-
-layout_activate() {
-    if [ -n "$(which pyenv)" ]; then
-        source $(pyenv root)/versions/$1/bin/activate
-    fi
-}
-
-layout_rye() {
-    PYPROJECT_TOML="${PYPROJECT_TOML:-pyproject.toml}"
-    if [[ ! -f "$PYPROJECT_TOML" ]]; then
-        log_status "No pyproject.toml found. Executing \`rye init\` to create a \`$PYPROJECT_TOML\` first."
-        rye init
-    fi
-
-    if [[ -d ".venv" ]]; then
-        VIRTUAL_ENV="$(pwd)/.venv"
-    fi
-
-    if [[ -z $VIRTUAL_ENV || ! -d $VIRTUAL_ENV ]]; then
-        log_status "No virtual environment exists. Executing \`rye sync\` to create one."
-        rye sync
-        VIRTUAL_ENV="$(pwd)/.venv"
-    fi
-
-    PATH_add "$VIRTUAL_ENV/bin"
-    export VENV_ACTIVE=1
-    export VIRTUAL_ENV
-}
+dotenv_if_exists || direnv status # https://direnv.net/man/direnv-stdlib.1.html

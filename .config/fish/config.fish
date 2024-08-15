@@ -8,6 +8,7 @@ end
 
 # disable intro fish greeting
 set -g fish_greeting
+set -gx EDITOR vim
 
 # starship
 starship init fish | source
@@ -15,15 +16,11 @@ starship init fish | source
 # direnv
 direnv hook fish | source
 
-# pyenv
-pyenv init - | source
-status --is-interactive; and pyenv virtualenv-init - | source
+# mise
+mise activate fish | source
 
 # zoxide
 zoxide init --cmd cd fish | source
 
 # atuin
 status --is-interactive; and atuin init fish | source
-
-# mise
-mise activate fish | source

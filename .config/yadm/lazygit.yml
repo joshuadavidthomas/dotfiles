@@ -1,0 +1,5 @@
+# https://github.com/jesseduffield/lazygit/discussions/1201
+# https://github.com/jesseduffield/lazygit/discussions/1201#discussioncomment-2437060
+keybinding:
+  files:
+    toggleStagedAll: "<c-a>" # avoid "stage/unstage all" since it hangs lazygit, cause I guess it tries to list all files

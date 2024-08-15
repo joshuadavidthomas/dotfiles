@@ -1,7 +1,5 @@
 [init]
 	defaultBranch = main
-[include]
-  path = config-local
 [alias]
 	br = "branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate"
 	branch-name = "!git rev-parse --abbrev-ref HEAD"
@@ -9,6 +7,12 @@
 	cob = "checkout -b"
 	del = "branch -D"
 	exe = "update-index --chmod=+x"
+	fork = "!f() { \
+			git clone $1 \
+			&& cd \"$(basename $1 .git)\" \
+			&& git remote add upstream $2 \
+			&& cd -; \
+		}; f"
 	main = "checkout main"
 	patch = "add -p"
 	pdiff = "-c 'core.pager=less' diff"
@@ -27,19 +31,20 @@
 [core]
 	pager = DELTA_FEATURES=+side-by-side delta
 	editor = nvim
-	sshCommand = ssh.exe
 [credential "https://github.com"]
 	helper =
 	helper = !$(which gh) auth git-credential
 [credential "https://gist.github.com"]
 	helper =
 	helper = !$(which gh) auth git-credential
+[include]
+	path = ~/.local/share/nvim/lazy/tokyonight.nvim/extras/delta/tokyonight_storm.gitconfig
 [delta]
 	# https://dandavison.github.io/delta/configuration.html
 	hyperlinks = true
 	line-numbers = true
 	navigate = true
-	syntax-theme = Monokai Extended
+	syntax-theme = tokyonight_storm
 [diff]
 	algorithm = histogram
 	colorMoved = default
@@ -47,7 +52,7 @@
 	autoCorrect = immediate
 [http]
 	sslVerify = true
-	sslCAInfo = /home/josh/.certs/cacert.pem
+	# sslCAInfo = /home/josh/.certs/cacert.pem
 [interactive]
 	diffFilter = delta --color-only
 [merge]
@@ -62,3 +67,5 @@
 [user]
 	name = Josh
 	email = josh@joshthomas.dev
+[include]
+	path = config.local
