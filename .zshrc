@@ -32,3 +32,5 @@ setopt COMPLETE_IN_WORD
 
 # autoload -U colors
 #colors
+
+. "$HOME/.local/bin/env"
