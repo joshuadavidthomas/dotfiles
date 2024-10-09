@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -ouex pipefail
+
+mkdir -p "$HOME/.config"
+
+touch "$HOME/.config/no-show-user-motd"

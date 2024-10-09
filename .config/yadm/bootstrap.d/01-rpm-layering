@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+set -ouex pipefail
+
+source "$(dirname "$0")/utils.sh"
+
+check_root "$@"
+
+FEDORA_MAJOR_VERSION=$(grep VERSION_ID /etc/os-release | cut -d= -f2 | tr -d '"')
+
+curl -Lo /etc/yum.repos.d/keyd.repo https://copr.fedorainfracloud.org/coprs/alternateved/keyd/repo/fedora-"${FEDORA_MAJOR_VERSION}"/alternateved-keyd-fedora-"${FEDORA_MAJOR_VERSION}".repo
+curl -Lo /etc/yum.repos.d/wezterm-nightly.repo https://copr.fedorainfracloud.org/coprs/wezfurlong/wezterm-nightly/repo/fedora-"${FEDORA_MAJOR_VERSION}"/wezfurlong-wezterm-nightly-fedora-"${FEDORA_MAJOR_VERSION}".repo
+
+sed -i 's@enabled=0@enabled=1@g' /etc/yum.repos.d/keyd.repo
+sed -i 's@enabled=0@enabled=1@g' /etc/yum.repos.d/wezterm-nightly.repo
+
+cat <<EOF >/etc/yum.repos.d/1password.repo
+[1password]
+name=1Password ${ONEPASSWORD_RELEASE_CHANNEL:-stable} Channel
+baseurl=https://downloads.1password.com/linux/rpm/${ONEPASSWORD_RELEASE_CHANNEL:-stable}/\$basearch
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://downloads.1password.com/linux/keys/1password.asc
+EOF
+
+cat <<EOF >/etc/yum.repos.d/vivaldi.repo
+[vivaldi]
+baseurl=https://repo.vivaldi.com/archive/rpm/\$basearch
+enabled=1
+gpgcheck=1
+gpgkey=https://repo.vivaldi.com/archive/linux_signing_key.pub
+name=vivaldi
+EOF
+
+PACKAGES=(
+        1password
+        1password-cli
+        chromium
+        keyd
+        vivaldi-"${VIVALDI_RELEASE_CHANNEL:-stable}"
+        wezterm
+)
+
+for package in "${PACKAGES[@]}"; do
+        if ! rpm-ostree status | grep -q "$package"; then
+                rpm-ostree install "$package"
+        fi
+done

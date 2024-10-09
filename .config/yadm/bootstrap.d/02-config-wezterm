@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -ouex pipefail
+
+source "$(dirname "$0")/utils.sh"
+
+mkdir -p ~/.local/share/applications
+
+kwriteconfig5 --file ~/.config/plasma-org.kde.plasma.desktop-appletsrc --group Containments --group 1 --group Applets --group 2 --group Configuration --group General --key launchers "preferred://browser,applications:org.wezfurlong.wezterm.desktop,applications:org.kde.discover.desktop,preferred://filemanager"
+
+kwriteconfig5 --file ~/.config/kickoffrc --group General --key favorites "preferred://browser,applications:org.wezfurlong.wezterm.desktop,applications:systemsettings.desktop,applications:org.kde.dolphin.desktop,applications:org.kde.kate.desktop,applications:org.kde.discover.desktop"
+
+cp /usr/share/applications/org.wezfurlong.wezterm.desktop ~/.local/share/applications/
+sed -i 's@Keywords=@Keywords=konsole;console;@g' ~/.local/share/applications/org.wezfurlong.wezterm.desktop
+echo "X-KDE-Shortcuts=Ctrl+Alt+T" >>~/.local/share/applications/org.wezfurlong.wezterm.desktop
+
+kwriteconfig5 --file ~/.config/kdeglobals --group General --key TerminalApplication "wezterm"
+kwriteconfig5 --file ~/.config/kdeglobals --group General --key TerminalService "org.wezfurlong.wezterm.desktop"
+
+kwriteconfig5 --file ~/.config/kglobalshortcutsrc --group org.wezfurlong.wezterm.desktop --key _launch "Ctrl+Alt+T,none,Launch WezTerm"

@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -ouex pipefail
+
+source "$(dirname "$0")/utils.sh"
+
+check_root "$@"
+
+mkdir -p /etc/keyd
+
+cat <<EOF >/etc/keyd/default.conf
+[ids]
+
+*
+
+[main]
+
+# Maps capslock to escape when pressed and control when held.
+capslock = overload(control, esc)
+
+# Remaps the escape key to capslock
+esc = capslock
+EOF
