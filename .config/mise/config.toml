@@ -2,12 +2,10 @@
 go = "latest"
 lua = "latest"
 node = "lts"
-python = "latest"
 perl = "latest"
 usage = "latest"
 rust = "latest"
 bun = "latest"
-"pipx:s3-credentials" = "latest"
 
 [settings]
 experimental = true
