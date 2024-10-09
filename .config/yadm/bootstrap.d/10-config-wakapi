@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -oue pipefail
+
+source "$(dirname "$0")/utils.sh"
+
+load_env "../.env" -p "WAKAPI_"
+
+cat <<EOF >"$HOME/.wakatime.cfg"
+[settings]
+debug = false
+hidefilenames = false
+ignore =
+    COMMIT_EDITMSG$
+    PULLREQ_EDITMSG$
+    MERGE_MSG$
+    TAG_EDITMSG$
+api_url = https://wakapi.app.joshthomas.cool/api
+api_key = $WAKAPI_API_KEY
+EOF
+
+unload_env "WAKAPI_"

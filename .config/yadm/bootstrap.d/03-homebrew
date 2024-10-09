@@ -1,7 +1,9 @@
 #!/usr/bin/bash
 
-set -ouex pipefail
+set -oue pipefail
 
-if command -v brew &>/dev/null && [ -f "$HOME/.Brewfile" ]; then
-        brew bundle --global
-fi
+source "$(dirname "$0")/utils.sh"
+
+check_command brew
+
+brew bundle --global

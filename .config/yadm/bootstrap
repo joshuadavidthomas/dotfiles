@@ -4,7 +4,7 @@
 # execute all executable files (excluding templates and editor backups) in the
 # ~/.config/yadm/bootstrap.d directory when run.
 
-set -ouex pipefail
+set -oue pipefail
 
 cd "$HOME" || exit 1
 

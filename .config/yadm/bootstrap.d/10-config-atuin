@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -oue pipefail
+
+source "$(dirname "$0")/utils.sh"
+
+check_command atuin
+
+load_env "../.env" -p "ATUIN_"
+
+atuin login -u "josh" -p "$ATUIN_PASSWORD" -k "$ATUIN_KEY"
+
+unset ATUIN_KEY
+unset ATUIN_PASSWORD

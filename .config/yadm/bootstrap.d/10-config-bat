@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -oue pipefail
+
+source "$(dirname "$0")/utils.sh"
+
+check_command bat
+
+mkdir -p "$(bat --config-dir)/themes"
+curl -LO --output-dir "$(bat --config-dir)/themes" https://raw.githubusercontent.com/folke/tokyonight.nvim/main/extras/sublime/tokyonight_storm.tmTheme
+bat cache --build

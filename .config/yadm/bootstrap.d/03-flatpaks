@@ -1,7 +1,11 @@
 #!/usr/bin/bash
 
-set -ouex pipefail
+set -oue pipefail
 
-if command -v flatpak &>/dev/null && [ -f "$HOME/.flatpaks" ]; then
+source "$(dirname "$0")/utils.sh"
+
+check_command flatpak
+
+if [ -f "$HOME/.flatpaks" ]; then
         xargs -a "$HOME/.flatpaks" -r flatpak --system -y install --or-update
 fi

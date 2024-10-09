@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-set -ouex pipefail
+set -oue pipefail
 
 kwriteconfig5 --file ~/.config/kdeglobals --group General --key BrowserApplication "vivaldi"
