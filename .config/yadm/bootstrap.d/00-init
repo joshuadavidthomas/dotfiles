@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+
+set -ouex pipefail
+
+chmod 700 "$HOME/.cache" "$HOME/.config"

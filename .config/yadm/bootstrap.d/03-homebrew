@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+
+set -ouex pipefail
+
+if command -v brew &>/dev/null && [ -f "$HOME/.Brewfile" ]; then
+        brew bundle --global
+fi

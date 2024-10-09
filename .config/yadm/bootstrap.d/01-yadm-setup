@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+
+set -ouex pipefail
+
+yadm gitconfig core.sparseCheckout true
+yadm sparse-checkout set '/*' '!README.md' '!LICENSE' '!.github/workflows/*'

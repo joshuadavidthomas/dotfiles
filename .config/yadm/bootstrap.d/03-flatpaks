@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+
+set -ouex pipefail
+
+if command -v flatpak &>/dev/null && [ -f "$HOME/.flatpaks" ]; then
+        xargs -a "$HOME/.flatpaks" -r flatpak --system -y install --or-update
+fi

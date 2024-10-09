@@ -6,6 +6,8 @@
 
 set -ouex pipefail
 
+cd "$HOME" || exit 1
+
 # Directory to look for bootstrap executables in
 BOOTSTRAP_D="${BASH_SOURCE[0]}.d"
 

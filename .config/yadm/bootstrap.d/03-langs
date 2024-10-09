@@ -1,0 +1,11 @@
+#!/usr/bin/bash
+
+set -ouex pipefail
+
+if command -v mise &>/dev/null; then
+        mise install --yes
+fi
+
+if ! command -v uv &>/dev/null; then
+        curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR="$HOME/.local" sh
+fi
