@@ -83,6 +83,8 @@ else
   config.window_decorations = "TITLE | RESIZE"
 end
 
+config.default_prog = { "/usr/bin/fish" }
+
 config.window_padding = {
   left = 0,
   right = 0,
