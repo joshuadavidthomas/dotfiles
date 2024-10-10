@@ -77,15 +77,8 @@ unload_env() {
 }
 
 check_command() {
-        local cmd="$1"
-        shift # Remove the first argument (cmd) from the argument list
-
-        if ! command -v "$cmd" &>/dev/null; then
-                if [[ $# -gt 0 ]]; then
-                        "$@"
-                else
-                        echo "Command \"$cmd\" not found. Exiting silently." >&2
-                        exit 0 # Exit silently (with success status) so other scripts can continue
-                fi
-        fi
+        command -v "$1" >/dev/null 2>&1 || {
+                echo >&2 "Command '$1' not found. Exiting."
+                exit 1
+        }
 }

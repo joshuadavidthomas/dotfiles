@@ -1,11 +1,15 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 set -oue pipefail
 
 source "$(dirname "$0")/utils.sh"
 
-check_command mise "curl -LsSf https://mise.run | sh"
+check_command mise || {
+        curl -LsSf https://mise.run | sh
+}
 
 mise install --yes
 
-check_command uv "curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR=\"$HOME/.local\" sh"
+check_command uv || {
+        curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR="$HOME/.local" sh
+}
