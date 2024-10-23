@@ -34,3 +34,4 @@ setopt COMPLETE_IN_WORD
 #colors
 
 . "$HOME/.local/bin/env"
+. "/home/josh/.deno/env"
