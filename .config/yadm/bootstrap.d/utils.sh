@@ -79,6 +79,6 @@ unload_env() {
 check_command() {
         command -v "$1" >/dev/null 2>&1 || {
                 echo >&2 "Command '$1' not found. Exiting."
-                exit 1
+                return 1
         }
 }

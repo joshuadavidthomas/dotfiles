@@ -4,17 +4,74 @@ set -oue pipefail
 
 source "$(dirname "$0")/utils.sh"
 
+log_file="/tmp/wezterm_setup.log"
+exec 1> >(tee -a "$log_file")
+exec 2>&1
+
+echo "Starting Wezterm setup at $(date)"
+
+for cmd in wezterm kwriteconfig6 qdbus; do
+        if ! command -v "$cmd" &>/dev/null; then
+                echo "Required command '$cmd' not found. Please install it first."
+                exit 1
+        fi
+done
+
 mkdir -p ~/.local/share/applications
+mkdir -p ~/.config/wezterm
 
-kwriteconfig5 --file ~/.config/plasma-org.kde.plasma.desktop-appletsrc --group Containments --group 1 --group Applets --group 2 --group Configuration --group General --key launchers "preferred://browser,applications:org.wezfurlong.wezterm.desktop,applications:org.kde.discover.desktop,preferred://filemanager"
+# Update task manager/dock favorites
+kwriteconfig6 --file ~/.config/plasma-org.kde.plasma.desktop-appletsrc \
+        --group Containments --group 1 --group Applets --group 2 \
+        --group Configuration --group General \
+        --key launchers "preferred://browser,applications:org.wezfurlong.wezterm.desktop,applications:org.kde.discover.desktop,preferred://filemanager"
 
-kwriteconfig5 --file ~/.config/kickoffrc --group General --key favorites "preferred://browser,applications:org.wezfurlong.wezterm.desktop,applications:systemsettings.desktop,applications:org.kde.dolphin.desktop,applications:org.kde.kate.desktop,applications:org.kde.discover.desktop"
+# Update application launcher favorites
+kwriteconfig6 --file ~/.config/kickoffrc --group General \
+        --key favorites "preferred://browser,applications:org.wezfurlong.wezterm.desktop,applications:systemsettings.desktop,applications:org.kde.dolphin.desktop,applications:org.kde.kate.desktop,applications:org.kde.discover.desktop"
 
+# Set up desktop file with custom shortcuts
 cp /usr/share/applications/org.wezfurlong.wezterm.desktop ~/.local/share/applications/
 sed -i 's@Keywords=@Keywords=konsole;console;@g' ~/.local/share/applications/org.wezfurlong.wezterm.desktop
 echo "X-KDE-Shortcuts=Ctrl+Alt+T" >>~/.local/share/applications/org.wezfurlong.wezterm.desktop
 
-kwriteconfig5 --file ~/.config/kdeglobals --group General --key TerminalApplication "wezterm"
-kwriteconfig5 --file ~/.config/kdeglobals --group General --key TerminalService "org.wezfurlong.wezterm.desktop"
+# Set as default terminal
+kwriteconfig6 --file ~/.config/kdeglobals --group General --key TerminalApplication "wezterm"
+kwriteconfig6 --file ~/.config/kdeglobals --group General --key TerminalService "org.wezfurlong.wezterm.desktop"
 
-kwriteconfig5 --file ~/.config/kglobalshortcutsrc --group org.wezfurlong.wezterm.desktop --key _launch "Ctrl+Alt+T,none,Launch WezTerm"
+# Set keyboard shortcut
+kwriteconfig6 --file ~/.config/kglobalshortcutsrc \
+        --group org.wezfurlong.wezterm.desktop \
+        --key _launch "Ctrl+Alt+T,none,Launch WezTerm"
+
+# Create window rules directly
+RULE_GROUP="1"
+kwriteconfig6 --file ~/.config/kwinrulesrc --group "$RULE_GROUP" \
+        --key Description "Window settings for org.wezfurlong.wezterm"
+kwriteconfig6 --file ~/.config/kwinrulesrc --group "$RULE_GROUP" \
+        --key maximizehoriz true
+kwriteconfig6 --file ~/.config/kwinrulesrc --group "$RULE_GROUP" \
+        --key maximizehorizrule 3
+kwriteconfig6 --file ~/.config/kwinrulesrc --group "$RULE_GROUP" \
+        --key maximizevert true
+kwriteconfig6 --file ~/.config/kwinrulesrc --group "$RULE_GROUP" \
+        --key maximizevertrule 3
+kwriteconfig6 --file ~/.config/kwinrulesrc --group "$RULE_GROUP" \
+        --key title "Debug"
+kwriteconfig6 --file ~/.config/kwinrulesrc --group "$RULE_GROUP" \
+        --key types 1
+kwriteconfig6 --file ~/.config/kwinrulesrc --group "$RULE_GROUP" \
+        --key wmclass "wezterm-gui org.wezfurlong.wezterm"
+kwriteconfig6 --file ~/.config/kwinrulesrc --group "$RULE_GROUP" \
+        --key wmclasscomplete true
+kwriteconfig6 --file ~/.config/kwinrulesrc --group "$RULE_GROUP" \
+        --key wmclassmatch 1
+
+# Update the count in General
+kwriteconfig6 --file ~/.config/kwinrulesrc --group General --key count 1
+
+# Reload KWin rules
+qdbus org.kde.KWin /KWin reconfigure
+
+echo "Wezterm setup completed at $(date)"
+echo "Log file available at: $log_file"

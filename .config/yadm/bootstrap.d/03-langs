@@ -13,3 +13,9 @@ mise install --yes
 check_command uv || {
         curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR="$HOME/.local" sh
 }
+
+check_command rustup || {
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --component rust-analyzer
+}
+
+rustup update

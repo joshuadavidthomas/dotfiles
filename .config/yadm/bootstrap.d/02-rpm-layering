@@ -40,6 +40,11 @@ PACKAGES=(
         keyd
         vivaldi-"${VIVALDI_RELEASE_CHANNEL:-stable}"
         wezterm
+        # tauri prereqs
+        librsvg2-devel
+        webkit2gtk4.1-devel
+        # pyo3
+        python3-devel
 )
 
 for package in "${PACKAGES[@]}"; do

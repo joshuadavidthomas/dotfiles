@@ -15,9 +15,17 @@ cat <<EOF >/etc/keyd/default.conf
 
 [main]
 
-# Maps capslock to escape when pressed and control when held.
+# Maps capslock to escape when pressed and control when held
 capslock = overload(control, esc)
 
 # Remaps the escape key to capslock
 esc = capslock
+
+# Creates special vim layer when 'control+shift' is held
+[control+shift]
+
+h = left
+k = up
+j = down
+l = right
 EOF

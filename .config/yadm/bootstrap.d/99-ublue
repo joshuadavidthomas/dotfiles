@@ -5,3 +5,5 @@ set -oue pipefail
 mkdir -p "$HOME/.config"
 
 touch "$HOME/.config/no-show-user-motd"
+
+ujust install-jetbrains-toolbox
