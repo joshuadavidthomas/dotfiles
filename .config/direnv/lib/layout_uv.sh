@@ -7,7 +7,7 @@ layout_uv() {
 
         if [[ -z $VIRTUAL_ENV || ! -d $VIRTUAL_ENV ]]; then
                 log_status "No virtual environment exists. Executing \`uv venv\` to create one."
-                uv venv
+                uv venv --seed
                 VIRTUAL_ENV="$(pwd)/.venv"
         fi
 
@@ -18,4 +18,6 @@ layout_uv() {
         PATH_add "$VIRTUAL_ENV/bin"
         export UV_ACTIVE=1 # or VENV_ACTIVE=1
         export VIRTUAL_ENV
+
+        export_alias "uvr" "uv run"
 }
