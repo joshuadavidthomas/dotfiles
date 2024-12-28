@@ -1,0 +1,44 @@
+version = 1
+
+[settings]
+bin_path = "/home/josh/.local/bin"
+always_use_raw = false
+
+[aliases.top]
+command = "btop"
+
+[aliases.ll]
+command = "eza --long --all --group-directories-first --git"
+
+[aliases.ls]
+command = "eza"
+
+[aliases.lt]
+command = "eza --tree --git-ignore --level=2 --group-directories-first"
+
+[aliases.tree]
+command = "eza --tree"
+
+[aliases.lT]
+command = "eza --tree --git-ignore --level=4 --group-directories-first"
+
+[aliases.la]
+command = "eza --long --all --git"
+
+[aliases.vim]
+command = "nvim"
+
+[aliases.l]
+command = "eza --long --all --group-directories-first --git-ignore"
+
+[aliases.llt]
+command = "eza --long --tree --git-ignore --level=2 --group-directories-first"
+
+[aliases.cat]
+command = "bat --paging=never"
+
+[aliases.lg]
+command = "lazygit"
+
+[aliases.fd]
+command = "find"
