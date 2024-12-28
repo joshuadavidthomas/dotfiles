@@ -47,8 +47,17 @@ PACKAGES=(
         python3-devel
 )
 
-for package in "${PACKAGES[@]}"; do
-        if ! rpm-ostree status | grep -q "$package"; then
-                rpm-ostree install "$package"
+TO_INSTALL=()
+
+for pkg in "${PACKAGES[@]}"; do
+        if ! rpm -q "$pkg" &>/dev/null; then
+                TO_INSTALL+=("$pkg")
         fi
 done
+
+if [ ${#TO_INSTALL[@]} -gt 0 ]; then
+        echo "Installing packages: ${TO_INSTALL[*]}"
+        dnf install -y "${TO_INSTALL[@]}"
+else
+        echo "All packages are already installed"
+fi
