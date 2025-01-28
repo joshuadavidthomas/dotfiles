@@ -15,7 +15,7 @@
 		}; f"
 	main = "checkout main"
 	patch = "add -p"
-	pdiff = "-c 'core.pager=less' diff"
+	pdiff = "-c 'core.pager=cat' diff"
 	publish = "!git push -u origin $(git branch-name)"
 	runs = "!f() { \
 		watch_gha_runs $@ \
