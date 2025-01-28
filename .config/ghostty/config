@@ -1,3 +1,6 @@
+# Shell
+command = /usr/bin/fish
+
 # Fonts
 bold-is-bright = true
 font-family = Symbols Nerd Font Mono
@@ -9,7 +12,10 @@ keybind = ctrl+a>r=reload_config
 keybind = f11=toggle_fullscreen
 
 keybind = ctrl+a>enter=new_split:auto
+keybind = ctrl+a>\=new_split:right
+keybind = ctrl+a>-=new_split:down
 keybind = ctrl+a>m=toggle_split_zoom
+keybind = ctrl+a>e=equalize_splits
 keybind = ctrl+h=goto_split:left
 keybind = ctrl+j=goto_split:bottom
 keybind = ctrl+k=goto_split:top
@@ -35,6 +41,7 @@ keybind = ctrl+a>w=close_surface
 
 # Mouse
 mouse-hide-while-typing = true
+mouse-scroll-multiplier = 2
 
 # Window
 adw-toolbar-style = flat
@@ -47,10 +54,12 @@ gtk-titlebar = true
 linux-cgroup = single-instance
 theme = dark:tokyonight-storm,light:tokyonight-day
 unfocused-split-opacity = 0.75
+window-height = 50
 window-padding-balance = true
 window-padding-x = 0
 window-padding-y = 0
 window-theme = ghostty
+window-width = 213
 
 # Other
-command = /usr/bin/fish
+copy-on-select = clipboard
