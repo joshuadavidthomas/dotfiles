@@ -4,38 +4,38 @@ version = 1
 bin_path = "/home/josh/.local/bin"
 always_use_raw = false
 
-[aliases.fd]
-command = "find"
-
 [aliases.lg]
 command = "TERM=xterm-256color lazygit"
 
-[aliases.top]
-command = "btop"
-
-[aliases.lt]
-command = "eza --tree --git-ignore --level=2 --group-directories-first"
-
-[aliases.la]
-command = "eza --long --all --git"
-
-[aliases.tree]
-command = "eza --tree"
+[aliases.vim]
+command = "nvim"
 
 [aliases.lT]
 command = "eza --tree --git-ignore --level=4 --group-directories-first"
 
+[aliases.la]
+command = "eza --long --all --git"
+
+[aliases.find]
+command = "fd"
+
 [aliases.ll]
 command = "eza --long --all --group-directories-first --git"
 
-[aliases.l]
-command = "eza --long --all --group-directories-first --git-ignore"
-
-[aliases.vim]
-command = "nvim"
+[aliases.lt]
+command = "eza --tree --git-ignore --level=2 --group-directories-first"
 
 [aliases.ls]
 command = "eza"
 
 [aliases.llt]
 command = "eza --long --tree --git-ignore --level=2 --group-directories-first"
+
+[aliases.tree]
+command = "eza --tree"
+
+[aliases.top]
+command = "btop"
+
+[aliases.l]
+command = "eza --long --all --group-directories-first --git-ignore"
