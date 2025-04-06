@@ -2,12 +2,12 @@
 go = "latest"
 lua = "latest"
 node = "lts"
-perl = "latest"
 usage = "latest"
 bun = "latest"
 "npm:pake-cli" = "latest"
 "npm:smee-client" = "latest"
 "npm:neovim" = "latest"
+"npm:@anthropic-ai/claude-code" = "latest"
 
 [settings]
 experimental = true
