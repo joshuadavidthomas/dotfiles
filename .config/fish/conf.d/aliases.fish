@@ -1,4 +1,5 @@
 alias lg="lazygit"
+# alias sp="spotify_player"
 
 # shadow cat="bat --paging=never"
 # shadow find="fd"

@@ -1,6 +1,7 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
 SETUVAR --export EDITOR:vim
+SETUVAR --export FZF_DEFAULT_OPTS:\x20\x20\x20\x2d\x2dhighlight\x2dline\x20\x20\x20\x2d\x2dinfo\x3dinline\x2dright\x20\x20\x20\x2d\x2dansi\x20\x20\x20\x2d\x2dlayout\x3dreverse\x20\x20\x20\x2d\x2dborder\x3dnone\x20\x20\x20\x2d\x2dcolor\x3dbg\x2b\x3a\x232d3f76\x20\x20\x20\x2d\x2dcolor\x3dbg\x3a\x231e2030\x20\x20\x20\x2d\x2dcolor\x3dborder\x3a\x23589ed7\x20\x20\x20\x2d\x2dcolor\x3dfg\x3a\x23c8d3f5\x20\x20\x20\x2d\x2dcolor\x3dgutter\x3a\x231e2030\x20\x20\x20\x2d\x2dcolor\x3dheader\x3a\x23ff966c\x20\x20\x20\x2d\x2dcolor\x3dhl\x2b\x3a\x2365bcff\x20\x20\x20\x2d\x2dcolor\x3dhl\x3a\x2365bcff\x20\x20\x20\x2d\x2dcolor\x3dinfo\x3a\x23545c7e\x20\x20\x20\x2d\x2dcolor\x3dmarker\x3a\x23ff007c\x20\x20\x20\x2d\x2dcolor\x3dpointer\x3a\x23ff007c\x20\x20\x20\x2d\x2dcolor\x3dprompt\x3a\x2365bcff\x20\x20\x20\x2d\x2dcolor\x3dquery\x3a\x23c8d3f5\x3aregular\x20\x20\x20\x2d\x2dcolor\x3dscrollbar\x3a\x23589ed7\x20\x20\x20\x2d\x2dcolor\x3dseparator\x3a\x23ff966c\x20\x20\x20\x2d\x2dcolor\x3dspinner\x3a\x23ff007c\x20
 SETUVAR --export HOMEBREW_NO_ENV_HINTS:True
 SETUVAR --export LG_CONFIG_FILE:/home/josh/\x2econfig/lazygit/config\x2eyml\x2c/home/josh/\x2ecache/nvim/lazygit\x2dtheme\x2eyml
 SETUVAR --export PYENV_ROOT:/home/josh/\x2epyenv
@@ -15,32 +16,42 @@ SETUVAR _fish_abbr_dotdot:\x2d\x2dregex\x20\x5e\x5c\x2e\x5c\x2e\x2b\x24\x20\x2d\
 SETUVAR _fisher_jorgebucaran_2F_fisher_files:\x7e/\x2econfig/fish/functions/fisher\x2efish\x1e\x7e/\x2econfig/fish/completions/fisher\x2efish
 SETUVAR _fisher_plugins:jorgebucaran/fisher
 SETUVAR _fisher_upgraded_to_4_4:\x1d
-SETUVAR fish_color_autosuggestion:555\x1ebrblack
-SETUVAR fish_color_cancel:\x2dr
-SETUVAR fish_color_command:blue
-SETUVAR fish_color_comment:red
-SETUVAR fish_color_cwd:green
+SETUVAR fish_color_autosuggestion:636da6
+SETUVAR fish_color_cancel:\x1d
+SETUVAR fish_color_command:86e1fc
+SETUVAR fish_color_comment:636da6
+SETUVAR fish_color_cwd:\x1d
 SETUVAR fish_color_cwd_root:red
-SETUVAR fish_color_end:green
-SETUVAR fish_color_error:brred
-SETUVAR fish_color_escape:brcyan
+SETUVAR fish_color_end:ff966c
+SETUVAR fish_color_error:ff757f
+SETUVAR fish_color_escape:c099ff
 SETUVAR fish_color_history_current:\x2d\x2dbold
-SETUVAR fish_color_host:normal
-SETUVAR fish_color_host_remote:yellow
-SETUVAR fish_color_normal:normal
-SETUVAR fish_color_operator:brcyan
-SETUVAR fish_color_param:cyan
-SETUVAR fish_color_quote:yellow
-SETUVAR fish_color_redirection:cyan\x1e\x2d\x2dbold
-SETUVAR fish_color_search_match:bryellow\x1e\x2d\x2dbackground\x3dbrblack
-SETUVAR fish_color_selection:white\x1e\x2d\x2dbold\x1e\x2d\x2dbackground\x3dbrblack
+SETUVAR fish_color_host:\x1d
+SETUVAR fish_color_host_remote:\x1d
+SETUVAR fish_color_keyword:\x1d
+SETUVAR fish_color_normal:c8d3f5
+SETUVAR fish_color_operator:c3e88d
+SETUVAR fish_color_option:\x1d
+SETUVAR fish_color_param:fca7ea
+SETUVAR fish_color_quote:ffc777
+SETUVAR fish_color_redirection:c8d3f5
+SETUVAR fish_color_search_match:\x2d\x2dbackground\x3d2d3f76
+SETUVAR fish_color_selection:\x2d\x2dbackground\x3d2d3f76
 SETUVAR fish_color_status:red
-SETUVAR fish_color_user:brgreen
+SETUVAR fish_color_user:\x1d
 SETUVAR fish_color_valid_path:\x2d\x2dunderline
 SETUVAR fish_key_bindings:fish_default_key_bindings
-SETUVAR fish_pager_color_completion:normal
-SETUVAR fish_pager_color_description:B3A06D\x1eyellow\x1e\x2di
-SETUVAR fish_pager_color_prefix:normal\x1e\x2d\x2dbold\x1e\x2d\x2dunderline
-SETUVAR fish_pager_color_progress:brwhite\x1e\x2d\x2dbackground\x3dcyan
-SETUVAR fish_pager_color_selected_background:\x2dr
-SETUVAR fish_user_paths:/home/josh/\x2econfig/herd\x2dlite/bin\x1e/home/linuxbrew/\x2elinuxbrew/opt/libpq/bin\x1e/home/josh/\x2ebun/bin\x1e/nix/var/nix/profiles/default/bin\x1e/home/josh/\x2efly/bin\x1e/home/josh/\x2enix\x2dprofile/bin\x1e/home/josh/\x2elocal/bin\x1e/usr/local/go/bin\x1e/home/josh/\x2epyenv/bin\x1e/home/josh/\x2efzf/bin\x1e/home/josh/\x2erye/shims\x1e/home/josh/\x2ecargo/bin
+SETUVAR fish_pager_color_background:\x1d
+SETUVAR fish_pager_color_completion:c8d3f5
+SETUVAR fish_pager_color_description:636da6
+SETUVAR fish_pager_color_prefix:86e1fc
+SETUVAR fish_pager_color_progress:636da6
+SETUVAR fish_pager_color_secondary_background:\x1d
+SETUVAR fish_pager_color_secondary_completion:\x1d
+SETUVAR fish_pager_color_secondary_description:\x1d
+SETUVAR fish_pager_color_secondary_prefix:\x1d
+SETUVAR fish_pager_color_selected_background:\x2d\x2dbackground\x3d2d3f76
+SETUVAR fish_pager_color_selected_completion:\x1d
+SETUVAR fish_pager_color_selected_description:\x1d
+SETUVAR fish_pager_color_selected_prefix:\x1d
+SETUVAR fish_user_paths:/home/josh/\x2ebin\x1e/home/josh/\x2econfig/herd\x2dlite/bin\x1e/home/linuxbrew/\x2elinuxbrew/opt/libpq/bin\x1e/home/josh/\x2ebun/bin\x1e/nix/var/nix/profiles/default/bin\x1e/home/josh/\x2efly/bin\x1e/home/josh/\x2enix\x2dprofile/bin\x1e/home/josh/\x2elocal/bin\x1e/usr/local/go/bin\x1e/home/josh/\x2epyenv/bin\x1e/home/josh/\x2efzf/bin\x1e/home/josh/\x2erye/shims\x1e/home/josh/\x2ecargo/bin
