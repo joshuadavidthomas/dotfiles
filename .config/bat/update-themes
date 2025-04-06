@@ -3,14 +3,20 @@
 set -euo pipefail
 
 if ! command -v bat &>/dev/null; then
-	echo "$(bat) is not installed"
-	exit 1
+        echo "$(bat) is not installed"
+        exit 1
 fi
 
 if ! command -v curl &>/dev/null; then
-	echo "$(curl) must be installed to update $(bat) themes"
+        echo "$(curl) must be installed to update $(bat) themes"
 fi
 
-mkdir -p "$(bat --config-dir)/themes"
-curl -LO --output-dir "$(bat --config-dir)/themes" https://raw.githubusercontent.com/folke/tokyonight.nvim/main/extras/sublime/tokyonight_storm.tmTheme
+THEMES_DIR="$(bat --config-dir)/themes"
+
+mkdir -p "$THEMES_DIR"
+
+for variant in day moon night storm; do
+        curl -LO --output-dir "$THEMES_DIR" "https://raw.githubusercontent.com/joshuadavidthomas/tokyonight.nvim/main/extras/sublime/tokyonight_${variant}.tmTheme"
+done
+
 bat cache --build
