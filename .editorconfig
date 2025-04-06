@@ -11,7 +11,7 @@ trim_trailing_whitespace = true
 [{,.}{j,J}ustfile]
 indent_size = 4
 
-[*.{fish,md,py,rst,ini}]
+[*.{fish,ini,md,py,rst,sh}]
 indent_size = 4
 
 [*.py]
