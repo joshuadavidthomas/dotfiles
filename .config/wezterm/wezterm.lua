@@ -83,7 +83,10 @@ else
   config.window_decorations = "TITLE | RESIZE"
 end
 
+config.window_background_opacity = 0.95
+
 config.default_prog = { "/usr/bin/fish" }
+config.term = "wezterm"
 
 config.window_padding = {
   left = 0,

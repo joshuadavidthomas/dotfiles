@@ -92,14 +92,14 @@ function M.setup(config)
     local fg = color_scheme.brights[5]
 
     window:set_right_status(w.format({
-      { Background = { Color = "none" } },
+      { Background = { Color = color_scheme.tab_bar.background } },
       { Foreground = { Color = color_scheme.ansi[1] } },
       { Text = icons.arrows.left.solid },
       { Background = { Color = color_scheme.ansi[1] } },
       { Foreground = { Color = color_scheme.ansi[8] } },
       { Text = " " .. window:active_workspace() .. " " },
       -- First, we draw the arrow...
-      { Background = { Color = "none" } },
+      { Background = { Color = color_scheme.ansi[1] } },
       { Foreground = { Color = bg } },
       { Text = icons.arrows.left.solid },
       -- Then we draw our text

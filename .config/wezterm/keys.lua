@@ -88,6 +88,8 @@ function M.setup(config)
     M.split_nav("move", M.mod.CTRL, "j", "Down"),
     M.split_nav("move", M.mod.CTRL, "k", "Up"),
     M.split_nav("move", M.mod.CTRL, "l", "Right"),
+    { key = "-", mods = M.mod.LEADER, action = act.SplitPane({ direction = "Down" }) },
+    { key = "\\", mods = M.mod.LEADER, action = act.SplitPane({ direction = "Right" }) },
   }
 
   for key, dir in pairs(M.dir) do
