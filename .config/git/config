@@ -44,7 +44,7 @@
 	hyperlinks = true
 	line-numbers = true
 	navigate = true
-	syntax-theme = tokyonight_storm
+	syntax-theme = tokyonight_moon
 [diff]
 	algorithm = histogram
 	colorMoved = default

@@ -1,10 +1,13 @@
-.aider*
+__pycache__/
+.claude/
 .direnv/
 .dotfiles/
 .quicknote/
 .scratch/
+.aider*
 .envrc
 .mise.local.toml
 .nvmrc
 .python-version
+CLAUDE.md
 pyrightconfig.json
