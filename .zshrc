@@ -35,3 +35,4 @@ setopt COMPLETE_IN_WORD
 
 . "$HOME/.local/bin/env"
 . "/home/josh/.deno/env"
+. "$HOME/.local/share/../bin/env"
