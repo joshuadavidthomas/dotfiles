@@ -12,7 +12,7 @@ sudo pacman -S --needed --noconfirm git base-devel
 check_command yay || {
         git clone https://aur.archlinux.org/yay.git /tmp/yay
         cd /tmp/yay
-        sudo -u "$SUDO_USER" makepkg -si --noconfirm
+        makepkg -si --noconfirm
         cd -
         rm -rf /tmp/yay
 }
