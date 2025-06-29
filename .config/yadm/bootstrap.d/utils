@@ -1,5 +1,76 @@
 #!/usr/bin/env bash
 
+# Distro detection functions
+get_distro() {
+        if [[ -f /etc/os-release ]]; then
+                source /etc/os-release
+                echo "${ID:-unknown}" | tr '[:upper:]' '[:lower:]'
+        else
+                echo "unknown"
+        fi
+}
+
+get_distro_family() {
+        if [[ -f /etc/os-release ]]; then
+                source /etc/os-release
+                # First check ID_LIKE, then fall back to ID
+                echo "${ID_LIKE:-${ID:-unknown}}" | tr '[:upper:]' '[:lower:]'
+        else
+                echo "unknown"
+        fi
+}
+
+# Package manager detection
+get_package_manager() {
+        local distro=$(get_distro)
+        local distro_family=$(get_distro_family)
+        
+        case "$distro" in
+                aurora|fedora) echo "dnf" ;;
+                arch|endeavouros|manjaro) echo "pacman" ;;
+                ubuntu|debian|pop) echo "apt" ;;
+                opensuse*) echo "zypper" ;;
+                *) 
+                        # Try distro family
+                        case "$distro_family" in
+                                fedora|rhel) echo "dnf" ;;
+                                arch|archlinux) echo "pacman" ;;
+                                debian|ubuntu) echo "apt" ;;
+                                *) echo "unknown" ;;
+                        esac
+                        ;;
+        esac
+}
+
+# Universal package installation
+install_packages() {
+        local pm=$(get_package_manager)
+        case "$pm" in
+                dnf) sudo dnf install -y "$@" ;;
+                pacman) sudo pacman -S --noconfirm "$@" ;;
+                apt) sudo apt install -y "$@" ;;
+                zypper) sudo zypper install -y "$@" ;;
+                *) 
+                        echo "Error: Unknown package manager for distro $(get_distro)" >&2
+                        return 1 
+                        ;;
+        esac
+}
+
+# Check if package is installed
+is_package_installed() {
+        local package=$1
+        local pm=$(get_package_manager)
+        
+        case "$pm" in
+                dnf) rpm -q "$package" &>/dev/null ;;
+                pacman) pacman -Qq "$package" &>/dev/null ;;
+                apt) dpkg -l "$package" 2>/dev/null | grep -q "^ii" ;;
+                zypper) rpm -q "$package" &>/dev/null ;;
+                *) return 1 ;;
+        esac
+}
+
 check_root() {
         if [[ $EUID -ne 0 ]]; then
                 echo "This script requires root privileges. Please enter your password."

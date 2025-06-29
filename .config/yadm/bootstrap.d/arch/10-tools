@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -oue pipefail
+
+source "$(dirname "$0")/../utils"
+
+yay -S --noconfirm --needed \
+        bat \
+        btop \
+        curl \
+        eza \
+        fastfetch \
+        fzf \
+        inetutils \
+        less \
+        man \
+        plocate \
+        ripgrep \
+        tldr \
+        unzip \
+        wget \
+        whois \
+        wl-clipboard \
+        zoxide

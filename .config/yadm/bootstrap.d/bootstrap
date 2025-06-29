@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-set -oue pipefail
-
-# TODO: add notes about post bootstrap process
-# - install MonoLisa font
-#   - https://www.monolisa.dev/api/fonts/v2/download?version=2.015&format=ttf&suffix=&freeze=ss04&freeze=zero&freeze=ss02&freeze=ss07&freeze=ss11&freeze=ss13&freeze=ss15&freeze=ss16

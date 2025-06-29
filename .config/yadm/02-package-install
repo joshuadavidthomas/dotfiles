@@ -1,0 +1,148 @@
+#!/usr/bin/env bash
+
+set -oue pipefail
+
+# Source utilities from parent directory
+source "$(dirname "$0")/../common/utils.sh"
+source "$(dirname "$0")/../common/package-map.sh"
+
+check_root "$@"
+
+# Install yay for AUR access if not already installed
+if ! command -v yay &>/dev/null; then
+    echo "Installing yay AUR helper..."
+    # Install dependencies for building yay
+    pacman -S --needed --noconfirm git base-devel
+    
+    # Build and install yay
+    git clone https://aur.archlinux.org/yay.git /tmp/yay
+    cd /tmp/yay
+    sudo -u "$SUDO_USER" makepkg -si --noconfirm
+    cd -
+    rm -rf /tmp/yay
+fi
+
+# Define packages to install
+PACKAGES=(
+    # Password manager
+    "1password"
+    "1password-cli"
+    
+    # Browsers
+    "chromium"
+    "vivaldi"
+    
+    # Terminal emulators
+    "wezterm"
+    "ghostty-git"  # AUR package
+    
+    # Key remapper
+    "keyd"
+    
+    # Development tools
+    "base-devel"
+    "git"
+    "perl"
+    "python"
+    
+    # Libraries for Tauri
+    "librsvg"
+    "webkit2gtk"
+    
+    # GUI Applications (previously from flatpaks)
+    "discord"
+    "teams-for-linux"  # AUR
+    "syncthingtray"
+    "slack-desktop"  # AUR
+    "spotify"  # AUR
+    "httpie-desktop"  # AUR
+    "obsidian"
+    "ktailctl"  # AUR
+    "libreoffice-fresh"
+    
+    # CLI Tools (previously from homebrew)
+    "atuin"
+    "bat"
+    "btop"
+    "curl"
+    "direnv"
+    "fd"
+    "flyctl"  # AUR
+    "fzf"
+    "github-cli"  # gh
+    "git-delta"
+    "lazygit"
+    "jq"
+    "just"
+    "llvm"
+    "neovim"
+    "python-pipx"
+    "ripgrep"
+    "starship"
+    "wget"
+    "zoxide"
+)
+
+# Separate AUR packages (ones that end with -git or are known AUR packages)
+AUR_PACKAGES=()
+REPO_PACKAGES=()
+
+# Known AUR packages
+KNOWN_AUR=(
+    "1password"
+    "1password-cli"
+    "teams-for-linux"
+    "slack-desktop"
+    "spotify"
+    "httpie-desktop"
+    "ktailctl"
+    "flyctl"
+)
+
+for pkg in "${PACKAGES[@]}"; do
+    if [[ "$pkg" =~ -git$ ]] || [[ " ${KNOWN_AUR[@]} " =~ " ${pkg} " ]]; then
+        AUR_PACKAGES+=("$pkg")
+    else
+        REPO_PACKAGES+=("$pkg")
+    fi
+done
+
+# Install repository packages
+if [ ${#REPO_PACKAGES[@]} -gt 0 ]; then
+    TO_INSTALL=()
+    for pkg in "${REPO_PACKAGES[@]}"; do
+        if ! pacman -Qq "$pkg" &>/dev/null; then
+            TO_INSTALL+=("$pkg")
+        fi
+    done
+    
+    if [ ${#TO_INSTALL[@]} -gt 0 ]; then
+        echo "Installing repository packages: ${TO_INSTALL[*]}"
+        pacman -S --needed --noconfirm "${TO_INSTALL[@]}"
+    else
+        echo "All repository packages are already installed"
+    fi
+fi
+
+# Install AUR packages
+if [ ${#AUR_PACKAGES[@]} -gt 0 ]; then
+    TO_INSTALL=()
+    for pkg in "${AUR_PACKAGES[@]}"; do
+        if ! pacman -Qq "$pkg" &>/dev/null; then
+            TO_INSTALL+=("$pkg")
+        fi
+    done
+    
+    if [ ${#TO_INSTALL[@]} -gt 0 ]; then
+        echo "Installing AUR packages: ${TO_INSTALL[*]}"
+        # Run yay as the non-root user
+        sudo -u "$SUDO_USER" yay -S --noconfirm "${TO_INSTALL[@]}"
+    else
+        echo "All AUR packages are already installed"
+    fi
+fi
+
+# Enable keyd service
+if pacman -Qq keyd &>/dev/null; then
+    systemctl enable --now keyd || true
+fi

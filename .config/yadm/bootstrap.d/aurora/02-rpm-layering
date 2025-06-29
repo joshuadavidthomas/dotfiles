@@ -48,6 +48,9 @@ PACKAGES=(
         webkit2gtk4.1-devel
         # pyo3
         python3-devel
+        # cargo openssl
+        perl
+        perl-FindBin
 )
 
 TO_INSTALL=()

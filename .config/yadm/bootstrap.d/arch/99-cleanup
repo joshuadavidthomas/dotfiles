@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -oue pipefail
+
+# Clean package cache
+paccache -r -k 2 2>/dev/null || true
+
+# Update mlocate database
+updatedb 2>/dev/null || true
