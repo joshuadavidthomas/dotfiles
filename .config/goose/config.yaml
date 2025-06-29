@@ -1,0 +1,47 @@
+GOOSE_CLI_MIN_PRIORITY: 0.2
+GOOSE_MODE: auto
+GOOSE_PROVIDER: google
+GOOSE_MODEL: gemini-2.5-pro-preview-03-25
+extensions:
+  developer:
+    bundled: true
+    display_name: Developer
+    enabled: true
+    name: developer
+    timeout: 300
+    type: builtin
+  github:
+    args:
+    - -y
+    - '@modelcontextprotocol/server-github'
+    bundled: null
+    cmd: npx
+    description: null
+    enabled: true
+    env_keys:
+    - GITHUB_PERSONAL_ACCESS_TOKEN
+    envs: {}
+    name: github
+    timeout: 300
+    type: stdio
+  memory:
+    bundled: true
+    display_name: Memory
+    enabled: true
+    name: memory
+    timeout: 300
+    type: builtin
+  tavily:
+    args:
+    - -y
+    - tavily-mcp
+    bundled: null
+    cmd: npx
+    description: null
+    enabled: true
+    env_keys:
+    - TAVILY_API_KEY
+    envs: {}
+    name: tavily
+    timeout: 300
+    type: stdio
