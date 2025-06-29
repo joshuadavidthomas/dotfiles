@@ -1,0 +1,13 @@
+GDAL
+GeoDjango
+LLM
+OS
+PR
+PyO3
+django
+func
+stderr
+str
+uv
+venv
+venvs
