@@ -1,0 +1,9 @@
+[
+  "llm-gemini",
+  "llm-deepseek",
+  "llm-templates-github",
+  "llm-docs",
+  "llm-anthropic",
+  "llm-uv-tool",
+  "llm-templates-fabric"
+]
