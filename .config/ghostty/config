@@ -13,6 +13,10 @@ keybind = f11=toggle_fullscreen
 keybind = ctrl+a>enter=new_split:auto
 keybind = ctrl+a>\=new_split:right
 keybind = ctrl+a>-=new_split:down
+keybind = ctrl+a>shift+h=new_split:left
+keybind = ctrl+a>shift+j=new_split:down
+keybind = ctrl+a>shift+k=new_split:up
+keybind = ctrl+a>shift+l=new_split:right
 keybind = ctrl+a>m=toggle_split_zoom
 keybind = ctrl+a>e=equalize_splits
 keybind = ctrl+alt+h=goto_split:left
