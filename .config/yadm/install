@@ -7,7 +7,7 @@ pacman -Q git &>/dev/null || sudo pacman -Sy --noconfirm --needed git
 git clone https://aur.archlinux.org/yadm-git.git /tmp/yadm
 cd /tmp/yadm
 makepkg -si --noconfirm
-cd "$HOME"
+cd -
 rm -rf /tmp/yadm
 
 yadm clone https://github.com/joshuadavidthomas/dotfiles
