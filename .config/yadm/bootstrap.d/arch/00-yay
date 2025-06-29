@@ -4,9 +4,6 @@ set -oue pipefail
 
 source "$(dirname "$0")/../utils"
 
-check_root "$@"
-
-# dependencies for building yay
 sudo pacman -S --needed --noconfirm git base-devel
 
 check_command yay || {
