@@ -1,0 +1,9 @@
+{
+  "amp.commands.allowlist": [
+    "just",
+    "python",
+    "uv",
+    "nvim",
+    "curl"
+  ]
+}
