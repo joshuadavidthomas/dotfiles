@@ -42,6 +42,8 @@ keybind = ctrl+a>9=goto_tab:9
 
 keybind = ctrl+a>w=close_surface
 
+keybind = shift+enter=text:\n
+
 # Mouse
 mouse-hide-while-typing = true
 mouse-scroll-multiplier = 2
