@@ -1,5 +1,9 @@
 [global]
 load_dotenv = true
+warn_timeout = "10s"
 
 [whitelist]
-prefix = ["/home/josh/projects/"]
+prefix = [
+  "/home/josh/projects",
+  "/var/home/josh/projects"
+]

@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
+gitignore_local
+
 if [[ -f .env ]] && command dotenv-linter --version >&/dev/null; then
-  dotenv-linter .env || log_error 'ERROR|https://dotenv-linter.github.io'
+        dotenv-linter .env || log_error 'ERROR|https://dotenv-linter.github.io'
 fi
 
 dotenv_if_exists || direnv status # https://direnv.net/man/direnv-stdlib.1.html
