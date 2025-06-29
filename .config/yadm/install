@@ -6,7 +6,7 @@ pacman -Q git &>/dev/null || sudo pacman -Sy --noconfirm --needed git
 
 git clone https://aur.archlinux.org/yadm-git.git /tmp/yadm
 cd /tmp/yadm
-sudo -u "$SUDO_USER" makepkg -si --noconfirm
+sudo makepkg -si --noconfirm
 cd "$HOME"
 rm -rf /tmp/yadm
 
