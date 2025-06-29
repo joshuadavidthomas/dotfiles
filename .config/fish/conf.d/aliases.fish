@@ -1,4 +1,9 @@
+alias claude="env CLAUDE_CONFIG_DIR=$HOME/.claude $HOME/.claude/local/claude"
+alias fabric="fabric-ai"
 alias lg="lazygit"
+alias j="just --justfile ~/.justfile --working-directory ."
+alias vim="nvim"
+
 # alias sp="spotify_player"
 
 # shadow cat="bat --paging=never"
