@@ -5,14 +5,8 @@ set -oue pipefail
 source "$(dirname "$0")/../utils"
 
 yay -S --noconfirm --needed \
-        blueberry \
+        adobe-source-code \
         brightnessctl \
-        cups \
-        cups-filters \
-        cups-pdf \
-        evince \
-        file-roller \
-        gnome-calculator \
         gnome-themes-extra \
         hypridle \
         hyprland \
@@ -23,29 +17,69 @@ yay -S --noconfirm --needed \
         hyprpolkitagent \
         hyprshot \
         imv \
+        inter-font \
         kvantum-qt5 \
-        nautilus \
+        noto-fonts \
+        noto-fonts-cjk \
+        noto-fonts-emoji \
+        noto-fonts-extra \
         pamixer \
         pavucontrol \
         playerctl \
         qt5-wayland \
         qt6-wayland \
         swaync \
-        sushi \
         system-config-printer \
+        ttf-dejavu \
+        ttf-fira-code \
+        ttf-font-awesome \
+        ttf-hack \
+        ttf-jetbrains-mono \
+        ttf-liberation \
+        ttf-nerd-fonts-symbols \
+        ttf-nerd-fonts-symbols-mono \
+        ttf-roboto \
+        ttf-symbols \
         waybar \
         wireplumber \
         wofi \
         xdg-desktop-portal-hyprland \
         xdg-desktop-portal-gtk
 
+BACKGROUNDS_DIR=~/.local/share/backgrounds/
+
+mkdir -p "$BACKGROUNDS_DIR/tokyo-night"
+
+curl -sL -o "$BACKGROUNDS_DIR/tokyo-night/1-Pawel-Czerwinski-Abstract-Purple-Blue.jpg" https://images.unsplash.com/photo-1651870364199-fc5f9f46ac85
+curl -sL -o "$BACKGROUNDS_DIR/tokyo-night/2-Milad-Fakurian-Abstract-Purple-Blue.jpg" https://images.unsplash.com/photo-1620207418302-439b387441b0
+
+mkdir -p ~/.local/share/fonts
+
+if ! fc-list | grep -qi "CaskaydiaMono Nerd Font"; then
+        cd /tmp
+        wget https://github.com/ryanoasis/nerd-fonts/releases/latest/download/CascadiaMono.zip
+        unzip CascadiaMono.zip -d CascadiaFont
+        cp CascadiaFont/CaskaydiaMonoNerdFont-Regular.ttf ~/.local/share/fonts
+        cp CascadiaFont/CaskaydiaMonoNerdFont-Bold.ttf ~/.local/share/fonts
+        cp CascadiaFont/CaskaydiaMonoNerdFont-Italic.ttf ~/.local/share/fonts
+        cp CascadiaFont/CaskaydiaMonoNerdFont-BoldItalic.ttf ~/.local/share/fonts
+        rm -rf CascadiaMono.zip CascadiaFont
+        cd -
+fi
+
+if ! fc-list | grep -qi "iA Writer Mono S"; then
+        cd /tmp
+        wget -O iafonts.zip https://github.com/iaolo/iA-Fonts/archive/refs/heads/master.zip
+        unzip iafonts.zip -d iaFonts
+        cp iaFonts/iA-Fonts-master/iA\ Writer\ Mono/Static/iAWriterMonoS-*.ttf ~/.local/share/fonts
+        rm -rf iafonts.zip iaFonts
+        cd -
+fi
+
+fc-cache -fv
+
 gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
 gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
 
 # Start Hyprland on first session
 echo "[[ -z \$DISPLAY && \$(tty) == /dev/tty1 ]] && exec Hyprland" >~/.bash_profile
-
-# Turn on bluetooth by default
-sudo systemctl enable --now bluetooth.service
-
-sudo systemctl enable --now cups.service

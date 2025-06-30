@@ -4,17 +4,34 @@ set -oue pipefail
 
 source "$(dirname "$0")/../utils"
 
+sudo pacman -S --needed --noconfirm git base-devel
+
+command -v yay >/dev/null 2>&1 || {
+        git clone https://aur.archlinux.org/yay.git /tmp/yay
+        cd /tmp/yay
+        makepkg -si --noconfirm
+        cd -
+        rm -rf /tmp/yay
+}
+
 yay -S --noconfirm --needed \
+        blueberry \
+        btop \
+        cups \
+        cups-filters \
+        cups-pdf \
         curl \
+        inetutils \
         keyd \
+        man \
         power-profiles-daemon \
         python-gobject \
-        unzip
+        unzip \
+        wget
 
-# Enable keyd service
-if pacman -Qq keyd &>/dev/null; then
-        systemctl enable --now keyd || true
-fi
+sudo systemctl enable --now keyd.service
+sudo systemctl enable --now bluetooth.service
+sudo systemctl enable --now cups.service
 
 # Setting the performance profile can make a big difference. By default, most systems seem to start in balanced mode,
 # even if they're not running off a battery. So let's make sure that's changed to performance.

@@ -5,4 +5,27 @@ set -oue pipefail
 source "$(dirname "$0")/../utils"
 
 yay -S --noconfirm --needed \
-        fish
+        atuin \
+        bat \
+        btop \
+        clipse \
+        eza \
+        fastfetch \
+        fd \
+        fish \
+        fzf \
+        git-delta \
+        less \
+        neovim \
+        plocate \
+        ripgrep \
+        starship \
+        tailscale \
+        tldr \
+        whois \
+        wl-clip-persist \
+        wl-clipboard \
+        zoxide
+
+rm -rf ~/.config/nvim
+git clone https://github.com/joshuadavidthomas/nvim ~/.config/nvim
