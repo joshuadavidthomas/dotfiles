@@ -18,6 +18,6 @@ zoxide init --cmd cd fish | source
 status --is-interactive; and atuin init fish | source
 
 # homebrew completions
-if test -d (brew --prefix)"/share/fish/vendor_completions.d"
+if command -q brew; and test -d (brew --prefix)"/share/fish/vendor_completions.d"
     set -p fish_complete_path (brew --prefix)/share/fish/vendor_completions.d
 end
