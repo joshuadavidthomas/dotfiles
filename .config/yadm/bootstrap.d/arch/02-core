@@ -8,6 +8,7 @@ yay -S --noconfirm --needed \
         curl \
         keyd \
         power-profiles-daemon \
+        python-gobject \
         unzip
 
 # Enable keyd service
