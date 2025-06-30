@@ -13,6 +13,7 @@ yay -S --noconfirm --needed \
         evince \
         file-roller \
         gnome-calculator \
+        gnome-themes-extra \
         hypridle \
         hyprland \
         hyprland-qtutils \
@@ -37,6 +38,9 @@ yay -S --noconfirm --needed \
         wofi \
         xdg-desktop-portal-hyprland \
         xdg-desktop-portal-gtk
+
+gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
+gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
 
 # Start Hyprland on first session
 echo "[[ -z \$DISPLAY && \$(tty) == /dev/tty1 ]] && exec Hyprland" >~/.bash_profile
