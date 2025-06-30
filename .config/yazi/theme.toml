@@ -1,4 +1,4 @@
-[manager]
+[mgr]
 syntect_theme = "./tokyonight_moon.tmTheme"
 
 cwd = { fg = "#828bb8", italic = true }
