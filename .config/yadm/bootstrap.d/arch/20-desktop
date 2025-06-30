@@ -11,7 +11,7 @@ yay -S --noconfirm --needed \
         cups-filters \
         cups-pdf \
         evince \
-        file-roller-git \
+        file-roller \
         gnome-calculator \
         hypridle \
         hyprland \
@@ -31,7 +31,7 @@ yay -S --noconfirm --needed \
         swaync \
         sushi \
         system-config-printer \
-        watershot-git \
+        watershot \
         waybar \
         wireplumber \
         wofi \
