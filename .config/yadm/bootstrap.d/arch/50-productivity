@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -oue pipefail
+
+source "$(dirname "$1")/../utils"
+
+yay -S --noconfirm --needed \
+        1password \
+        1password-cli \
+        evince \
+        libreoffice-fresh \
+        obsidian \
+        typora \
+        xournalpp

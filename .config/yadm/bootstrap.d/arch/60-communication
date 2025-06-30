@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -oue pipefail
+
+source "$(dirname "$1")/../utils"
+
+yay -S --noconfirm --needed \
+        signal-desktop \
+        slack-desktop \
+        teams-for-linux \
+        webcord \
+        zoom

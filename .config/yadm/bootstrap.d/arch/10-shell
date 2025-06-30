@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -oue pipefail
+
+source "$(dirname "$1")/../utils"
+
+yay -S --noconfirm --needed \
+        fish

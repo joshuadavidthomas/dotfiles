@@ -2,7 +2,7 @@
 
 set -oue pipefail
 
-cd "$HOME" || exit 1
+readonly BOOTSTRAP_BASE="${BASH_SOURCE[0]}.d"
 
 # Distro detection with normalization
 get_distro() {
@@ -14,36 +14,79 @@ get_distro() {
         fi
 }
 
-BOOTSTRAP_BASE="${BASH_SOURCE[0]}.d"
-DISTRO=$(get_distro)
+# Find executable scripts in a directory
+find_scripts() {
+        local dir="$1"
+        if [[ -d "$dir" ]]; then
+                find -L "$dir" -type f -executable -print0 | grep -zv '##\|~$' || true
+        fi
+}
 
-echo "Detected distro: $DISTRO"
+# Collect scripts from common and distro directories
+collect_scripts() {
+        local distro="$1"
+        local script_dirs=(
+                "$BOOTSTRAP_BASE/common"
+                "$BOOTSTRAP_BASE/$distro"
+        )
 
-if [[ ! -d "$BOOTSTRAP_BASE" ]]; then
-        echo "Error: bootstrap directory '$BOOTSTRAP_BASE' not found" >&2
-        exit 1
-fi
+        local scripts=()
 
-# Execute scripts from distro-specific directory only
-dir="$BOOTSTRAP_BASE/$DISTRO"
-if [[ -d "$dir" ]]; then
-        echo "Executing scripts from: $dir"
-        find -L "$dir" -type f | sort | while IFS= read -r bootstrap; do
-                if [[ -x "$bootstrap" && ! "$bootstrap" =~ "##" && ! "$bootstrap" =~ "~$" ]]; then
-                        echo "Running: $(basename "$bootstrap")"
-                        if ! "$bootstrap"; then
-                                echo "Error: bootstrap '$bootstrap' failed" >&2
-                                exit 1
-                        fi
-                fi
+        for dir in "${script_dirs[@]}"; do
+                while IFS= read -r -d '' script; do
+                        [[ -n "$script" ]] && scripts+=("$script")
+                done < <(find_scripts "$dir")
         done
-else
-        echo "Warning: No bootstrap directory found for distro: $DISTRO" >&2
-fi
 
-read -rp "Do you want to reboot now? (y/n): " confirm
+        printf '%s\n' "${scripts[@]}"
+}
 
-if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
-        echo "Rebooting now..."
-        systemctl reboot
-fi
+# Execute a bootstrap script
+run_script() {
+        local script="$1"
+        local script_name=$(basename "$script")
+        local script_dir=$(basename "$(dirname "$script")")
+
+        echo "Running: $script_name from $script_dir/"
+        if ! "$script"; then
+                echo "Error: bootstrap '$script' failed" >&2
+                return 1
+        fi
+}
+
+main() {
+        cd "$HOME" || exit 1
+
+        local distro=$(get_distro)
+        echo "Detected distro: $distro"
+
+        if [[ ! -d "$BOOTSTRAP_BASE" ]]; then
+                echo "Error: bootstrap directory '$BOOTSTRAP_BASE' not found" >&2
+                exit 1
+        fi
+
+        local scripts=$(collect_scripts "$distro" | sort -t/ -k4)
+
+        if [[ -z "$scripts" ]]; then
+                echo "Warning: No bootstrap scripts found for distro: $distro" >&2
+        else
+                local count=$(echo "$scripts" | wc -l)
+                echo "Found $count bootstrap scripts to execute"
+
+                # Execute each script
+                while IFS= read -r script; do
+                        run_script "$script" || exit 1
+                done <<<"$scripts"
+        fi
+
+        sudo updatedb
+
+        read -rp "Do you want to reboot now? (y/n): " confirm
+        if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
+                echo "Rebooting now..."
+                systemctl reboot
+        fi
+}
+
+# Run main
+main

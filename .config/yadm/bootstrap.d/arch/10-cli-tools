@@ -2,23 +2,36 @@
 
 set -oue pipefail
 
-source "$(dirname "$0")/../utils"
+source "$(dirname "$1")/../utils"
 
 yay -S --noconfirm --needed \
+        atuin \
         bat \
         btop \
         curl \
+        direnv \
         eza \
         fastfetch \
+        fd \
+        flyctl \
         fzf \
+        git-delta \
+        github-cli \
         inetutils \
+        jq \
+        just \
+        lazydocker \
+        lazygit \
         less \
+        llvm \
         man \
+        neovim \
         plocate \
         ripgrep \
+        starship \
+        tailscale \
         tldr \
         unzip \
         wget \
         whois \
-        wl-clipboard \
         zoxide

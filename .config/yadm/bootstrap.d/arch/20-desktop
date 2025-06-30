@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+set -oue pipefail
+
+source "$(dirname "$1")/../utils"
+
+yay -S --noconfirm --needed \
+        blueberry \
+        brightnessctl \
+        cups \
+        cups-filters \
+        cups-pdf \
+        evince \
+        file-roller-git \
+        gnome-calculator \
+        hypridle \
+        hyprland \
+        hyprland-qtutils \
+        hyprlock \
+        hyprpaper \
+        hyprpicker \
+        hyprpolkitagent \
+        imv \
+        kvantum-qt5 \
+        nautilus \
+        pamixer \
+        pavucontrol \
+        playerctl \
+        qt5-wayland \
+        qt6-wayland \
+        swaync \
+        sushi \
+        system-config-printer \
+        watershot-git \
+        waybar \
+        wireplumber \
+        wofi \
+        xdg-desktop-portal-hyprland \
+        xdg-desktop-portal-gtk
+
+# Start Hyprland on first session
+echo "[[ -z \$DISPLAY && \$(tty) == /dev/tty1 ]] && exec Hyprland" >~/.bash_profile
+
+# Turn on bluetooth by default
+sudo systemctl enable --now bluetooth.service
+
+sudo systemctl enable --now cups.service

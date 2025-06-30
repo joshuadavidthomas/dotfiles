@@ -10,4 +10,4 @@ makepkg -si --noconfirm
 cd -
 rm -rf /tmp/yadm
 
-yadm clone https://github.com/joshuadavidthomas/dotfiles
+yadm clone --bootstrap https://github.com/joshuadavidthomas/dotfiles
