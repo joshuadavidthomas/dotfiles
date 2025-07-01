@@ -61,7 +61,6 @@ yadm sparse-checkout set \
         '!install'
 
 distro=$(get_distro)
-echo "Detected distro: $distro"
 
 if [[ ! -d "$BOOTSTRAP_BASE" ]]; then
         echo "Error: bootstrap directory '$BOOTSTRAP_BASE' not found" >&2
@@ -73,10 +72,7 @@ scripts=$(collect_scripts "$distro" | sort -t/ -k4)
 if [[ -z "$scripts" ]]; then
         echo "Warning: No bootstrap scripts found for distro: $distro" >&2
 else
-        local count=$(echo "$scripts" | wc -l)
-        echo "Found $count bootstrap scripts to execute"
-
-        # Execute each script
+        count=$(echo "$scripts" | wc -l)
         while IFS= read -r script; do
                 run_script "$script" || exit 1
         done <<<"$scripts"
