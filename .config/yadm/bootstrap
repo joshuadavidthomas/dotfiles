@@ -73,10 +73,12 @@ scripts=$(collect_scripts "$distro")
 if [[ -z "$scripts" ]]; then
         echo "Warning: No bootstrap scripts found for distro: $distro" >&2
 else
-        count=$(echo "$scripts" | wc -l)
-        while IFS= read -r script; do
-                run_script "$script" || exit 1
-        done <<<"$scripts"
+        # Store scripts in array to avoid stdin issues
+        readarray -t script_array <<<"$scripts"
+        
+        for script in "${script_array[@]}"; do
+                [[ -n "$script" ]] && run_script "$script" || exit 1
+        done
 fi
 
 read -rp "Do you want to reboot now? (y/n): " confirm
