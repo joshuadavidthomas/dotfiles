@@ -65,7 +65,7 @@ if [[ ! -d "$BOOTSTRAP_BASE" ]]; then
         exit 1
 fi
 
-scripts=$(collect_scripts "$distro" | sort -t/ -k4)
+scripts=$(collect_scripts "$distro" | sort -t/ -k3)
 
 if [[ -z "$scripts" ]]; then
         echo "Warning: No bootstrap scripts found for distro: $distro" >&2
