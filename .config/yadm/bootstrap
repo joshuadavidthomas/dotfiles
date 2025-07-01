@@ -60,7 +60,7 @@ yadm sparse-checkout set \
         '!README.md' \
         '!install'
 
-local distro=$(get_distro)
+distro=$(get_distro)
 echo "Detected distro: $distro"
 
 if [[ ! -d "$BOOTSTRAP_BASE" ]]; then
@@ -68,7 +68,7 @@ if [[ ! -d "$BOOTSTRAP_BASE" ]]; then
         exit 1
 fi
 
-local scripts=$(collect_scripts "$distro" | sort -t/ -k4)
+scripts=$(collect_scripts "$distro" | sort -t/ -k4)
 
 if [[ -z "$scripts" ]]; then
         echo "Warning: No bootstrap scripts found for distro: $distro" >&2
@@ -81,8 +81,6 @@ else
                 run_script "$script" || exit 1
         done <<<"$scripts"
 fi
-
-sudo updatedb
 
 read -rp "Do you want to reboot now? (y/n): " confirm
 if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
