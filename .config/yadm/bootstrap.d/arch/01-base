@@ -25,7 +25,7 @@ sudo systemctl enable --now keyd.service
 
 mkdir -p /etc/keyd
 
-cat <<EOF >/etc/keyd/default.conf
+sudo cat <<EOF >/etc/keyd/default.conf
 [ids]
 
 *
