@@ -4,7 +4,6 @@ set -oue pipefail
 
 readonly BOOTSTRAP_BASE="${BASH_SOURCE[0]}.d"
 
-# Distro detection with normalization
 get_distro() {
         if [[ -f /etc/os-release ]]; then
                 source /etc/os-release
@@ -14,7 +13,6 @@ get_distro() {
         fi
 }
 
-# Find executable scripts in a directory
 find_scripts() {
         local dir="$1"
         if [[ -d "$dir" ]]; then
@@ -22,7 +20,6 @@ find_scripts() {
         fi
 }
 
-# Collect scripts from common and distro directories
 collect_scripts() {
         local distro="$1"
         local script_dirs=(
@@ -41,7 +38,6 @@ collect_scripts() {
         printf '%s\n' "${scripts[@]}"
 }
 
-# Execute a bootstrap script
 run_script() {
         local script="$1"
         local script_name=$(basename "$script")
@@ -54,39 +50,42 @@ run_script() {
         fi
 }
 
-main() {
-        cd "$HOME" || exit 1
+cd "$HOME" || exit 1
 
-        local distro=$(get_distro)
-        echo "Detected distro: $distro"
+yadm gitconfig core.sparseCheckout true
+yadm sparse-checkout set \
+        '/*' \
+        '!.github/' \
+        '!LICENSE' \
+        '!README.md' \
+        '!install'
 
-        if [[ ! -d "$BOOTSTRAP_BASE" ]]; then
-                echo "Error: bootstrap directory '$BOOTSTRAP_BASE' not found" >&2
-                exit 1
-        fi
+local distro=$(get_distro)
+echo "Detected distro: $distro"
 
-        local scripts=$(collect_scripts "$distro" | sort -t/ -k4)
+if [[ ! -d "$BOOTSTRAP_BASE" ]]; then
+        echo "Error: bootstrap directory '$BOOTSTRAP_BASE' not found" >&2
+        exit 1
+fi
 
-        if [[ -z "$scripts" ]]; then
-                echo "Warning: No bootstrap scripts found for distro: $distro" >&2
-        else
-                local count=$(echo "$scripts" | wc -l)
-                echo "Found $count bootstrap scripts to execute"
+local scripts=$(collect_scripts "$distro" | sort -t/ -k4)
 
-                # Execute each script
-                while IFS= read -r script; do
-                        run_script "$script" || exit 1
-                done <<<"$scripts"
-        fi
+if [[ -z "$scripts" ]]; then
+        echo "Warning: No bootstrap scripts found for distro: $distro" >&2
+else
+        local count=$(echo "$scripts" | wc -l)
+        echo "Found $count bootstrap scripts to execute"
 
-        sudo updatedb
+        # Execute each script
+        while IFS= read -r script; do
+                run_script "$script" || exit 1
+        done <<<"$scripts"
+fi
 
-        read -rp "Do you want to reboot now? (y/n): " confirm
-        if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
-                echo "Rebooting now..."
-                systemctl reboot
-        fi
-}
+sudo updatedb
 
-# Run main
-main
+read -rp "Do you want to reboot now? (y/n): " confirm
+if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
+        echo "Rebooting now..."
+        systemctl reboot
+fi

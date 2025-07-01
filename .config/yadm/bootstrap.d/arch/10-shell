@@ -21,11 +21,16 @@ yay -S --noconfirm --needed \
         ripgrep \
         starship \
         tailscale \
-        tldr \
         whois \
         wl-clip-persist \
         wl-clipboard \
         zoxide
+
+(cd "$(bat --config-dir)" && ./update-themes)
+
+if [[ -n "${ATUIN_PASSWORD:-}" ]] && [[ -n "${ATUIN_KEY:-}" ]]; then
+        atuin login -u "josh" -p "$ATUIN_PASSWORD" -k "$ATUIN_KEY"
+fi
 
 rm -rf ~/.config/nvim
 git clone https://github.com/joshuadavidthomas/nvim ~/.config/nvim

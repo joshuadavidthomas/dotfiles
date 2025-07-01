@@ -7,6 +7,7 @@ source "$(dirname "$0")/../utils"
 yay -S --noconfirm --needed \
         adobe-source-code \
         brightnessctl \
+        ghostty \
         gnome-themes-extra \
         hypridle \
         hyprland \
@@ -41,6 +42,7 @@ yay -S --noconfirm --needed \
         ttf-roboto \
         ttf-symbols \
         waybar \
+        wezterm-git \
         wireplumber \
         wofi \
         xdg-desktop-portal-hyprland \

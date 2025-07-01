@@ -8,19 +8,33 @@ yay -S --noconfirm --needed \
         direnv \
         docker \
         docker-compose \
+        dotenv-linter-bin \
         flyctl \
         github-cli \
         just \
         lazydocker \
         lazygit \
-        llvm \
-        mise
+        llvm
 
 # Limit log size to avoid running out of disk
 # echo '{"log-driver":"json-file","log-opts":{"max-size":"10m","max-file":"5"}}' | sudo tee /etc/docker/daemon.json
 
 # Start Docker automatically
 sudo systemctl enable docker
-
 # Give this user privileged Docker access
 sudo usermod -aG docker ${USER}
+
+command -v uv >/dev/null 2>&1 || {
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+}
+
+command -v mise >/dev/null 2>&1 || {
+        curl -LsSf https://mise.run | sh
+}
+mise install --yes
+
+command -v rustup >/dev/null 2>&1 || {
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --component \
+                rust-analyzer
+}
+rustup update

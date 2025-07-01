@@ -4,16 +4,6 @@ set -oue pipefail
 
 source "$(dirname "$0")/../utils"
 
-sudo pacman -S --needed --noconfirm git base-devel
-
-command -v yay >/dev/null 2>&1 || {
-        git clone https://aur.archlinux.org/yay.git /tmp/yay
-        cd /tmp/yay
-        makepkg -si --noconfirm
-        cd -
-        rm -rf /tmp/yay
-}
-
 yay -S --noconfirm --needed \
         blueberry \
         btop \
@@ -29,9 +19,33 @@ yay -S --noconfirm --needed \
         unzip \
         wget
 
-sudo systemctl enable --now keyd.service
 sudo systemctl enable --now bluetooth.service
 sudo systemctl enable --now cups.service
+sudo systemctl enable --now keyd.service
+
+mkdir -p /etc/keyd
+
+cat <<EOF >/etc/keyd/default.conf
+[ids]
+
+*
+
+[main]
+
+# Maps capslock to escape when pressed and control when held
+capslock = overload(control, esc)
+
+# Remaps the escape key to capslock
+esc = capslock
+
+# Creates special vim layer when 'control+shift' is held
+[control+shift]
+
+h = left
+k = up
+j = down
+l = right
+EOF
 
 # Setting the performance profile can make a big difference. By default, most systems seem to start in balanced mode,
 # even if they're not running off a battery. So let's make sure that's changed to performance.
