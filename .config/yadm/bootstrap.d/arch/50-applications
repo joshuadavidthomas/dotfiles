@@ -25,7 +25,7 @@ yay -S --noconfirm --needed \
         xournalpp \
         zoom
 
-mkdir -p /etc/1password
-cat <<EOF >/etc/1password/custom_allowed_browsers
+sudo mkdir -p /etc/1password
+cat <<EOF | sudo tee /etc/1password/custom_allowed_browsers >/dev/null
 vivaldi-bin
 EOF
