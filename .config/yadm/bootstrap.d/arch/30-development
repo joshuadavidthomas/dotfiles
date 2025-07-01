@@ -45,6 +45,8 @@ rustup update
 
 # Setup Wakatime API key in fish config if 1Password is available
 if command -v op &>/dev/null; then
+        eval $(op signin)
+
         WAKATIME_BASE_OP_URI="op://Private/Wakapi"
         WAKATIME_API_KEY=$(op read "$WAKATIME_BASE_OP_URI/api key" 2>/dev/null || echo "")
 
