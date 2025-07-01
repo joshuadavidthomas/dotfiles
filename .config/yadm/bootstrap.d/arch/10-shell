@@ -32,5 +32,12 @@ if [[ -n "${ATUIN_PASSWORD:-}" ]] && [[ -n "${ATUIN_KEY:-}" ]]; then
         atuin login -u "josh" -p "$ATUIN_PASSWORD" -k "$ATUIN_KEY"
 fi
 
-rm -rf ~/.config/nvim
-git clone https://github.com/joshuadavidthomas/nvim ~/.config/nvim
+NEOVIM_CONFIG_DIR="$HOME/.config/nvim"
+rm -rf "$NEOVIM_CONFIG_DIR"
+git clone https://github.com/joshuadavidthomas/nvim "$NEOVIM_CONFIG_DIR"
+
+PROJECTS_DIR="$HOME/projects"
+mkdir -p "$PROJECTS_DIR"
+# this is private for now
+# git clone https://github.com/joshuadavidthomas/spotify.nvim "$PROJECTS_DIR/spotify.nvim"
+git clone https://github.com/joshuadavidthomas/tokyonight.nvim "$PROJECTS_DIR/tokyonight.nvim"

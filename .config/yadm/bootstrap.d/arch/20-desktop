@@ -58,7 +58,7 @@ curl -sL -o "$BACKGROUNDS_DIR/tokyo-night/2-Milad-Fakurian-Abstract-Purple-Blue.
 mkdir -p ~/.local/share/fonts
 
 if ! ls ~/.local/share/fonts/CaskaydiaMonoNerdFont*.ttf >/dev/null 2>&1; then
-        pushd /tmp > /dev/null
+        pushd /tmp >/dev/null
         curl -L -o CascadiaMono.zip https://github.com/ryanoasis/nerd-fonts/releases/latest/download/CascadiaMono.zip
         unzip CascadiaMono.zip -d CascadiaFont
         cp CascadiaFont/CaskaydiaMonoNerdFont-Regular.ttf ~/.local/share/fonts
@@ -66,19 +66,40 @@ if ! ls ~/.local/share/fonts/CaskaydiaMonoNerdFont*.ttf >/dev/null 2>&1; then
         cp CascadiaFont/CaskaydiaMonoNerdFont-Italic.ttf ~/.local/share/fonts
         cp CascadiaFont/CaskaydiaMonoNerdFont-BoldItalic.ttf ~/.local/share/fonts
         rm -rf CascadiaMono.zip CascadiaFont
-        popd > /dev/null
+        popd >/dev/null
 fi
 
 if ! ls ~/.local/share/fonts/iAWriterMonoS*.ttf >/dev/null 2>&1; then
-        pushd /tmp > /dev/null
+        pushd /tmp >/dev/null
         curl -L -o iafonts.zip https://github.com/iaolo/iA-Fonts/archive/refs/heads/master.zip
         unzip iafonts.zip -d iaFonts
         cp iaFonts/iA-Fonts-master/iA\ Writer\ Mono/Static/iAWriterMonoS-*.ttf ~/.local/share/fonts
         rm -rf iafonts.zip iaFonts
-        popd > /dev/null
+        popd >/dev/null
 fi
 
-# Final font cache update to ensure everything is properly indexed
+if [[ -n "$R2_ACCESS_KEY_ID" ]] && [[ -n "$R2_SECRET_ACCESS_KEY" ]] && [[ -n "$R2_ENDPOINT" ]]; then
+        mkdir -p ~/.config/rclone
+
+        if ! rclone listremotes | grep -q "^r2:$"; then
+                cat >>"$HOME/.config/rclone/rclone.conf" <<EOF
+
+[r2]
+type = s3
+provider = Cloudflare
+access_key_id = $R2_ACCESS_KEY_ID
+secret_access_key = $R2_SECRET_ACCESS_KEY
+endpoint = $R2_ENDPOINT
+acl = private
+EOF
+        fi
+
+        R2_BUCKET="devenv"
+        if rclone lsf "r2:${R2_BUCKET}/.local/share/fonts/" &>/dev/null; then
+                rclone sync "r2:${R2_BUCKET}/.local/share/fonts/" ~/.local/share/fonts/
+        fi
+fi
+
 fc-cache -fv
 
 gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"

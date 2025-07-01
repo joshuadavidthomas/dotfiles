@@ -5,6 +5,7 @@ set -oue pipefail
 source "$(dirname "$0")/../utils"
 
 yay -S --noconfirm --needed \
+        1password-cli \
         blueberry \
         btop \
         cups \
@@ -16,6 +17,7 @@ yay -S --noconfirm --needed \
         man \
         power-profiles-daemon \
         python-gobject \
+        rclone \
         unzip \
         wget
 

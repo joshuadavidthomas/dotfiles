@@ -61,13 +61,12 @@ yadm sparse-checkout set \
         '!README.md' \
         '!install'
 
-distro=$(get_distro)
-
 if [[ ! -d "$BOOTSTRAP_BASE" ]]; then
         echo "Error: bootstrap directory '$BOOTSTRAP_BASE' not found" >&2
         exit 1
 fi
 
+distro=$(get_distro)
 scripts=$(collect_scripts "$distro")
 
 if [[ -z "$scripts" ]]; then
@@ -75,13 +74,12 @@ if [[ -z "$scripts" ]]; then
 else
         # Store scripts in array to avoid stdin issues
         readarray -t script_array <<<"$scripts"
-        
+
         for script in "${script_array[@]}"; do
                 [[ -n "$script" ]] && run_script "$script" || exit 1
         done
 fi
 
-# Prompt for reboot
 reboot_confirmed=false
 if command -v gum &>/dev/null; then
         gum confirm "Do you want to reboot now?" && reboot_confirmed=true
@@ -91,6 +89,6 @@ else
 fi
 
 if [[ "$reboot_confirmed" == "true" ]]; then
-        echo "Rebooting now..."
+        echo "Rebooting..."
         systemctl reboot
 fi

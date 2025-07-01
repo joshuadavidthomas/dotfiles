@@ -6,7 +6,6 @@ source "$(dirname "$0")/../utils"
 
 yay -S --noconfirm --needed \
         1password \
-        1password-cli \
         evince \
         file-roller \
         gnome-calculator \
