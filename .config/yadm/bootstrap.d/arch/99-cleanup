@@ -6,7 +6,10 @@ set -oue pipefail
 paccache -r -k 2 2>/dev/null || true
 
 # Remove orphan packages
-yay -Qtdq | yay -Rns -
+orphans=$(yay -Qtdq) || true
+if [[ -n "$orphans" ]]; then
+        echo "$orphans" | yay -Rns -
+fi
 
 # Update mlocate database
 updatedb 2>/dev/null || true
