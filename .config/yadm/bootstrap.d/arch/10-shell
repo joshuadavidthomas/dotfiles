@@ -45,6 +45,17 @@ git clone https://github.com/joshuadavidthomas/nvim "$NEOVIM_CONFIG_DIR"
 
 PROJECTS_DIR="$HOME/projects"
 mkdir -p "$PROJECTS_DIR"
+
+# Clone or update tokyonight.nvim
+if [[ -d "$PROJECTS_DIR/tokyonight.nvim" ]]; then
+        (cd "$PROJECTS_DIR/tokyonight.nvim" && git pull)
+else
+        git clone https://github.com/joshuadavidthomas/tokyonight.nvim "$PROJECTS_DIR/tokyonight.nvim"
+fi
+
 # this is private for now
-# git clone https://github.com/joshuadavidthomas/spotify.nvim "$PROJECTS_DIR/spotify.nvim"
-git clone https://github.com/joshuadavidthomas/tokyonight.nvim "$PROJECTS_DIR/tokyonight.nvim"
+# if [[ -d "$PROJECTS_DIR/spotify.nvim" ]]; then
+#         (cd "$PROJECTS_DIR/spotify.nvim" && git pull)
+# else
+#         git clone https://github.com/joshuadavidthomas/spotify.nvim "$PROJECTS_DIR/spotify.nvim"
+# fi
