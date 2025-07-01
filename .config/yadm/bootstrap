@@ -81,8 +81,16 @@ else
         done
 fi
 
-read -rp "Do you want to reboot now? (y/n): " confirm
-if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
+# Prompt for reboot
+reboot_confirmed=false
+if command -v gum &>/dev/null; then
+        gum confirm "Do you want to reboot now?" && reboot_confirmed=true
+else
+        read -rp "Do you want to reboot now? (y/n): " confirm
+        [[ "$confirm" == "y" || "$confirm" == "Y" ]] && reboot_confirmed=true
+fi
+
+if [[ "$reboot_confirmed" == "true" ]]; then
         echo "Rebooting now..."
         systemctl reboot
 fi
