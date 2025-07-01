@@ -43,32 +43,33 @@ command -v rustup >/dev/null 2>&1 || {
 }
 rustup update
 
-# Setup Wakatime API key in fish config
-if [[ -n "$WAKATIME_API_KEY" ]]; then
-        FISH_CONF_DIR="$HOME/.config/fish/conf.d"
-        SECRETS_FILE="$FISH_CONF_DIR/.secrets.fish"
-        GITIGNORE_FILE="$FISH_CONF_DIR/.gitignore"
+# Setup Wakatime API key in fish config if 1Password is available
+if command -v op &>/dev/null; then
+        WAKATIME_BASE_OP_URI="op://Private/Wakapi"
+        WAKATIME_API_KEY=$(op read "$WAKATIME_BASE_OP_URI/api key" 2>/dev/null || echo "")
 
-        # Create conf.d directory if it doesn't exist
-        mkdir -p "$FISH_CONF_DIR"
+        if [[ -n "$WAKATIME_API_KEY" ]]; then
+                FISH_CONF_DIR="$HOME/.config/fish/conf.d"
+                SECRETS_FILE="$FISH_CONF_DIR/.secrets.fish"
+                GITIGNORE_FILE="$FISH_CONF_DIR/.gitignore"
 
-        # Create secrets file if it doesn't exist
-        if [[ ! -f "$SECRETS_FILE" ]]; then
-                touch "$SECRETS_FILE"
-                chmod 600 "$SECRETS_FILE"
-        fi
+                mkdir -p "$FISH_CONF_DIR"
 
-        # Ensure .gitignore exists and contains .secrets.fish
-        if [[ ! -f "$GITIGNORE_FILE" ]]; then
-                echo ".secrets.fish" >"$GITIGNORE_FILE"
-        elif ! grep -q "^\.secrets\.fish$" "$GITIGNORE_FILE"; then
-                echo ".secrets.fish" >>"$GITIGNORE_FILE"
-        fi
+                if [[ ! -f "$SECRETS_FILE" ]]; then
+                        touch "$SECRETS_FILE"
+                        chmod 600 "$SECRETS_FILE"
+                fi
 
-        # Check if WAKATIME_API_KEY is already in the file
-        if grep -q "^set -x WAKATIME_API_KEY" "$SECRETS_FILE"; then
-                sed -i "s|^set -x WAKATIME_API_KEY.*|set -x WAKATIME_API_KEY $WAKATIME_API_KEY|" "$SECRETS_FILE"
-        else
-                echo "set -x WAKATIME_API_KEY $WAKATIME_API_KEY" >>"$SECRETS_FILE"
+                if [[ ! -f "$GITIGNORE_FILE" ]]; then
+                        echo ".secrets.fish" >"$GITIGNORE_FILE"
+                elif ! grep -q "^\.secrets\.fish$" "$GITIGNORE_FILE"; then
+                        echo ".secrets.fish" >>"$GITIGNORE_FILE"
+                fi
+
+                if grep -q "^set -x WAKATIME_API_KEY" "$SECRETS_FILE"; then
+                        sed -i "s|^set -x WAKATIME_API_KEY.*|set -x WAKATIME_API_KEY $WAKATIME_API_KEY|" "$SECRETS_FILE"
+                else
+                        echo "set -x WAKATIME_API_KEY $WAKATIME_API_KEY" >>"$SECRETS_FILE"
+                fi
         fi
 fi

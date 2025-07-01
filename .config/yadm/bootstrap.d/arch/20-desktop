@@ -78,11 +78,18 @@ if ! ls ~/.local/share/fonts/iAWriterMonoS*.ttf >/dev/null 2>&1; then
         popd >/dev/null
 fi
 
-if [[ -n "$R2_ACCESS_KEY_ID" ]] && [[ -n "$R2_SECRET_ACCESS_KEY" ]] && [[ -n "$R2_ENDPOINT" ]]; then
-        mkdir -p ~/.config/rclone
+# Sync private fonts from R2 if 1Password is available
+if command -v op &>/dev/null; then
+        R2_BASE_OP_URI="op://Private/rclone - R2 Token"
+        R2_ACCESS_KEY_ID=$(op read "$R2_BASE_OP_URI/access key id" 2>/dev/null || echo "")
+        R2_SECRET_ACCESS_KEY=$(op read "$R2_BASE_OP_URI/secret access key" 2>/dev/null || echo "")
+        R2_ENDPOINT=$(op read "$R2_BASE_OP_URI/endpoint" 2>/dev/null || echo "")
 
-        if ! rclone listremotes | grep -q "^r2:$"; then
-                cat >>"$HOME/.config/rclone/rclone.conf" <<EOF
+        if [[ -n "$R2_ACCESS_KEY_ID" ]] && [[ -n "$R2_SECRET_ACCESS_KEY" ]] && [[ -n "$R2_ENDPOINT" ]]; then
+                mkdir -p ~/.config/rclone
+
+                if ! rclone listremotes | grep -q "^r2:$"; then
+                        cat >>"$HOME/.config/rclone/rclone.conf" <<EOF
 
 [r2]
 type = s3
@@ -92,11 +99,12 @@ secret_access_key = $R2_SECRET_ACCESS_KEY
 endpoint = $R2_ENDPOINT
 acl = private
 EOF
-        fi
+                fi
 
-        R2_BUCKET="devenv"
-        if rclone lsf "r2:${R2_BUCKET}/.local/share/fonts/" &>/dev/null; then
-                rclone sync "r2:${R2_BUCKET}/.local/share/fonts/" ~/.local/share/fonts/
+                R2_BUCKET="devenv"
+                if rclone lsf "r2:${R2_BUCKET}/.local/share/fonts/" &>/dev/null; then
+                        rclone sync "r2:${R2_BUCKET}/.local/share/fonts/" ~/.local/share/fonts/
+                fi
         fi
 fi
 
