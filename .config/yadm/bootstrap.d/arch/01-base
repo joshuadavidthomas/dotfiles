@@ -23,8 +23,7 @@ sudo systemctl enable --now bluetooth.service
 sudo systemctl enable --now cups.service
 sudo systemctl enable --now keyd.service
 
-mkdir -p /etc/keyd
-
+sudo mkdir -p /etc/keyd
 sudo cat <<EOF >/etc/keyd/default.conf
 [ids]
 
