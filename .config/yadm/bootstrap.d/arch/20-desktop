@@ -54,6 +54,7 @@ mkdir -p "$BACKGROUNDS_DIR"
 mkdir -p "$BACKGROUNDS_DIR/tokyo-night"
 curl -sL -o "$BACKGROUNDS_DIR/tokyo-night/1-Pawel-Czerwinski-Abstract-Purple-Blue.jpg" https://images.unsplash.com/photo-1651870364199-fc5f9f46ac85
 curl -sL -o "$BACKGROUNDS_DIR/tokyo-night/2-Milad-Fakurian-Abstract-Purple-Blue.jpg" https://images.unsplash.com/photo-1620207418302-439b387441b0
+ln -sf "$BACKGROUNDS_DIR/tokyo-night/1-Pawel-Czerwinski-Abstract-Purple-Blue.jpg" "$BACKGROUNDS_DIR/current"
 
 FONTS_DIR="$HOME/.local/share/fonts"
 mkdir -p "$FONTS_DIR"
