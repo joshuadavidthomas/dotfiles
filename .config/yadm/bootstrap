@@ -35,7 +35,10 @@ collect_scripts() {
                 done < <(find_scripts "$dir")
         done
 
-        printf '%s\n' "${scripts[@]}"
+        # Sort by basename to properly interleave scripts with numeric prefixes
+        printf '%s\n' "${scripts[@]}" | while read -r script; do
+                echo "$(basename "$script") $script"
+        done | sort | cut -d' ' -f2-
 }
 
 run_script() {
@@ -65,7 +68,7 @@ if [[ ! -d "$BOOTSTRAP_BASE" ]]; then
         exit 1
 fi
 
-scripts=$(collect_scripts "$distro" | sort -t/ -k3)
+scripts=$(collect_scripts "$distro")
 
 if [[ -z "$scripts" ]]; then
         echo "Warning: No bootstrap scripts found for distro: $distro" >&2
