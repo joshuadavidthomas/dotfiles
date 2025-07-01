@@ -82,8 +82,6 @@ fi
 
 # Sync private fonts from R2 if 1Password is available
 if command -v op &>/dev/null; then
-        eval $(op signin)
-
         R2_BASE_OP_URI="op://Private/rclone - R2 Token"
         R2_ACCESS_KEY_ID=$(op read "$R2_BASE_OP_URI/access key id")
         R2_SECRET_ACCESS_KEY=$(op read "$R2_BASE_OP_URI/secret access key")
