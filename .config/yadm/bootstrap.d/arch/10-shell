@@ -30,7 +30,7 @@ yay -S --noconfirm --needed \
 
 # Login to Atuin if not already logged in and 1Password is available
 if ! (command -v op &>/dev/null && atuin status 2>&1 | grep -q "Username:"); then
-        ATUIN_BASE_OP_URI="op://Dunbrook Web/Atuin"
+        ATUIN_BASE_OP_URI="op://Dunbrook Web/lzasdlv2qilesxszmijw42yk4e"
         ATUIN_PASSWORD=$(op read "$ATUIN_BASE_OP_URI/password" 2>/dev/null || echo "")
         ATUIN_KEY=$(op read "$ATUIN_BASE_OP_URI/key" 2>/dev/null || echo "")
 
