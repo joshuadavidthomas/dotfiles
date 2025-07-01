@@ -3,7 +3,13 @@
 gitignore_local
 
 if [[ -f .env ]] && command dotenv-linter --version >&/dev/null; then
-        dotenv-linter .env || log_error 'ERROR|https://dotenv-linter.github.io'
+        dotenv-linter --quiet .env || log_error 'ERROR|https://dotenv-linter.github.io'
 fi
 
 dotenv_if_exists || direnv status # https://direnv.net/man/direnv-stdlib.1.html
+
+home_env_file="$HOME/.env"
+if [[ -f $home_env_file ]]; then
+        dotenv-linter --quiet $home_env_file || log_error 'ERROR|https://dotenv-linter.github.io'
+        dotenv $home_env_file
+fi
