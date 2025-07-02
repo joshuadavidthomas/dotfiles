@@ -28,3 +28,8 @@ sudo mkdir -p /etc/1password
 cat <<EOF | sudo tee /etc/1password/custom_allowed_browsers >/dev/null
 vivaldi-bin
 EOF
+
+if ! command -v spicetify &>/dev/null; then
+        curl -fsSL https://raw.githubusercontent.com/spicetify/cli/main/install.sh | sh
+        curl -fsSL https://raw.githubusercontent.com/spicetify/marketplace/main/resources/install.sh | sh
+fi
