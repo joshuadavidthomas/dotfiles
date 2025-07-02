@@ -22,7 +22,8 @@ yay -S --noconfirm --needed \
         python-gobject \
         rclone \
         unzip \
-        wget
+        wget \
+        zip
 
 sudo systemctl enable --now bluetooth.service
 sudo systemctl enable --now cups.service

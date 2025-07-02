@@ -30,6 +30,7 @@ vivaldi-bin
 EOF
 
 mkdir -p "$HOME/.local/share/applications"
+
 cp /usr/share/applications/spotify.desktop "$HOME/.local/share/applications"
 sed -i 's|^Exec=spotify --uri=%u|Exec=spotify --enable-features=UseOzonePlatform --ozone-platform=wayland --uri=%u|' ~/.local/share/applications/spotify.desktop
 

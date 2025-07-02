@@ -8,6 +8,7 @@ yay -S --noconfirm --needed \
         datagrip \
         direnv \
         docker \
+        docker-buildx \
         docker-compose \
         dotenv-linter-bin \
         flyctl \
