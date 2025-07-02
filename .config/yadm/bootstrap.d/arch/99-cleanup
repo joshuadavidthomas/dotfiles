@@ -8,7 +8,7 @@ paccache -r -k 2 2>/dev/null || true
 # Remove orphan packages
 orphans=$(yay -Qtdq) || true
 if [[ -n "$orphans" ]]; then
-        echo "$orphans" | yay -Rns -
+        echo "$orphans" | yay -Rns --noconfirm -
 fi
 
 # Update mlocate database
