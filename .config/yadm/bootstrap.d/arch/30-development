@@ -48,9 +48,8 @@ rustup update
 # Setup Wakatime API key in fish config if 1Password is available
 if command -v op &>/dev/null; then
         WAKATIME_BASE_OP_URI="op://Private/Wakapi"
-        WAKATIME_API_KEY=$(op read "$WAKATIME_BASE_OP_URI/api key")
 
-        if [[ -n "$WAKATIME_API_KEY" ]]; then
+        if op_ensure_auth && WAKATIME_API_KEY=$(op_read "$WAKATIME_BASE_OP_URI/api key"); then
                 FISH_CONF_DIR="$HOME/.config/fish/conf.d"
                 SECRETS_FILE="$FISH_CONF_DIR/.secrets.fish"
                 GITIGNORE_FILE="$FISH_CONF_DIR/.gitignore"
@@ -73,5 +72,8 @@ if command -v op &>/dev/null; then
                 else
                         echo "set -x WAKATIME_API_KEY $WAKATIME_API_KEY" >>"$SECRETS_FILE"
                 fi
+        else
+                echo "Warning: Could not access Wakatime API key from 1Password"
+                echo "Skipping Wakatime configuration"
         fi
 fi

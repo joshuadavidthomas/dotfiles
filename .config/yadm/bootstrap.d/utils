@@ -91,3 +91,56 @@ check_command() {
                 return 1
         }
 }
+
+# Ensure 1Password CLI is authenticated before operations
+# Usage: op_ensure_auth
+# Returns 0 if authenticated successfully, 1 otherwise
+op_ensure_auth() {
+        # Check if op command exists
+        if ! command -v op &>/dev/null; then
+                echo "Error: 1Password CLI (op) not installed" >&2
+                return 1
+        fi
+        
+        # Check if we have a valid session
+        if ! op whoami &>/dev/null; then
+                echo "1Password session expired, signing in..." >&2
+                eval $(op signin) || {
+                        echo "Error: Failed to sign in to 1Password" >&2
+                        return 1
+                }
+        fi
+        
+        return 0
+}
+
+# Read a value from 1Password with retry logic
+# Usage: value=$(op_read "op://vault/item/field")
+# This maintains the same syntax as regular op read but adds retry logic
+op_read() {
+        local uri="$1"
+        local value=""
+        local max_attempts=3
+        
+        # Try to read the value with retry logic
+        for attempt in 1 2 3; do
+                # Ensure we're authenticated
+                op_ensure_auth || return 1
+                
+                # Try to read the value
+                if value=$(op read "$uri" 2>/dev/null); then
+                        echo "$value"
+                        return 0
+                else
+                        if [[ $attempt -lt $max_attempts ]]; then
+                                echo "Failed to read from 1Password (attempt $attempt/$max_attempts), retrying..." >&2
+                                sleep 2
+                                # Force re-authentication
+                                eval $(op signin) 2>/dev/null || true
+                        else
+                                echo "Error: Could not read '$uri' from 1Password after $max_attempts attempts" >&2
+                                return 1
+                        fi
+                fi
+        done
+}

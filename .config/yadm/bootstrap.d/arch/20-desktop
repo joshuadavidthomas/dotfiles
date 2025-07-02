@@ -83,14 +83,15 @@ fi
 # Sync private fonts from R2 if 1Password is available
 if command -v op &>/dev/null; then
         R2_BASE_OP_URI="op://Private/rclone - R2 Token"
-        R2_ACCESS_KEY_ID=$(op read "$R2_BASE_OP_URI/access key id")
-        R2_SECRET_ACCESS_KEY=$(op read "$R2_BASE_OP_URI/secret access key")
-        R2_ENDPOINT=$(op read "$R2_BASE_OP_URI/endpoint")
+        
+        if op_ensure_auth && \
+           R2_ACCESS_KEY_ID=$(op_read "$R2_BASE_OP_URI/access key id") && \
+           R2_SECRET_ACCESS_KEY=$(op_read "$R2_BASE_OP_URI/secret access key") && \
+           R2_ENDPOINT=$(op_read "$R2_BASE_OP_URI/endpoint"); then
+                mkdir -p ~/.config/rclone
 
-        mkdir -p ~/.config/rclone
-
-        if ! rclone listremotes | grep -q "^r2:$"; then
-                cat >>"$HOME/.config/rclone/rclone.conf" <<EOF
+                if ! rclone listremotes | grep -q "^r2:$"; then
+                        cat >>"$HOME/.config/rclone/rclone.conf" <<EOF
 
 [r2]
 type = s3
@@ -100,11 +101,15 @@ secret_access_key = $R2_SECRET_ACCESS_KEY
 endpoint = $R2_ENDPOINT
 acl = private
 EOF
-        fi
+                fi
 
-        R2_BUCKET="devenv"
-        if rclone lsf "r2:$R2_BUCKET/.local/share/fonts/" &>/dev/null; then
-                rclone copy "r2:$R2_BUCKET/.local/share/fonts/" "$FONTS_DIR"
+                R2_BUCKET="devenv"
+                if rclone lsf "r2:$R2_BUCKET/.local/share/fonts/" &>/dev/null; then
+                        rclone copy "r2:$R2_BUCKET/.local/share/fonts/" "$FONTS_DIR"
+                fi
+        else
+                echo "Warning: Could not access R2 credentials from 1Password"
+                echo "Skipping private font sync"
         fi
 fi
 
