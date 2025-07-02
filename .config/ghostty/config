@@ -57,6 +57,7 @@ gtk-tabs-location = bottom
 gtk-wide-tabs = false
 gtk-titlebar = true
 linux-cgroup = single-instance
+resize-overlay-position = top-left
 theme = dark:tokyonight_moon,light:tokyonight_day
 unfocused-split-opacity = 0.75
 window-decoration = server
