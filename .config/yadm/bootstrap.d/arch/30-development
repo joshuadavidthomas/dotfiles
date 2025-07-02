@@ -29,20 +29,19 @@ sudo usermod -aG docker ${USER}
 # install these tools via the shell scripts instead of package manager so their respective
 # self updating features work. may revisit this later.
 
-# install uv before mise as uvx is used as the pipx backend
-if ! command -v uv &>/dev/null; then
-        curl -LsSf https://astral.sh/uv/install.sh | sh
-fi
 if ! command -v mise &>/dev/null; then
         curl -LsSf https://mise.run | sh
 fi
-"$HOME/.local/bin/mise" install --yes
 
 if ! command -v rustup &>/dev/null; then
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --component \
                 rust-analyzer
 fi
 rustup update
+
+if ! command -v uv &>/dev/null; then
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+fi
 
 # Setup Wakatime API key in fish config if 1Password is available
 if command -v op &>/dev/null; then
