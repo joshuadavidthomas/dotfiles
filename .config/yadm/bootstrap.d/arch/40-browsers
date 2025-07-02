@@ -11,14 +11,22 @@ yay -S --noconfirm --needed \
 
 mkdir -p "$HOME/.local/share/applications"
 
-cp /usr/share/applications/chromium.desktop "$HOME/.local/share/applications"
-sed -i 's|^Exec=/usr/bin/chromium %U$|Exec=/usr/bin/chromium --enable-features=UseOzonePlatform --ozone-platform=wayland %U|' ~/.local/share/applications/chromium.desktop
-sed -i 's|^Exec=/usr/bin/chromium$|Exec=/usr/bin/chromium --enable-features=UseOzonePlatform --ozone-platform=wayland|' ~/.local/share/applications/chromium.desktop
-sed -i 's|^Exec=/usr/bin/chromium --incognito$|Exec=/usr/bin/chromium --enable-features=UseOzonePlatform --ozone-platform=wayland --incognito|' ~/.local/share/applications/chromium.desktop
+wayland_flags="--enable-features=UseOzonePlatform --ozone-platform=wayland"
+for browser in chromium vivaldi-stable; do
+        desktop_file="/usr/share/applications/${browser}.desktop"
 
-cp /usr/share/applications/vivaldi-stable.desktop "$HOME/.local/share/applications"
-sed -i 's|^Exec=/usr/bin/vivaldi-stable %U$|Exec=/usr/bin/vivaldi-stable --enable-features=UseOzonePlatform --ozone-platform=wayland %U|' ~/.local/share/applications/vivaldi-stable.desktop
-sed -i 's|^Exec=/usr/bin/vivaldi-stable --new-window$|Exec=/usr/bin/vivaldi-stable --enable-features=UseOzonePlatform --ozone-platform=wayland --new-window|' ~/.local/share/applications/vivaldi-stable.desktop
-sed -i 's|^Exec=/usr/bin/vivaldi-stable --incognito$|Exec=/usr/bin/vivaldi-stable --enable-features=UseOzonePlatform --ozone-platform=wayland --incognito|' ~/.local/share/applications/vivaldi-stable.desktop
+        if [[ -f "$desktop_file" ]]; then
+                local_desktop="$HOME/.local/share/applications/${browser}.desktop"
+                cp "$desktop_file" "$local_desktop"
+
+                sed -i "s|^Exec=/usr/bin/${browser} %U\$|Exec=/usr/bin/${browser} ${wayland_flags} %U|" "$local_desktop"
+                sed -i "s|^Exec=/usr/bin/${browser}\$|Exec=/usr/bin/${browser} ${wayland_flags}|" "$local_desktop"
+                sed -i "s|^Exec=/usr/bin/${browser} --incognito\$|Exec=/usr/bin/${browser} ${wayland_flags} --incognito|" "$local_desktop"
+
+                if [[ "$browser" == "vivaldi-stable" ]]; then
+                        sed -i "s|^Exec=/usr/bin/${browser} --new-window\$|Exec=/usr/bin/${browser} ${wayland_flags} --new-window|" "$local_desktop"
+                fi
+        fi
+done
 
 xdg-settings set default-web-browser vivaldi-stable.desktop
