@@ -83,11 +83,11 @@ fi
 # Sync private fonts from R2 if 1Password is available
 if command -v op &>/dev/null; then
         R2_BASE_OP_URI="op://Private/rclone - R2 Token"
-        
-        if op_ensure_auth && \
-           R2_ACCESS_KEY_ID=$(op_read "$R2_BASE_OP_URI/access key id") && \
-           R2_SECRET_ACCESS_KEY=$(op_read "$R2_BASE_OP_URI/secret access key") && \
-           R2_ENDPOINT=$(op_read "$R2_BASE_OP_URI/endpoint"); then
+
+        if op_ensure_auth &&
+                R2_ACCESS_KEY_ID=$(op_read "$R2_BASE_OP_URI/access key id") &&
+                R2_SECRET_ACCESS_KEY=$(op_read "$R2_BASE_OP_URI/secret access key") &&
+                R2_ENDPOINT=$(op_read "$R2_BASE_OP_URI/endpoint"); then
                 mkdir -p ~/.config/rclone
 
                 if ! rclone listremotes | grep -q "^r2:$"; then

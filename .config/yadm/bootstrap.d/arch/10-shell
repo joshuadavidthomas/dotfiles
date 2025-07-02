@@ -24,6 +24,7 @@ yay -S --noconfirm --needed \
         whois \
         wl-clip-persist \
         wl-clipboard \
+        yazi \
         zoxide
 
 (cd "$(bat --config-dir)" && ./update-themes)
@@ -31,10 +32,10 @@ yay -S --noconfirm --needed \
 # Login to Atuin if not already logged in and 1Password is available
 if ! (command -v op &>/dev/null && atuin status 2>&1 | grep -q "Username:"); then
         ATUIN_BASE_OP_URI="op://Dunbrook Web/lzasdlv2qilesxszmijw42yk4e"
-        
-        if op_ensure_auth && \
-           ATUIN_PASSWORD=$(op_read "$ATUIN_BASE_OP_URI/password") && \
-           ATUIN_KEY=$(op_read "$ATUIN_BASE_OP_URI/key"); then
+
+        if op_ensure_auth &&
+                ATUIN_PASSWORD=$(op_read "$ATUIN_BASE_OP_URI/password") &&
+                ATUIN_KEY=$(op_read "$ATUIN_BASE_OP_URI/key"); then
                 atuin login -u "josh" -p "$ATUIN_PASSWORD" -k "$ATUIN_KEY"
         else
                 echo "Warning: Could not access Atuin credentials from 1Password"
