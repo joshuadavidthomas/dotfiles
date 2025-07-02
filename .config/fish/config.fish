@@ -12,7 +12,7 @@ direnv hook fish | source
 mise activate fish | source
 
 # zoxide
-zoxide init --cmd cd fish | source
+zoxide init fish | source
 
 # atuin
 status --is-interactive; and atuin init fish | source
