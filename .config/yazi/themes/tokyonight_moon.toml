@@ -1,5 +1,6 @@
-[mgr]
-syntect_theme = "./syntect_theme.tmTheme"
+[manager]
+# NOTE: can combined with tmTheme (sublime colorshceme file) for preview code highlight
+# syntect_theme = "path/to/tmTheme"
 
 cwd = { fg = "#828bb8", italic = true }
 
@@ -154,4 +155,4 @@ rules = [
 	# Fallback
 	{ name = "*/", fg = "#82aaff" }
 ]
-
+    
