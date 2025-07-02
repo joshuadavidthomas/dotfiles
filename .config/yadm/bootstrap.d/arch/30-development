@@ -5,6 +5,7 @@ set -oue pipefail
 source "$(dirname "$0")/../utils"
 
 yay -S --noconfirm --needed \
+        datagrip \
         direnv \
         docker \
         docker-compose \
@@ -14,7 +15,8 @@ yay -S --noconfirm --needed \
         just \
         lazydocker \
         lazygit \
-        llvm
+        llvm \
+        zed
 
 # Limit log size to avoid running out of disk
 # echo '{"log-driver":"json-file","log-opts":{"max-size":"10m","max-file":"5"}}' | sudo tee /etc/docker/daemon.json
