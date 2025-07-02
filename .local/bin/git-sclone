@@ -9,7 +9,6 @@ from dataclasses import dataclass
 from pathlib import Path
 from urllib.parse import urlparse
 
-
 SSH_PATTERN = re.compile(r"^git@([^:]+):([^/]+)/([^/]+?)(\.git)?$")
 
 
