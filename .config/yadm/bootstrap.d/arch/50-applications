@@ -29,6 +29,10 @@ cat <<EOF | sudo tee /etc/1password/custom_allowed_browsers >/dev/null
 vivaldi-bin
 EOF
 
+mkdir -p "$HOME/.local/share/applications"
+cp /usr/share/applications/spotify.desktop "$HOME/.local/share/applications"
+sed -i 's|^Exec=spotify --uri=%u|Exec=spotify --enable-features=UseOzonePlatform --ozone-platform=wayland --uri=%u|' ~/.local/share/applications/spotify.desktop
+
 # if ! command -v spicetify &>/dev/null; then
 #         curl -fsSL https://raw.githubusercontent.com/spicetify/cli/main/install.sh | sh
 #         curl -fsSL https://raw.githubusercontent.com/spicetify/marketplace/main/resources/install.sh | sh
