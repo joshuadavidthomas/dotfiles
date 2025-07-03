@@ -1,4 +1,7 @@
 {
+  "include": [
+    "~/.config/waybar/modules/custom-notifications.jsonc"
+  ],
   "layer": "top",
   "position": "top",
   "spacing": 0,
@@ -15,7 +18,8 @@
     "pulseaudio",
     "cpu",
     "power-profiles-daemon",
-    "battery"
+    "battery",
+    "custom/notifications",
   ],
   "hyprland/workspaces": {
     "on-click": "activate",
@@ -67,8 +71,9 @@
   "battery": {
     "interval": 5,
     "format": "{capacity}% {icon}",
-    "format-discharging": "{icon}",
     "format-charging": "{icon}",
+    "format-discharging": "{icon}",
+    "format-full": "",
     "format-plugged": "",
     "format-icons": {
       "charging": [
@@ -78,7 +83,6 @@
         "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"
       ]
     },
-    "format-full": "Charged ",
     "tooltip-format-discharging": "{power:>1.0f}W↓ {capacity}%",
     "tooltip-format-charging": "{power:>1.0f}W↑ {capacity}%",
     "interval": 5,
