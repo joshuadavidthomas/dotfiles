@@ -1,5 +1,16 @@
 {
   "hooks": {
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "canberra-gtk-play -f ./notification.mp3 &> /dev/null || true"
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "matcher": "Bash",
