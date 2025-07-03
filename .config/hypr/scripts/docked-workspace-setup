@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Wait for kanshi to apply display configuration
+sleep 2
+
+# Restart waybar for new monitor configuration
+pkill waybar
+waybar &
+
+# Assign workspaces to monitors
+hyprctl dispatch moveworkspacetomonitor 1 DP-4
+hyprctl dispatch moveworkspacetomonitor 2 DP-4
+hyprctl dispatch moveworkspacetomonitor 3 DP-4
+hyprctl dispatch moveworkspacetomonitor 4 DP-4
+hyprctl dispatch moveworkspacetomonitor 5 DP-4
+hyprctl dispatch moveworkspacetomonitor 6 DP-4
+hyprctl dispatch moveworkspacetomonitor 7 DP-3
+hyprctl dispatch moveworkspacetomonitor 8 DP-5
+hyprctl dispatch moveworkspacetomonitor 9 eDP-1
+
+# Add window rules for docked mode (for new windows)
+# Teams and Slack to workspace 7
+hyprctl keyword windowrulev2 "workspace 7 silent,class:^(teams-for-linux)$"
+hyprctl keyword windowrulev2 "workspace 7 silent,class:^(Slack)$"
+hyprctl keyword windowrulev2 "workspace 7 silent,title:^(Microsoft Teams).*"
+
+# Browser to workspace 8
+hyprctl keyword windowrulev2 "workspace 8 silent,class:^(vivaldi-stable)$"
+hyprctl keyword windowrulev2 "workspace 8 silent,class:^(vivaldi)$"
+
+# Outlook to workspace 9
+hyprctl keyword windowrulev2 "workspace 9 silent,class:.*outlook.office.com.*"
+hyprctl keyword windowrulev2 "workspace 9 silent,title:.*Outlook.*"
+
+# Function to move windows by class to a workspace
+move_windows_by_class() {
+    local workspace="$1"
+    local class_pattern="$2"
+    local jq_filter="$3"
+
+    # Use provided jq filter or default to exact match
+    if [ -z "$jq_filter" ]; then
+        jq_filter=".class == \"$class_pattern\""
+    fi
+
+    hyprctl clients -j | jq -r ".[] | select($jq_filter) | .address" | while read -r addr; do
+        [ -n "$addr" ] && hyprctl dispatch movetoworkspacesilent "$workspace,address:$addr"
+    done
+}
+
+# Move existing windows to their designated workspaces
+# Move Teams and Slack to workspace 7
+move_windows_by_class 7 "teams-for-linux"
+move_windows_by_class 7 "Slack"
+
+# Move browser windows (except Outlook) to workspace 8
+move_windows_by_class 8 "vivaldi" '.class | startswith("vivaldi") | select(.class | contains("outlook.office.com") | not)'
+
+# Move Outlook windows to workspace 9
+move_windows_by_class 9 "outlook.office.com" '.class | contains("outlook.office.com")'

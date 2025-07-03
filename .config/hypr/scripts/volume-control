@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Function to get current volume
+get_volume() {
+        wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print int($2*100)}'
+}
+
+# Function to check if muted
+is_muted() {
+        wpctl get-volume @DEFAULT_AUDIO_SINK@ | grep -q '\[MUTED\]'
+}
+
+# Function to send notification
+notify_volume() {
+        local volume=$(get_volume)
+        local icon
+
+        if is_muted; then
+                icon="audio-volume-muted"
+                notify-send -i "$icon" -t 1500 -h string:x-canonical-private-synchronous:volume \
+                        -h int:value:0 "Volume Muted"
+        else
+                # Determine icon based on volume level
+                if [ "$volume" -eq 0 ]; then
+                        icon="audio-volume-muted"
+                elif [ "$volume" -lt 33 ]; then
+                        icon="audio-volume-low"
+                elif [ "$volume" -lt 66 ]; then
+                        icon="audio-volume-medium"
+                else
+                        icon="audio-volume-high"
+                fi
+
+                notify-send -i "$icon" -t 1500 -h string:x-canonical-private-synchronous:volume \
+                        -h int:value:"$volume" "Volume: ${volume}%"
+        fi
+
+        # Play feedback sound
+        if command -v canberra-gtk-play &>/dev/null; then
+                canberra-gtk-play -i audio-volume-change &>/dev/null || true
+        fi
+}
+
+# Execute volume command
+case "${1:-}" in
+"up")
+        wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+
+        notify_volume
+        ;;
+"down")
+        wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+        notify_volume
+        ;;
+"mute")
+        wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+        notify_volume
+        ;;
+"mic-mute")
+        wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+        notify_volume
+        ;;
+*)
+        echo "Usage: $0 {up|down|mute}"
+        exit 1
+        ;;
+esac
+

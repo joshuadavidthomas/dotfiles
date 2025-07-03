@@ -1,0 +1,179 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import os
+import subprocess
+import time
+import urllib.request
+from collections.abc import Sequence
+from dataclasses import dataclass
+from enum import StrEnum
+from pathlib import Path
+from typing import NamedTuple
+
+
+class MediaCommand(StrEnum):
+    PLAY_PAUSE = "play-pause"
+    NEXT = "next"
+    PREVIOUS = "previous"
+    STOP = "stop"
+
+
+class MediaMetadata(NamedTuple):
+    title: str
+    artist_album: str
+    status: str
+    art_url: str | None
+
+    @classmethod
+    def from_player(cls, player: Player) -> MediaMetadata:
+        title = player.execute("metadata", "--format", "{{title}}") or "Unknown Title"
+        artist_album = (
+            player.execute("metadata", "--format", "{{artist}} - {{album}}")
+            or "Unknown Artist"
+        )
+        status = player.execute("status") or "Unknown"
+        art_url = player.execute("metadata", "mpris:artUrl")
+
+        return cls(title, artist_album, status, art_url)
+
+
+@dataclass
+class Player:
+    name: str | None = None
+
+    def __post_init__(self):
+        if self.name is None:
+            self.name = self._get_preferred_player()
+
+    def _get_preferred_player(self) -> str | None:
+        try:
+            players = (
+                subprocess.run(
+                    ["playerctl", "-l"], capture_output=True, text=True, check=True
+                )
+                .stdout.strip()
+                .split("\n")
+            )
+
+            # Prefer Spotify if available
+            try:
+                return next(player for player in players if "spotify" in player.lower())
+            except StopIteration:
+                return players[0] if players else None
+        except subprocess.CalledProcessError:
+            return None
+
+    def execute(self, *args) -> str | None:
+        cmd = ["playerctl"]
+        if self.name:
+            cmd.extend(["-p", self.name])
+        cmd.extend(args)
+
+        try:
+            result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+            return result.stdout.strip()
+        except subprocess.CalledProcessError:
+            return None
+
+    @property
+    def is_available(self) -> bool:
+        return self.name is not None
+
+
+def get_album_art(url: str) -> str | None:
+    if not url or not url.startswith("http"):
+        return None
+
+    cache_dir = (
+        Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache"))
+        / "hypr"
+        / "media-control"
+    )
+    if not cache_dir.exists():
+        cache_dir.mkdir(parents=True, exist_ok=True)
+
+    cache_path = cache_dir / f"{url.split('/')[-1]}.jpg"
+
+    if cache_path.exists():
+        return str(cache_path)
+
+    try:
+        urllib.request.urlretrieve(url, cache_path)
+        return str(cache_path)
+    except Exception:
+        return None
+
+
+def notify(player: Player, command: MediaCommand, buffer: float = 0.1):
+    time.sleep(buffer)
+
+    title, artist_album, status, art_url = MediaMetadata.from_player(player)
+    body = f"{artist_album}\\n{status}"
+
+    icon = "media-playback-start"
+    if (
+        command == MediaCommand.PLAY_PAUSE
+        and art_url
+        and (album_art := get_album_art(art_url))
+    ):
+        icon = album_art
+
+    subprocess.run(
+        [
+            "notify-send",
+            "-i",
+            icon,
+            "-t",
+            "2000",
+            "-h",
+            "string:x-canonical-private-synchronous:media-control",
+            "-u",
+            "low",
+            title,
+            body,
+        ]
+    )
+    subprocess.run(
+        ["canberra-gtk-play", "-i", "audio-volume-change"],
+        stderr=subprocess.DEVNULL,
+    )
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(
+        description="Control media players via playerctl with notifications"
+    )
+    parser.add_argument(
+        "command",
+        type=MediaCommand,
+        choices=list(MediaCommand),
+        help="Media control command to execute",
+    )
+    args = parser.parse_args(argv)
+
+    player = Player()
+    if not player.is_available:
+        subprocess.run(
+            [
+                "notify-send",
+                "-i",
+                "media-playback-stop",
+                "-t",
+                "2000",
+                "-h",
+                "string:x-canonical-private-synchronous:media-control",
+                "No Media Player",
+                "No active media player found",
+            ]
+        )
+    else:
+        player.execute(args.command)
+        notify(player, args.command)
+
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

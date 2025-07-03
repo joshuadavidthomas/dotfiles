@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Wait for kanshi to apply display configuration
+sleep 2
+
+# Restart waybar for single monitor
+pkill waybar
+waybar &
+
+# Move all workspaces back to laptop
+for i in {1..9}; do
+    hyprctl dispatch moveworkspacetomonitor $i eDP-1
+done
+
+# Clear the docked-specific window rules
+# Teams and Slack - remove workspace assignment
+hyprctl keyword windowrulev2 "unset,class:^(teams-for-linux)$"
+hyprctl keyword windowrulev2 "unset,class:^(Slack)$"
+hyprctl keyword windowrulev2 "unset,title:^(Microsoft Teams).*"
+
+# Browser - remove workspace assignment
+hyprctl keyword windowrulev2 "unset,class:^(vivaldi-stable)$"
+hyprctl keyword windowrulev2 "unset,class:^(vivaldi)$"
+
+# Outlook - remove workspace assignment
+hyprctl keyword windowrulev2 "unset,class:.*outlook.office.com.*"
+hyprctl keyword windowrulev2 "unset,title:.*Outlook.*"
