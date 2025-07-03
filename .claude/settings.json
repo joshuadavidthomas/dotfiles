@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "canberra-gtk-play -f ./notification.mp3 &> /dev/null || true"
+            "command": "canberra-gtk-play -f $HOME/.claude/notification.wav"
           }
         ]
       }
