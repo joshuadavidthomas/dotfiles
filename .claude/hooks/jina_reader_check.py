@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 import sys
 from collections.abc import Sequence
+from urllib.parse import urlparse
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -20,10 +21,17 @@ def main(argv: Sequence[str] | None = None) -> int:
     if tool_name != "WebFetch" or not url:
         return 1
 
-    # Check if URL starts with the Jina Reader service
+    parsed_url = urlparse(url)
+
+    if parsed_url.fragment == "jina-fallback":
+        return 0
+
     if not url.startswith("https://r.jina.ai/"):
-        print(f"• Please prepend 'https://r.jina.ai/' to all fetch calls", file=sys.stderr)
+        print(
+            "• Please prepend 'https://r.jina.ai/' to all fetch calls", file=sys.stderr
+        )
         print(f"• Use: https://r.jina.ai/{url}", file=sys.stderr)
+        print(f"• If Jina fails, retry with: {url}#jina-fallback", file=sys.stderr)
         # Exit code 2 blocks tool call and shows stderr to Claude
         return 2
 
