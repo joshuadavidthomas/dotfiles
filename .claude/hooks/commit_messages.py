@@ -55,11 +55,11 @@ def extract_commit_message(command: str) -> str | None:
     # Match patterns like: git commit -m "message" or git commit --message="message"
     patterns = [
         r'git\s+commit\s+.*-m\s+"([^"]+)"',
-        r'git\s+commit\s+.*-m\s+\'([^\']+)\'',
+        r"git\s+commit\s+.*-m\s+\'([^\']+)\'",
         r'git\s+commit\s+.*--message="([^"]+)"',
-        r'git\s+commit\s+.*--message=\'([^\']+)\'',
+        r"git\s+commit\s+.*--message=\'([^\']+)\'",
     ]
-    
+
     for pattern in patterns:
         match = re.search(pattern, command)
         if match:
@@ -69,11 +69,22 @@ def extract_commit_message(command: str) -> str | None:
 
 # Validation rules: (validation_function, error_message)
 COMMIT_VALIDATIONS = [
-    (lambda m: len(m) <= 72, lambda m: f"Commit message too long ({len(m)} chars). Maximum is 72 characters."),
-    (lambda m: not re.match(r'^(Added|Fixed|Updated|Removed|Changed|Created|Deleted|Implemented)', m), 
-     lambda m: "Use imperative mood (e.g., 'Add' not 'Added')"),
-    (lambda m: not re.match(r'^(feat|fix|docs|style|refactor|test|chore)(\(.+\))?:', m),
-     lambda m: "Don't use conventional commit format (feat:, fix:, etc.)"),
+    (
+        lambda m: len(m) <= 72,
+        lambda m: f"Commit message too long ({len(m)} chars). Maximum is 72 characters.",
+    ),
+    (
+        lambda m: not re.match(
+            r"^(Added|Fixed|Updated|Removed|Changed|Created|Deleted|Implemented)", m
+        ),
+        lambda m: "Use imperative mood (e.g., 'Add' not 'Added')",
+    ),
+    (
+        lambda m: not re.match(
+            r"^(feat|fix|docs|style|refactor|test|chore)(\(.+\))?:", m
+        ),
+        lambda m: "Don't use conventional commit format (feat:, fix:, etc.)",
+    ),
 ]
 
 
@@ -97,13 +108,13 @@ def main(argv: Sequence[str] | None = None) -> int:
         if not message:
             # Let git handle the case where no message is provided
             return 0
-        
+
         # Validate the commit message
         issues = []
         for validation_fn, error_fn in COMMIT_VALIDATIONS:
             if not validation_fn(message):
                 issues.append(error_fn(message))
-        
+
         if issues:
             print(COMMIT_MESSAGE_PROMPT, file=sys.stderr)
             print("\nValidation errors:", file=sys.stderr)
