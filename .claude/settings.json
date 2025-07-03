@@ -18,6 +18,15 @@
             "command": "$HOME/.claude/hooks/commit_messages.py"
           }
         ]
+      },
+      {
+        "matcher": "WebFetch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/jina_reader_check.py"
+          }
+        ]
       }
     ]
   }
