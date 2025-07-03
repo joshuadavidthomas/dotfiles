@@ -17,9 +17,9 @@ yay -S --noconfirm --needed \
         hyprpicker \
         hyprpolkitagent \
         hyprshot \
-        imv \
         inter-font \
         kvantum-qt5 \
+        loupe \
         noto-fonts \
         noto-fonts-cjk \
         noto-fonts-emoji \
