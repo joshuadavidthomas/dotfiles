@@ -38,6 +38,24 @@
             "command": "$HOME/.claude/hooks/jina_reader_check.py"
           }
         ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/bash_shebang_check.py"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/python_deprecated_imports.py"
+          }
+        ]
       }
     ]
   }

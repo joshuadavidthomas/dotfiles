@@ -8,12 +8,12 @@ from collections.abc import Sequence
 
 VALIDATION_RULES = [
     (
-        r"\bgrep\b(?!.*\|)",
+        r"\bgrep\b",
         "Use 'rg' (ripgrep) instead of 'grep' for better performance and features",
     ),
     (
-        r"\bfind\s+\S+\s+-name\b",
-        "Use 'rg --files | rg pattern' or 'rg --files -g pattern' instead of 'find -name' for better performance",
+        r"\bfind\s+",
+        "Use 'rg --files' with appropriate filters instead of 'find' for better performance",
     ),
 ]
 

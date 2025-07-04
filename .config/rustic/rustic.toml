@@ -1,0 +1,80 @@
+[repository]
+repository = "opendal:s3"
+password-file = "/home/josh/.config/rustic/rustic-password"
+
+[repository.options]
+endpoint = "https://0d52c99870b49aa52ccc7d5feca16714.r2.cloudflarestorage.com"
+bucket = "homedir"
+region = "auto"
+batch_max_operations = "700"
+enable_exact_buf_write = "true"
+root = "/backups"
+
+[backup]
+label = "homedir"
+tags = ["home", "laptop"]
+git-ignore = false
+exclude-if-present = [".nobackup", "CACHEDIR.TAG"]
+one-file-system = false
+
+globs = []
+iglobs = [
+    # System caches
+    "/home/josh/.cache/**",
+    "/home/josh/.local/share/Trash/**",
+    "/home/josh/snap/**",
+
+    # Browser caches
+    "/home/josh/.config/BraveSoftware/*/*Cache/**",
+    "/home/josh/.config/chromium/*/*Cache/**",
+    "/home/josh/.config/google-chrome/*/*Cache/**",
+    "/home/josh/.config/vivaldi/*/*Cache/**",
+    "/home/josh/.config/vivaldi-snapshot/*/*Cache/**",
+    "/home/josh/.mozilla/firefox/*/*Cache/**",
+
+    # Package caches
+    "/home/josh/.cargo/registry/**",
+    "/home/josh/.cargo/git/db/**",
+    "/home/josh/.cargo/bin/**",
+    "/home/josh/.go/pkg/mod/**",
+    "/home/josh/.npm/**",
+    "/home/josh/.pnpm-store/**",
+    "/home/josh/.yarn/cache/**",
+
+    # Build outputs & dependencies
+    "**/node_modules/**",
+    "**/target/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/__pycache__/**",
+    "**/*.pyc",
+    "**/.venv/**",
+    "**/venv/**",
+
+    # Large media/gaming
+    "/home/josh/.local/share/Steam/**",
+    "/home/josh/videos/**",
+    "/home/josh/music/**",
+
+    # Temp files
+    "**/*.tmp",
+    "**/*.temp",
+    "**/*.swp",
+    "**/*.swo",
+    "**/core",
+    "**/core.*",
+
+    # Downloads (usually duplicates)
+    "/home/josh/downloads/**",
+    "/home/josh/Downloads/**",
+]
+
+[[backup.snapshots]]
+sources = ["/home/josh"]
+
+[forget]
+keep-daily = 7
+keep-weekly = 4
+keep-monthly = 6
+keep-yearly = 2
+prune = true
