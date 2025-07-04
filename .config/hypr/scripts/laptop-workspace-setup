@@ -11,7 +11,7 @@ waybar &
 
 # Move all workspaces back to laptop
 for i in {1..9}; do
-    hyprctl dispatch moveworkspacetomonitor $i eDP-1
+        hyprctl dispatch moveworkspacetomonitor $i eDP-1
 done
 
 # Clear the docked-specific window rules
@@ -27,3 +27,32 @@ hyprctl keyword windowrulev2 "unset,class:^(vivaldi)$"
 # Outlook - remove workspace assignment
 hyprctl keyword windowrulev2 "unset,class:.*outlook.office.com.*"
 hyprctl keyword windowrulev2 "unset,title:.*Outlook.*"
+
+# Consolidate windows to lowest numbered workspaces
+consolidate_workspaces() {
+        local target_workspace=1
+
+        # Get all workspaces with windows, sorted numerically
+        local workspaces_with_windows=$(hyprctl workspaces -j | jq -r '.[] | select(.windows > 0) | .id' | sort -n)
+
+        for workspace in $workspaces_with_windows; do
+                # Get all window addresses on this workspace
+                local windows=$(hyprctl clients -j | jq -r ".[] | select(.workspace.id == $workspace) | .address")
+
+                # Move each window to the target workspace if it's not already there
+                if [ "$workspace" -ne "$target_workspace" ]; then
+                        for window in $windows; do
+                                [ -n "$window" ] && hyprctl dispatch movetoworkspacesilent "$target_workspace,address:$window"
+                        done
+                fi
+
+                # Always increment target workspace for next group
+                ((target_workspace++))
+        done
+
+        # Switch to workspace 1
+        hyprctl dispatch workspace 1
+}
+
+# Run the consolidation
+consolidate_workspaces

@@ -36,18 +36,18 @@ hyprctl keyword windowrulev2 "workspace 9 silent,title:.*Outlook.*"
 
 # Function to move windows by class to a workspace
 move_windows_by_class() {
-    local workspace="$1"
-    local class_pattern="$2"
-    local jq_filter="$3"
+        local workspace="$1"
+        local class_pattern="$2"
+        local jq_filter="$3"
 
-    # Use provided jq filter or default to exact match
-    if [ -z "$jq_filter" ]; then
-        jq_filter=".class == \"$class_pattern\""
-    fi
+        # Use provided jq filter or default to exact match
+        if [ -z "$jq_filter" ]; then
+                jq_filter=".class == \"$class_pattern\""
+        fi
 
-    hyprctl clients -j | jq -r ".[] | select($jq_filter) | .address" | while read -r addr; do
-        [ -n "$addr" ] && hyprctl dispatch movetoworkspacesilent "$workspace,address:$addr"
-    done
+        hyprctl clients -j | jq -r ".[] | select($jq_filter) | .address" | while read -r addr; do
+                [ -n "$addr" ] && hyprctl dispatch movetoworkspacesilent "$workspace,address:$addr"
+        done
 }
 
 # Move existing windows to their designated workspaces
