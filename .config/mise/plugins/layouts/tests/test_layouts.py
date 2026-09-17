@@ -105,7 +105,7 @@ class LayoutTests(unittest.TestCase):
                 layout = self.layout(root / 'src')
                 with patch.object(layout, 'command') as command:
                     layout.javascript()
-                    command.assert_called_once_with([manager, 'install'], root)
+                    command.assert_called_once_with([manager, 'install'], root, visible=True)
         (self.root / 'package.json').write_text('{"workspaces":["packages/*"],"packageManager":"pnpm@1"}')
         (self.root / 'pnpm-lock.yaml').touch()
         member = self.root / 'packages/member'
@@ -114,7 +114,7 @@ class LayoutTests(unittest.TestCase):
         layout = self.layout(member)
         with patch.object(layout, 'command') as command:
             layout.javascript()
-            command.assert_called_once_with(['pnpm', 'install'], self.root)
+            command.assert_called_once_with(['pnpm', 'install'], self.root, visible=True)
 
     def test_ambiguous_js_skips(self):
         (self.root / 'package.json').write_text('{}')
@@ -133,7 +133,7 @@ class LayoutTests(unittest.TestCase):
                 root.mkdir()
                 (root / ('uv.lock' if kind == 'uv' else 'requirements.txt')).touch()
                 layout = self.layout(root)
-                def fake_command(argv, cwd, extra=None):
+                def fake_command(argv, cwd, extra=None, **kwargs):
                     self.calls.append(argv)
                     (root / '.venv/bin').mkdir(parents=True, exist_ok=True)
                     (root / '.venv/bin/python').touch()
@@ -156,7 +156,7 @@ class LayoutTests(unittest.TestCase):
         python.parent.mkdir(parents=True)
         python.touch()
         site = str(self.home / 'script-venv/lib/site-packages')
-        def fake_command(argv, cwd, extra=None):
+        def fake_command(argv, cwd, extra=None, **kwargs):
             self.calls.append(argv)
             if argv[:3] == ['uv', 'python', 'find']:
                 return str(python)

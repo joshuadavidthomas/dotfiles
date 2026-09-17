@@ -116,12 +116,19 @@ class Layout:
             write_json(stamp, {"fingerprint": fingerprint(sources)})
             return True
 
-    def command(self, argv, root, extra=None):
+    def command(self, argv, root, extra=None, *, visible=False):
         env = self.base_env | self.env | (extra or {})
-        result = run(argv, root, env)
+        if visible:
+            print(f"layouts: {root.name}: {shlex.join(argv)}", file=sys.stderr, flush=True)
+            result = subprocess.run(argv, cwd=root, env=env, stdin=subprocess.DEVNULL,
+                                    stdout=sys.stderr, stderr=sys.stderr, text=True)
+        else:
+            result = run(argv, root, env)
         if result.returncode:
-            # No command output here: package managers and linters may print secrets.
             raise RuntimeError(f"{shlex.join(argv)} failed (exit {result.returncode}); run it in this directory for details")
+        if visible:
+            print(f"layouts: {root.name}: setup complete", file=sys.stderr, flush=True)
+            return ""
         return result.stdout.strip()
 
     def dotenv(self):
@@ -211,11 +218,11 @@ class Layout:
                 sources.extend(root.glob(pattern.rstrip("/") + "/pyproject.toml"))
         def install():
             if not (venv / "bin/python").exists():
-                self.command(["uv", "venv", "--seed", str(venv)], root)
+                self.command(["uv", "venv", "--seed", str(venv)], root, visible=True)
             if is_uv:
-                self.command(["uv", "sync", "--quiet"], root)
+                self.command(["uv", "sync"], root, visible=True)
             else:
-                self.command(["uv", "pip", "install", "--python", str(venv / "bin/python"), "-r", "requirements.txt", "--quiet"], root)
+                self.command(["uv", "pip", "install", "--python", str(venv / "bin/python"), "-r", "requirements.txt"], root, visible=True)
         if not self.once(root, "uv" if is_uv else "requirements", sources, [venv / "bin/python"], install):
             return True
         self.env.update(VIRTUAL_ENV=str(venv), UV_ACTIVE="1")
@@ -265,7 +272,7 @@ class Layout:
             return
         needs_modules = any(package.get(k) for k in ["dependencies", "devDependencies", "optionalDependencies", "workspaces"])
         outputs = [root / "node_modules"] if needs_modules or (root / "pnpm-workspace.yaml").exists() else []
-        self.once(root, manager, inputs, outputs, lambda: self.command([manager, "install"], root))
+        self.once(root, manager, inputs, outputs, lambda: self.command([manager, "install"], root, visible=True))
 
     def scripts(self):
         roots = []
@@ -291,7 +298,7 @@ class Layout:
             previous = load_json(bucket / "python.json").get("python")
             outputs = [Path(previous)] if previous else [bucket / "not-yet-synced"]
             def install(script=script, bucket=bucket):
-                self.command(["uv", "sync", "--script", str(script), "--quiet"], root)
+                self.command(["uv", "sync", "--script", str(script)], root, visible=True)
                 python = self.command(["uv", "python", "find", "--script", str(script)], root)
                 write_json(bucket / "python.json", {"python": python})
             if not self.once(script, "script-sync", [script, lock], outputs, install):
