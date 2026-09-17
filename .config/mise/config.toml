@@ -42,3 +42,12 @@ exclude = [
 "~/.config/mise/plugins/layouts" = { mode = "track" }
 "~/.config/starship.toml" = { mode = "track" }
 "~/.hushlogin" = { mode = "track", variants = [{ os = "macos" }] }
+
+[tasks.bootstrap]
+description = "Install Atuin history hooks for coding agents"
+run = [
+  "atuin hook install codex",
+  "atuin hook install claude-code",
+  "atuin hook install opencode",
+  "atuin hook install pi",
+]
