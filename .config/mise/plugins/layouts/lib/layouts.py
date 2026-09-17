@@ -1,6 +1,6 @@
 # /// script
 # requires-python = ">=3.11"
-# dependencies = ["python-dotenv==1.2.2"]
+# dependencies = ["python-dotenv==1.2.2", "packaging>=24"]
 # ///
 """Personal mise layouts. All generated state lives outside project repositories."""
 from __future__ import annotations
@@ -17,6 +17,9 @@ import shutil
 import subprocess
 import sys
 import tomllib
+import time
+
+from packaging.specifiers import SpecifierSet
 
 from dotenv import dotenv_values
 
@@ -212,12 +215,27 @@ class Layout:
         venv = Path(configured)
         if not venv.is_absolute():
             venv = root / venv
-        sources = [root / "pyproject.toml", root / "uv.lock", root / "requirements.txt", root / ".python-version", root / "uv.toml"]
+        sources = [root / "pyproject.toml", root / "uv.lock", root / "requirements.txt", root / ".python-version", root / "uv.toml", venv / "pyvenv.cfg"]
         if is_uv and (root / "pyproject.toml").exists():
             workspace = tomllib.loads((root / "pyproject.toml").read_text()).get("tool", {}).get("uv", {}).get("workspace", {})
             for pattern in workspace.get("members", []):
                 sources.extend(root.glob(pattern.rstrip("/") + "/pyproject.toml"))
         def install():
+            if (venv / "bin/python").exists():
+                project_file = root / "pyproject.toml"
+                requirement = (tomllib.loads(project_file.read_text()).get("project", {}).get("requires-python", "")
+                               if project_file.exists() else "")
+                pin_file = root / ".python-version"
+                pin = pin_file.read_text().strip() if pin_file.exists() else ""
+                constraints = [requirement] if requirement else []
+                if re.fullmatch(r"\d+(?:\.\d+){0,2}", pin):
+                    constraints.append("==" + pin + (".*" if pin.count(".") < 2 else ""))
+                if constraints:
+                    version = self.command([str(venv / "bin/python"), "-c", "import platform; print(platform.python_version())"], root)
+                    if any(version not in SpecifierSet(c) for c in constraints):
+                        backup = self.bucket(root, "venv-backups") / ("venv-" + str(time.time_ns()))
+                        print(f"layouts: {root.name}: Python {version} does not satisfy {', '.join(constraints)}; preserving old environment at {backup}", file=sys.stderr, flush=True)
+                        shutil.move(str(venv), str(backup))
             if not (venv / "bin/python").exists():
                 self.command(["uv", "venv", "--seed", str(venv)], root, visible=True)
             if is_uv:

@@ -1,6 +1,6 @@
 # /// script
 # requires-python = ">=3.11"
-# dependencies = ["python-dotenv==1.2.2"]
+# dependencies = ["python-dotenv==1.2.2", "packaging>=24"]
 # ///
 import importlib.util
 import json
@@ -184,6 +184,31 @@ class LayoutTests(unittest.TestCase):
             for name in ['uvas', 'uves', 'uvis', 'uvls', 'uvrs', 'uvss', 'uvts']:
                 self.assertTrue((folder / name).exists(), name)
             self.assertFalse((folder / 'uva').exists())
+
+    def test_requirements_replaces_incompatible_python_and_keeps_backup(self):
+        (self.root / 'requirements.txt').touch()
+        (self.root / 'pyproject.toml').write_text('[project]\nrequires-python = ">=3.12,<3.14"\n')
+        python = self.root / '.venv/bin/python'
+        python.parent.mkdir(parents=True)
+        python.write_text('original interpreter')
+        (self.root / '.venv/pyvenv.cfg').write_text('version_info = 3.14.5\n')
+        def fake_command(argv, cwd, extra=None, **kwargs):
+            self.calls.append(argv)
+            if argv[0] == str(python):
+                return '3.14.5'
+            if argv[:2] == ['uv', 'venv']:
+                python.parent.mkdir(parents=True)
+                python.write_text('compatible interpreter')
+            return ''
+        layout = self.layout()
+        with patch.object(layout, 'command', side_effect=fake_command):
+            layout.python()
+        self.assertEqual(python.read_text(), 'compatible interpreter')
+        backups = list(layout.bucket(self.root, 'venv-backups').glob('*/bin/python'))
+        self.assertEqual(len(backups), 1)
+        self.assertEqual(backups[0].read_text(), 'original interpreter')
+        self.assertTrue(any(c[:2] == ['uv', 'venv'] for c in self.calls))
+        self.assertTrue(any(c[:3] == ['uv', 'pip', 'install'] for c in self.calls))
 
     def test_wrapper_preserves_arguments(self):
         layout = self.layout()
