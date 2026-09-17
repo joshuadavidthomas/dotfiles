@@ -107,6 +107,7 @@ class Layout:
             stamp = bucket / "state.json"
             current = fingerprint(sources)
             if load_json(stamp).get("fingerprint") == current and all(p.exists() for p in outputs):
+                self.messages.append(f"{root}: {kind}: unchanged; reusing cached setup")
                 return True
             try:
                 action()

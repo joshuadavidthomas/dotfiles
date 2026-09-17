@@ -1,4 +1,5 @@
 function PLUGIN:MisePath(ctx)
+  ctx.layout_path_pass = true
   if os.getenv("MISE_LAYOUTS_DISABLE") == "1" then return {} end
   local config_dir = os.getenv("MISE_CONFIG_DIR") or ((os.getenv("XDG_CONFIG_HOME") or (os.getenv("HOME") .. "/.config")) .. "/mise")
   local root = ctx.options.root or (config_dir .. "/plugins/layouts")

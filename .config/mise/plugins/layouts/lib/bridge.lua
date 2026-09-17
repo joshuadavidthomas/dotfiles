@@ -18,8 +18,11 @@ return function(ctx)
   os.remove(result_path)
   if code ~= 0 then error("layout helper failed (exit " .. tostring(code) .. ")") end
   local result = json.decode(output)
-  for _, message in ipairs(result.messages or {}) do
-    print("layouts: " .. message)
+  -- Mise asks separately for environment and PATH; report checks once.
+  if not ctx.layout_path_pass then
+    for _, message in ipairs(result.messages or {}) do
+      print("layouts: " .. message)
+    end
   end
   return result
 end

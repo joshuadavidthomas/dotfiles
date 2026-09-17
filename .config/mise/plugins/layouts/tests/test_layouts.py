@@ -83,7 +83,9 @@ class LayoutTests(unittest.TestCase):
             self.calls.append('run')
             output.touch()
         self.layout().once(self.root, 'test', [source], [output], action)
-        self.layout().once(self.root, 'test', [source], [output], action)
+        cached = self.layout()
+        cached.once(self.root, 'test', [source], [output], action)
+        self.assertTrue(any('unchanged; reusing cached setup' in m for m in cached.messages))
         self.assertEqual(len(self.calls), 1)
         source.write_text('b')
         def fail():
