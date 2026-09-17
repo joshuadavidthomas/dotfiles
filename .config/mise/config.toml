@@ -1,15 +1,44 @@
 [tools]
+1password-cli = "latest"
+amp = { version = "0.0.1789660852-g000545", allow_builds = ["@ampcode/cli"] }
 atuin = "latest"
+bat = "latest"
 bun = "latest"
 claude-code = "latest"
 codex = "latest"
+delta = "latest"
 dotenv-linter = "latest"
+eza = "latest"
+fastfetch = "latest"
+fd = "latest"
+flyctl = "latest"
+fzf = "latest"
+gh = "latest"
+glow = "latest"
+go = "latest"
+jj = "latest"
+jq = "latest"
+just = "latest"
+lazydocker = "latest"
+lazygit = "latest"
+lua = "latest"
 node = "lts"
 opencode = "latest"
 pi = "latest"
+"pipx:llm" = { version = "latest", with = ["llm-gemini", "llm-deepseek", "llm-templates-github", "llm-docs", "llm-anthropic", "llm-uv-tool", "llm-templates-fabric"] }
+"pipx:posting" = "latest"
+"pipx:tldr" = "latest"
+"pipx:wakatime" = "latest"
 pnpm = "latest"
+rclone = "latest"
+ripgrep = "latest"
+rustic = "latest"
 starship = "latest"
+tmux = "latest"
+topgrade = "latest"
+usage = "latest"
 uv = "latest"
+yazi = "latest"
 zoxide = "latest"
 
 [env]
@@ -24,6 +53,43 @@ layouts = "~/.config/mise/plugins/layouts"
 "brew-cask:ghostty" = { version = "latest", os = "macos", adopt = true }
 "pacman:fish" = "latest"
 "pacman:ghostty" = "latest"
+
+"brew:btop" = "latest"
+"brew:ffmpeg" = "latest"
+"brew:wget" = "latest"
+"brew:gnupg" = "latest"
+"brew:llvm" = "latest"
+"brew:pkgconf" = "latest"
+"brew:readline" = "latest"
+"pacman:btop" = "latest"
+"pacman:ffmpeg" = "latest"
+"pacman:git" = "latest"
+"pacman:curl" = "latest"
+"pacman:wget" = "latest"
+"pacman:less" = "latest"
+"pacman:zip" = "latest"
+"pacman:unzip" = "latest"
+"pacman:gnupg" = "latest"
+"pacman:whois" = "latest"
+"pacman:plocate" = "latest"
+"pacman:inetutils" = "latest"
+"pacman:llvm" = "latest"
+"pacman:base-devel" = "latest"
+"apt:git" = "latest"
+"apt:curl" = "latest"
+"apt:wget" = "latest"
+"apt:less" = "latest"
+"apt:zip" = "latest"
+"apt:unzip" = "latest"
+"apt:gnupg" = "latest"
+"apt:whois" = "latest"
+"apt:plocate" = "latest"
+"apt:inetutils-tools" = "latest"
+"apt:build-essential" = "latest"
+"apt:pkg-config" = "latest"
+"apt:libreadline-dev" = "latest"
+"brew-cask:wezterm" = { version = "latest", os = "macos", adopt = true }
+"pacman:wezterm" = "latest"
 
 [bootstrap.mise_shell_activate]
 fish = "activate"
@@ -42,6 +108,19 @@ exclude = [
 ]
 
 [dotfiles]
+"~/.config/jj/config.toml" = { mode = "track" }
+"~/.local/bin/git-sclone" = { mode = "track" }
+"~/.local/bin/git-rebase-feature-branch" = { mode = "track" }
+"~/.local/bin/video2gif" = { mode = "track" }
+"~/.tmux.conf" = { mode = "track" }
+"~/.config/wezterm" = { mode = "track" }
+"~/.config/lazydocker/config.yml" = { mode = "track" }
+"~/.config/posting/config.yaml" = { mode = "track" }
+"~/.config/glow/glow.yml" = { mode = "track" }
+"~/.config/btop/btop.conf" = { mode = "track" }
+"~/.config/eza/theme.yml" = { mode = "track" }
+"~/.config/bat/themes" = { mode = "track" }
+"~/.config/bat/config" = { mode = "track" }
 "~/.config/atuin/config.toml" = { mode = "track" }
 "~/.config/fish" = { mode = "track" }
 "~/.config/ghostty" = { mode = "track" }
@@ -52,8 +131,10 @@ exclude = [
 "~/.hushlogin" = { mode = "track", variants = [{ os = "macos" }] }
 
 [tasks.bootstrap]
-description = "Install Atuin history hooks for coding agents"
+description = "Configure shell utilities, Rust, and agent history hooks"
 run = [
+  'test -x "$HOME/.cargo/bin/rustup" || curl --proto "=https" --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile default --component rust-analyzer',
+  'bat cache --build',
   "atuin hook install codex",
   "atuin hook install claude-code",
   "atuin hook install opencode",
@@ -75,3 +156,10 @@ variants = [
   { os = "macos", target = "~/Library/Fonts/MonoLisaItalic.ttf" },
   { os = "linux", target = "~/.local/share/fonts/monolisa/MonoLisaItalic.ttf" },
 ]
+
+[settings.npm]
+shell_out = true
+
+[bootstrap.repos]
+"~/.tmux/plugins/tpm" = { url = "https://github.com/tmux-plugins/tpm.git" }
+"~/.tmux/plugins/tmux-resurrect" = { url = "https://github.com/tmux-plugins/tmux-resurrect.git" }
