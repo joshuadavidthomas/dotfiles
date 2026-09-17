@@ -40,3 +40,4 @@ exclude = [
 "~/.config/mise/config.toml" = { mode = "track" }
 "~/.config/mise/plugins/layouts" = { mode = "track" }
 "~/.config/starship.toml" = { mode = "track" }
+"~/.hushlogin" = { mode = "track" }
