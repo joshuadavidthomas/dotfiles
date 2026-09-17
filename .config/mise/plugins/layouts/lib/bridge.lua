@@ -11,18 +11,13 @@ return function(ctx)
   local result_path = cmd.exec("mktemp"):gsub("%s+$", "")
   local code = os.execute("uv run --quiet --no-project --no-env-file --script "
     .. quote(ctx.options.root .. "/lib/layouts.py") .. " --cwd "
-    .. quote(cmd.exec("pwd"):gsub("%s+$", "")) .. " > " .. quote(result_path))
+    .. quote(cmd.exec("pwd"):gsub("%s+$", ""))
+    .. (ctx.layout_path_pass and " --path-pass" or "") .. " > " .. quote(result_path))
   local handle = io.open(result_path, "r")
   local output = handle and handle:read("*a") or ""
   if handle then handle:close() end
   os.remove(result_path)
   if code ~= 0 then error("layout helper failed (exit " .. tostring(code) .. ")") end
   local result = json.decode(output)
-  -- Mise asks separately for environment and PATH; report checks once.
-  if not ctx.layout_path_pass then
-    for _, message in ipairs(result.messages or {}) do
-      print("layouts: " .. message)
-    end
-  end
   return result
 end

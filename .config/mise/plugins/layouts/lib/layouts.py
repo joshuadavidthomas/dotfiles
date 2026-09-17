@@ -74,7 +74,8 @@ def script_metadata(path):
 
 
 class Layout:
-    def __init__(self, cwd):
+    def __init__(self, cwd, *, path_pass=False):
+        self.path_pass = path_pass
         self.cwd = cwd.resolve()
         self.home = Path.home()
         self.chain = ancestors(self.cwd)
@@ -94,6 +95,38 @@ class Layout:
         if options_path.exists():
             self.options = tomllib.loads(options_path.read_text())
 
+    def log(self, prefix, message):
+        message = f"{prefix}: {message}"
+        self.messages.append(message)
+        if not self.path_pass:
+            print(message, file=sys.stderr, flush=True)
+
+    def check_message(self, root, kind, cached):
+        if kind == "uv":
+            prefix = "layout uv"
+            message = "Project lock file unchanged; using existing environment" if cached else "Syncing with project lock file"
+        elif kind == "requirements":
+            prefix = "layout uv"
+            message = "requirements.txt unchanged; using existing environment" if cached else "Syncing with requirements.txt"
+        elif kind in {"npm", "pnpm", "bun"}:
+            prefix = f"layout {kind}"
+            message = "Project dependencies are up to date" if cached else "Installing project dependencies"
+        elif kind == "script-sync":
+            prefix = "layout uvscript"
+            message = f"{root.name} unchanged; using existing environment" if cached else f"Syncing dependencies for {root.name}"
+        elif kind.startswith("lint-"):
+            prefix = "dotenv"
+            message = "Lint check unchanged" if cached else "Checking environment file"
+        else:
+            prefix = f"layout {kind}"
+            message = "Check unchanged" if cached else "Checking setup"
+        self.log(prefix, message)
+
+    def alias_help(self, prefix, descriptions):
+        self.log(prefix, "Aliases:")
+        for usage, description in descriptions:
+            self.log(prefix, f"  {usage} - {description}")
+
     def bucket(self, root, kind):
         key = hashlib.sha256((str(root) + "\0" + kind).encode()).hexdigest()[:24]
         path = self.cache / key
@@ -110,12 +143,14 @@ class Layout:
             stamp = bucket / "state.json"
             current = fingerprint(sources)
             if load_json(stamp).get("fingerprint") == current and all(p.exists() for p in outputs):
-                self.messages.append(f"{root}: {kind}: unchanged; reusing cached setup")
+                self.check_message(root, kind, cached=True)
                 return True
+            self.check_message(root, kind, cached=False)
             try:
                 action()
             except (OSError, RuntimeError) as exc:
-                self.messages.append(f"{root.name}: {exc}")
+                prefix = "layout uv" if kind in {"uv", "requirements"} else ("layout uvscript" if kind == "script-sync" else f"layout {kind}")
+                self.log(prefix, str(exc))
                 return False
             write_json(stamp, {"fingerprint": fingerprint(sources)})
             return True
@@ -123,15 +158,14 @@ class Layout:
     def command(self, argv, root, extra=None, *, visible=False):
         env = self.base_env | self.env | (extra or {})
         if visible:
-            print(f"layouts: {root.name}: {shlex.join(argv)}", file=sys.stderr, flush=True)
             result = subprocess.run(argv, cwd=root, env=env, stdin=subprocess.DEVNULL,
                                     stdout=sys.stderr, stderr=sys.stderr, text=True)
         else:
             result = run(argv, root, env)
         if result.returncode:
-            raise RuntimeError(f"{shlex.join(argv)} failed (exit {result.returncode}); run it in this directory for details")
+            display = [str(Path(a).relative_to(root)) if a.startswith(str(root) + os.sep) else a for a in argv]
+            raise RuntimeError(f"{shlex.join(display)} failed (exit {result.returncode})")
         if visible:
-            print(f"layouts: {root.name}: setup complete", file=sys.stderr, flush=True)
             return ""
         return result.stdout.strip()
 
@@ -144,7 +178,7 @@ class Layout:
             def lint(path=path):
                 result = run(["dotenv-linter", "--quiet", "check", str(path)], path.parent, self.base_env)
                 if result.returncode:
-                    self.messages.append(f"dotenv-linter found issues in {path}; run dotenv-linter on that file for details")
+                    self.log("dotenv", f"dotenv-linter found issues in {path.name}; run dotenv-linter on that file for details")
             self.once(path.parent, "lint-" + path.name, [path], [], lint)
             # Match project first, home second; interpolate using the preceding environment.
             before = os.environ.copy()
@@ -234,9 +268,12 @@ class Layout:
                     version = self.command([str(venv / "bin/python"), "-c", "import platform; print(platform.python_version())"], root)
                     if any(version not in SpecifierSet(c) for c in constraints):
                         backup = self.bucket(root, "venv-backups") / ("venv-" + str(time.time_ns()))
-                        print(f"layouts: {root.name}: Python {version} does not satisfy {', '.join(constraints)}; preserving old environment at {backup}", file=sys.stderr, flush=True)
+                        self.log("layout uv", f"Python {version} does not satisfy {', '.join(constraints)}")
+                        self.log("layout uv", f"Preserving old environment at {backup}")
                         shutil.move(str(venv), str(backup))
             if not (venv / "bin/python").exists():
+                self.log("layout uv", "No virtual environment exists.")
+                self.log("layout uv", "Executing `uv venv` to create one.")
                 self.command(["uv", "venv", "--seed", str(venv)], root, visible=True)
             if is_uv:
                 self.command(["uv", "sync"], root, visible=True)
@@ -253,6 +290,24 @@ class Layout:
                 "a": ["add"], "e": ["export"], "i": ["pip", "install"], "l": ["lock"],
                 "r": ["run"], "s": ["sync"], "t": ["tree"]}.items()}
         self.wrappers(root, "python", commands)
+        if is_uv:
+            descriptions = [
+                ("uva [packages...]", "Add package(s) as project dependency"),
+                ("uve", "Export project requirements"),
+                ("uvi [packages...]", "Install package(s) in project environment"),
+                ("uvl", "Lock project dependencies"),
+                ("uvr [args...]", "Run Python in project environment"),
+                ("uvs", "Sync project environment"),
+                ("uvt", "Show project dependency tree"),
+            ]
+        else:
+            descriptions = [
+                ("uvi [packages...]", "Install package(s) in project environment"),
+                ("uvl [pyproject.toml|requirements.in]", "Lock project dependencies"),
+                ("uvr [args...]", "Run Python in project environment"),
+                ("uvs", "Sync project environment"),
+            ]
+        self.alias_help("layout uv", descriptions)
         return True
 
     def javascript(self):
@@ -285,7 +340,7 @@ class Layout:
         self.watch.update(inputs)
         if manager not in locks:
             if len(present) > 1:
-                self.messages.append(f"{root.name}: multiple JavaScript lockfiles; set packageManager to select one")
+                self.log("layout javascript", "multiple JavaScript lockfiles; set packageManager to select one")
             return
         if manager not in present:
             return
@@ -327,6 +382,7 @@ class Layout:
             paths = json.loads(self.command([python, "-c", "import json,sysconfig; print(json.dumps([sysconfig.get_path('purelib'),sysconfig.get_path('platlib')]))"], root))
             site_paths.extend(paths)
         if site_paths:
+            self.log("layout uvscript", "Adding script environments to PYTHONPATH")
             old = self.env.get("PYTHONPATH", self.base_env.get("PYTHONPATH", ""))
             self.env["PYTHONPATH"] = os.pathsep.join(dict.fromkeys([*site_paths, *filter(None, old.split(os.pathsep))]))
             self.checker(root, list(dict.fromkeys(site_paths)))
@@ -336,6 +392,15 @@ class Layout:
             commands = {"uv" + k: ["uv", *v, "--script", str(script)] for k, v in operations.items()}
             commands["uvi"] = ["uv", "pip", "install", "--python", pythons[script]]
             self.wrappers(root, "scripts", commands)
+            self.alias_help("layout uvscript", [
+                ("uva [packages...]", f"Add package(s) as dependency to {script.name}"),
+                ("uve", f"Export requirements for {script.name}"),
+                ("uvi [packages...]", f"Install package(s) in {script.name}'s environment"),
+                ("uvl", f"Lock dependencies for {script.name}"),
+                ("uvr [args...]", f"Run {script.name}"),
+                ("uvs", f"Sync {script.name}'s environment"),
+                ("uvt", f"Show dependency tree for {script.name}"),
+            ])
         elif scripts:
             commands = {"uv" + k + "s": ["uv", *v, "--script"] for k, v in operations.items()}
             self.wrappers(root, "scripts", commands)
@@ -349,6 +414,15 @@ exec uv pip install --python "$python" "$@"
 '''
             (folder / "uvis").write_text(content)
             (folder / "uvis").chmod(0o700)
+            self.alias_help("layout uvscript", [
+                ("uvas [script.py] [packages...]", "Add package(s) as dependency to script"),
+                ("uves [script.py]", "Export requirements for a script"),
+                ("uvis [script.py] [packages...]", "Install package(s) in script's environment"),
+                ("uvls [script.py]", "Lock dependencies for a script"),
+                ("uvrs [script.py] [args...]", "Run a script"),
+                ("uvss [script.py]", "Sync a script's environment"),
+                ("uvts [script.py]", "Show dependency tree for a script"),
+            ])
 
     def checker(self, root, paths):
         candidates = [root / "pyrightconfig.json", root / "pyproject.toml"]
@@ -359,9 +433,14 @@ exec uv pip install --python "$python" "$@"
         if missing:
             # Diagnostic only; never rewrite a project's checker settings.
             name = "Basedpyright" if "[tool.basedpyright]" in text else "Pyright"
-            def report():
-                self.messages.append(f"{root.name}: {name} config does not mention script dependency paths: " + ", ".join(missing))
-            self.once(root, "checker", candidates + [Path(p) for p in paths], [], report)
+            self.log("layout uvscript", f"{name}:")
+            self.log("layout uvscript", "  Config missing script paths in executionEnvironments")
+            self.log("layout uvscript", "  Missing paths:")
+            for path in missing:
+                self.log("layout uvscript", f"    * {path}")
+            reference = ("https://docs.basedpyright.com/latest/configuration/config-files/#execution-environment-options"
+                         if name == "Basedpyright" else "https://github.com/microsoft/pyright/blob/main/docs/configuration.md#execution-environment-options")
+            self.log("layout uvscript", f"  Reference: {reference}")
 
     def result(self):
         for parent in self.chain:
@@ -380,11 +459,14 @@ exec uv pip install --python "$python" "$@"
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--cwd", required=True)
+    parser.add_argument("--path-pass", action="store_true")
     args = parser.parse_args()
     try:
-        result = Layout(Path(args.cwd)).result()
+        result = Layout(Path(args.cwd), path_pass=args.path_pass).result()
     except Exception as exc:
         # Avoid dumping environment values or command output into the prompt.
-        result = {"env": [], "paths": [], "watch_files": [],
-                  "messages": [f"layout setup failed ({type(exc).__name__}); run the helper directly to diagnose"]}
+        message = f"layout: setup failed ({type(exc).__name__}); run the helper directly to diagnose"
+        if not args.path_pass:
+            print(message, file=sys.stderr, flush=True)
+        result = {"env": [], "paths": [], "watch_files": [], "messages": [message]}
     print(json.dumps(result))
