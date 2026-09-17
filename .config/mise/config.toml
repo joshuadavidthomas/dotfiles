@@ -175,3 +175,14 @@ run = [
   'nvim --headless "+Lazy! install" +qa',
   'nvim --headless +UpdateRemotePlugins +qa',
 ]
+
+[bootstrap.macos.launchd.agents.amp-runner]
+program = "~/.local/bin/mise"
+args = ["exec", "--", "amp", "--no-tui", "--runner-id", "{{ vars.amp_runner_id }}", "--discover-dirs"]
+working_directory = "~/Code"
+run_at_load = true
+keep_alive = true
+throttle_interval = 30
+stdout_path = "~/Library/Logs/amp-runner.log"
+stderr_path = "~/Library/Logs/amp-runner.err.log"
+environment = { PATH = "{{ env.HOME }}/.local/bin:{{ env.HOME }}/.cargo/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin", MISE_LAYOUTS_DISABLE = "1" }
