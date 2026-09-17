@@ -85,7 +85,9 @@ end
 
 config.window_background_opacity = 0.95
 
-config.default_prog = { "/usr/bin/fish" }
+if not wezterm.target_triple:find("windows") then
+  config.default_prog = { "fish" }
+end
 config.term = "wezterm"
 
 config.window_padding = {
@@ -95,7 +97,7 @@ config.window_padding = {
   bottom = 0,
 }
 
-config.font = wezterm.font({ family = "MonoLisa Variable" })
+config.font = wezterm.font({ family = "MonoLisa" })
 config.font_size = 11.0
 config.bold_brightens_ansi_colors = true
 
