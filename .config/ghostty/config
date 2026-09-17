@@ -3,7 +3,7 @@ command = fish
 
 # Fonts
 bold-is-bright = true
-font-family = "MonoLisa Variable"
+font-family = "MonoLisa"
 font-size = 14.0
 
 # Keys

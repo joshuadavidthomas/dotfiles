@@ -46,6 +46,7 @@ exclude = [
 "~/.config/fish" = { mode = "track" }
 "~/.config/ghostty" = { mode = "track" }
 "~/.config/mise/config.toml" = { mode = "track" }
+"~/.config/mise/fonts/monolisa" = { mode = "track" }
 "~/.config/mise/plugins/layouts" = { mode = "track" }
 "~/.config/starship.toml" = { mode = "track" }
 "~/.hushlogin" = { mode = "track", variants = [{ os = "macos" }] }
@@ -57,4 +58,20 @@ run = [
   "atuin hook install claude-code",
   "atuin hook install opencode",
   "atuin hook install pi",
+]
+
+[dotfiles."fonts/monolisa/MonoLisaNormal.ttf"]
+source = "~/.config/mise/fonts/monolisa/MonoLisaNormal.ttf"
+mode = "copy"
+variants = [
+  { os = "macos", target = "~/Library/Fonts/MonoLisaNormal.ttf" },
+  { os = "linux", target = "~/.local/share/fonts/monolisa/MonoLisaNormal.ttf" },
+]
+
+[dotfiles."fonts/monolisa/MonoLisaItalic.ttf"]
+source = "~/.config/mise/fonts/monolisa/MonoLisaItalic.ttf"
+mode = "copy"
+variants = [
+  { os = "macos", target = "~/Library/Fonts/MonoLisaItalic.ttf" },
+  { os = "linux", target = "~/.local/share/fonts/monolisa/MonoLisaItalic.ttf" },
 ]
