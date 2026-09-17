@@ -22,7 +22,9 @@ just = "latest"
 lazydocker = "latest"
 lazygit = "latest"
 lua = "latest"
+neovim = "latest"
 node = "lts"
+"npm:neovim" = "latest"
 opencode = "latest"
 pi = "latest"
 "pipx:llm" = { version = "latest", with = ["llm-gemini", "llm-deepseek", "llm-templates-github", "llm-docs", "llm-anthropic", "llm-uv-tool", "llm-templates-fabric"] }
@@ -135,6 +137,7 @@ description = "Configure shell utilities, Rust, and agent history hooks"
 run = [
   'test -x "$HOME/.cargo/bin/rustup" || curl --proto "=https" --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile default --component rust-analyzer',
   'bat cache --build',
+  'mise run bootstrap:nvim',
   "atuin hook install codex",
   "atuin hook install claude-code",
   "atuin hook install opencode",
@@ -161,5 +164,14 @@ variants = [
 shell_out = true
 
 [bootstrap.repos]
+"~/.config/nvim" = { url = "https://github.com/joshuadavidthomas/nvim" }
 "~/.tmux/plugins/tpm" = { url = "https://github.com/tmux-plugins/tpm.git" }
 "~/.tmux/plugins/tmux-resurrect" = { url = "https://github.com/tmux-plugins/tmux-resurrect.git" }
+
+[tasks."bootstrap:nvim"]
+description = "Restore Neovim providers and install missing plugins"
+run = [
+  'uv sync --project "$HOME/.config/nvim" --locked --python 3.13',
+  'nvim --headless "+Lazy! install" +qa',
+  'nvim --headless +UpdateRemotePlugins +qa',
+]
