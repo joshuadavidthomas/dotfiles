@@ -21,7 +21,9 @@ layouts = "~/.config/mise/plugins/layouts"
 [bootstrap.packages]
 # Select managers in untracked config.local.toml on each machine.
 "brew:fish" = "latest"
+"brew-cask:ghostty" = { version = "latest", os = "macos", adopt = true }
 "pacman:fish" = "latest"
+"pacman:ghostty" = "latest"
 
 [bootstrap.mise_shell_activate]
 fish = "activate"
@@ -42,6 +44,7 @@ exclude = [
 [dotfiles]
 "~/.config/atuin/config.toml" = { mode = "track" }
 "~/.config/fish" = { mode = "track" }
+"~/.config/ghostty" = { mode = "track" }
 "~/.config/mise/config.toml" = { mode = "track" }
 "~/.config/mise/plugins/layouts" = { mode = "track" }
 "~/.config/starship.toml" = { mode = "track" }
