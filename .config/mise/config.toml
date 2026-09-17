@@ -15,6 +15,7 @@ _.layouts = { tools = true }
 layouts = "~/.config/mise/plugins/layouts"
 
 [bootstrap.packages]
+# Select managers in untracked config.local.toml on each machine.
 "brew:fish" = "latest"
 "pacman:fish" = "latest"
 
@@ -30,7 +31,8 @@ exclude = [
   "~/.config/fish/fish_variables",
   "~/.config/fish/**/*.local.fish",
   "~/.config/mise/plugins/layouts/**/__pycache__/**",
-  "~/.config/mise/plugins/layouts/**/*.pyc", "~/.config/fish/completions/{docker,kubectl,orbctl}.fish",
+  "~/.config/mise/plugins/layouts/**/*.pyc",
+  "~/.config/fish/completions/{docker,kubectl,orbctl}.fish",
 ]
 
 [dotfiles]
