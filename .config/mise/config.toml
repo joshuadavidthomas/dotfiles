@@ -1,30 +1,40 @@
 [tools]
+atuin = "latest"
 bun = "latest"
-erlang = "latest"
-go = "latest"
-lua = "latest"
+dotenv-linter = "latest"
 node = "lts"
-usage = "latest"
+pnpm = "latest"
+starship = "latest"
+uv = "latest"
+zoxide = "latest"
 
-"aqua:gleam-lang/gleam" = "latest"
-"npm:@openai/codex" = "latest"
-"npm:pake-cli" = "latest"
-"npm:neovim" = "latest"
-"npm:smee-client" = "latest"
-"pipx:tldr" = "latest"
+[env]
+_.layouts = { tools = true }
 
-[settings]
-disable_tools = [
-  "python",
-  "rust",
+[plugins]
+layouts = "~/.config/mise/plugins/layouts"
+
+[bootstrap.packages]
+"brew:fish" = "latest"
+"pacman:fish" = "latest"
+
+[bootstrap.mise_shell_activate]
+fish = "activate"
+zshrc = "activate"
+
+[bootstrap.services.mise-history]
+builtin = "history-watch"
+
+[history]
+exclude = [
+  "~/.config/fish/fish_variables",
+  "~/.config/fish/**/*.local.fish",
+  "~/.config/mise/plugins/layouts/**/__pycache__/**",
+  "~/.config/mise/plugins/layouts/**/*.pyc", "~/.config/fish/completions/{docker,kubectl,orbctl}.fish",
 ]
-experimental = true
 
-[settings.npm]
-bun = true
-
-[settings.pipx]
-uvx = true
-
-[settings.python]
-uv_venv_auto = true
+[dotfiles]
+"~/.config/fish" = { mode = "track" }
+"~/.config/mise/config.toml" = { mode = "track" }
+"~/.config/mise/plugins/layouts" = { mode = "track" }
+"~/.config/starship.toml" = { mode = "track" }

@@ -1,6 +1,8 @@
 function workon --argument-names project_name
-    set -l projects_dir "$HOME/projects"
+    set -l projects_dir (__fish_projects_dir)
     set -l projects_file "$projects_dir/.projects"
+
+    mkdir -p "$projects_dir"
 
     if not test -f $projects_file
         touch $projects_file

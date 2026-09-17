@@ -1,5 +1,5 @@
 function __fish_workon_projects
-    set -l projects_file "$HOME/projects/.projects"
+    set -l projects_file (__fish_projects_dir)/.projects
     if test -f $projects_file
         while read -l line
             set -l parts (string split ',' $line)

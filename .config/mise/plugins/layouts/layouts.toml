@@ -1,0 +1,5 @@
+# Ordinary uv, requirements, npm, pnpm, Bun, and PEP 723 script projects
+# are detected automatically. Add only unusual script directory overrides.
+#
+# [[scripts]]
+# directory = "~/Code/some-project/scripts"
