@@ -1,8 +1,12 @@
 [tools]
 atuin = "latest"
 bun = "latest"
+claude-code = "latest"
+codex = "latest"
 dotenv-linter = "latest"
 node = "lts"
+opencode = "latest"
+pi = "latest"
 pnpm = "latest"
 starship = "latest"
 uv = "latest"
