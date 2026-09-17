@@ -35,6 +35,20 @@ class LayoutTests(unittest.TestCase):
     def layout(self, cwd=None):
         return mod.Layout(cwd or self.root)
 
+    def test_watches_detect_creation_and_deletion_without_missing_paths(self):
+        layout = self.layout()
+        target = self.root / 'nested' / 'project' / 'uv.lock'
+        layout.watch.add(target)
+        self.assertIn(str(self.root), layout.watch_files())
+        self.assertTrue(all(Path(p).exists() for p in layout.watch_files()))
+        target.parent.mkdir(parents=True)
+        self.assertIn(str(target.parent), layout.watch_files())
+        target.touch()
+        self.assertIn(str(target), layout.watch_files())
+        target.unlink()
+        self.assertIn(str(target.parent), layout.watch_files())
+        self.assertTrue(all(Path(p).exists() for p in layout.watch_files()))
+
     def test_dotenv_order_interpolation_and_lint(self):
         (self.root / '.env').write_text('LAYOUT_TEST=project\nPROJECT_ONLY=yes\n')
         (self.home / '.env').write_text('LAYOUT_TEST=home\nHOME_COPY=${PROJECT_ONLY}\n')

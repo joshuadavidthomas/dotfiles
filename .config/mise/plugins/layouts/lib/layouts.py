@@ -442,6 +442,16 @@ exec uv pip install --python "$python" "$@"
                          if name == "Basedpyright" else "https://github.com/microsoft/pyright/blob/main/docs/configuration.md#execution-environment-options")
             self.log("layout uvscript", f"  Reference: {reference}")
 
+    def watch_files(self):
+        # mise treats missing watched paths as deletions on every prompt.
+        # Watch their nearest existing parent to detect creation instead.
+        paths = set()
+        for path in self.watch:
+            while not path.exists() and path != path.parent:
+                path = path.parent
+            paths.add(str(path))
+        return sorted(paths)
+
     def result(self):
         for parent in self.chain:
             self.watch.add(parent)
@@ -452,7 +462,7 @@ exec uv pip install --python "$python" "$@"
         self.javascript()
         self.scripts()
         return {"env": [{"key": k, "value": v} for k, v in self.env.items()],
-                "paths": list(dict.fromkeys(self.paths)), "watch_files": sorted(map(str, self.watch)),
+                "paths": list(dict.fromkeys(self.paths)), "watch_files": self.watch_files(),
                 "messages": self.messages}
 
 
