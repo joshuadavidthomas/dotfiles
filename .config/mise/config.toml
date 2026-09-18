@@ -50,6 +50,7 @@ _.layouts = { tools = true }
 layouts = "~/.config/mise/plugins/layouts"
 
 [bootstrap.packages]
+"brew-cask:steipete/tap/codexbar" = { version = "latest", os = "macos", adopt = true }
 # Select managers in untracked config.local.toml on each machine.
 "brew:fish" = "latest"
 "brew-cask:ghostty" = { version = "latest", os = "macos", adopt = true }
