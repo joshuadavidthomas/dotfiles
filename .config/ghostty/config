@@ -1,6 +1,6 @@
 # Shell
 # GUI launches may not inherit Homebrew paths from shell startup.
-command = shell:PATH="$PATH:/opt/homebrew/bin:/usr/local/bin:/home/linuxbrew/.linuxbrew/bin" exec fish --login
+command = shell:/usr/bin/env PATH="$PATH:/opt/homebrew/bin:/usr/local/bin:/home/linuxbrew/.linuxbrew/bin" fish --login
 shell-integration = fish
 
 # Fonts
