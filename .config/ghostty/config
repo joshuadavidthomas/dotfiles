@@ -1,5 +1,7 @@
 # Shell
-command = fish
+# GUI launches may not inherit Homebrew paths from shell startup.
+command = shell:PATH="$PATH:/opt/homebrew/bin:/usr/local/bin:/home/linuxbrew/.linuxbrew/bin" exec fish --login
+shell-integration = fish
 
 # Fonts
 bold-is-bright = true
