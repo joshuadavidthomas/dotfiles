@@ -173,6 +173,7 @@ description = "Restore Neovim providers and install missing plugins"
 run = [
   'uv sync --project "$HOME/.config/nvim" --locked --python 3.13',
   'nvim --headless "+Lazy! install" +qa',
+  "nvim --headless \"+lua require('lazy').load({plugins={'nvim-treesitter'}}); local p=require('lazy.core.config').plugins['nvim-treesitter']; local opts=require('lazy.core.plugin').values(p,'opts',false); vim.cmd('TSInstallSync '..table.concat(opts.ensure_installed,' '))\" +qa",
   'nvim --headless +UpdateRemotePlugins +qa',
 ]
 
