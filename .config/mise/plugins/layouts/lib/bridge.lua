@@ -10,6 +10,7 @@ return function(ctx)
   -- Keep the environment JSON separate while setup diagnostics stream to stderr.
   local result_path = cmd.exec("mktemp"):gsub("%s+$", "")
   -- uv may discover Python through a mise shim; prevent nested layout execution.
+  -- Scope this guard to the helper subprocess, leaving interactive layouts enabled.
   local code = os.execute("MISE_LAYOUTS_DISABLE=1 uv run --quiet --no-project --no-env-file --script "
     .. quote(ctx.options.root .. "/lib/layouts.py") .. " --cwd "
     .. quote(cmd.exec("pwd"):gsub("%s+$", ""))
