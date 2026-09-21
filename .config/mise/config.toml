@@ -43,6 +43,14 @@ uv = "latest"
 yazi = "latest"
 zoxide = "latest"
 
+# Additional development tools retained from the WSL setup.
+"cargo-binstall" = "latest"
+"cargo:https://github.com/dmmulroy/jj-starship" = "latest"
+"herdr" = "latest"
+"jjui" = "latest"
+"lisette" = { version = "latest", version_prefix = "lisette-v" }
+"zig" = "latest"
+
 [env]
 _.layouts = { tools = true }
 
@@ -91,6 +99,8 @@ layouts = "~/.config/mise/plugins/layouts"
 "apt:build-essential" = "latest"
 "apt:pkg-config" = "latest"
 "apt:libreadline-dev" = "latest"
+# Mason creates Python tool environments with the system interpreter.
+"apt:python3-venv" = "latest"
 "brew-cask:wezterm" = { version = "latest", os = "macos", adopt = true }
 "pacman:wezterm" = "latest"
 
@@ -180,7 +190,7 @@ run = [
 
 [bootstrap.macos.launchd.agents.amp-runner]
 program = "~/.local/bin/mise"
-args = ["exec", "--", "amp", "--no-tui", "--runner-id", "{{ vars.amp_runner_id }}", "--discover-dirs"]
+args = ["exec", "--", "amp", "--no-tui", "--runner-id", "{% if os() == 'macos' %}{{ vars.amp_runner_id }}{% endif %}", "--discover-dirs"]
 working_directory = "~/Code"
 run_at_load = true
 keep_alive = true

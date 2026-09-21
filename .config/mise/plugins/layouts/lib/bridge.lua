@@ -9,7 +9,8 @@ return function(ctx)
   end
   -- Keep the environment JSON separate while setup diagnostics stream to stderr.
   local result_path = cmd.exec("mktemp"):gsub("%s+$", "")
-  local code = os.execute("uv run --quiet --no-project --no-env-file --script "
+  -- uv may discover Python through a mise shim; prevent nested layout execution.
+  local code = os.execute("MISE_LAYOUTS_DISABLE=1 uv run --quiet --no-project --no-env-file --script "
     .. quote(ctx.options.root .. "/lib/layouts.py") .. " --cwd "
     .. quote(cmd.exec("pwd"):gsub("%s+$", ""))
     .. (ctx.layout_path_pass and " --path-pass" or "") .. " > " .. quote(result_path))
