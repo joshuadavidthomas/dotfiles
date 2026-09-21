@@ -123,6 +123,7 @@ exclude = [
 ]
 
 [dotfiles]
+"~/.config/opencode/plugins/atuin.ts" = { mode = "track" }
 "~/.config/jj/config.toml" = { mode = "track" }
 "~/.local/bin/git-sclone" = { mode = "track" }
 "~/.local/bin/git-rebase-feature-branch" = { mode = "track" }
@@ -154,7 +155,6 @@ run = [
   'mise run bootstrap:nvim',
   "atuin hook install codex",
   "atuin hook install claude-code",
-  "atuin hook install opencode",
   "atuin hook install pi",
 ]
 
