@@ -147,6 +147,7 @@ exclude = [
 description = "Configure shell utilities, Rust, and agent history hooks"
 run = [
   'test -x "$HOME/.cargo/bin/rustup" || curl --proto "=https" --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile default --component rust-analyzer',
+  '"$HOME/.cargo/bin/rustup" component add rust-analyzer',
   'bat cache --build',
   'mise run bootstrap:nvim',
   "atuin hook install codex",
