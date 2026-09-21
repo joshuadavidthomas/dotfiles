@@ -12,11 +12,6 @@ end
 fish_add_path --global "$HOME/.local/bin"
 
 set -g fish_greeting
-if command -q nvim
-    set -gx EDITOR nvim
-else
-    set -gx EDITOR vi
-end
 
 if status is-interactive
 # >>> mise:activate >>> managed by mise - do not edit between markers
@@ -26,4 +21,11 @@ mise activate fish | source
     command -q atuin; and atuin init fish | source
     command -q starship; and starship init fish | source
     fish_config theme choose tokyonight_moon
+end
+
+# Resolve the editor after mise has activated its tools.
+if command -q nvim
+    set -gx EDITOR nvim
+else
+    set -gx EDITOR vi
 end
