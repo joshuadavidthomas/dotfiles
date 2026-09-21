@@ -25,7 +25,7 @@ lua = "latest"
 neovim = "latest"
 node = "lts"
 "npm:neovim" = "latest"
-opencode = "latest"
+"npm:@opencode/cli" = { version = "latest", allow_builds = ["@opencode/cli"] }
 pi = "latest"
 "pipx:llm" = { version = "latest", with = ["llm-gemini", "llm-deepseek", "llm-templates-github", "llm-docs", "llm-anthropic", "llm-uv-tool", "llm-templates-fabric"] }
 "pipx:posting" = "latest"
