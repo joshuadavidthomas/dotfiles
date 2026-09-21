@@ -7,7 +7,7 @@ return function(ctx)
   local function quote(s)
     return "'" .. s:gsub("'", "'\\''") .. "'"
   end
-  -- Keep the environment JSON separate while setup diagnostics stream to stderr.
+  -- Keep environment JSON separate while visible setup diagnostics stream to stderr.
   local result_path = cmd.exec("mktemp"):gsub("%s+$", "")
   -- uv may discover Python through a mise shim; prevent nested layout execution.
   -- Scope this guard to the helper subprocess, leaving interactive layouts enabled.
