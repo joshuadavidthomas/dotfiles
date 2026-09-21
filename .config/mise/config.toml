@@ -70,6 +70,8 @@ layouts = "~/.config/mise/plugins/layouts"
 "brew:wget" = "latest"
 "brew:gnupg" = "latest"
 "brew:llvm" = "latest"
+# Linux LLVM bottles require Homebrew libedit.so.0 (Ubuntu ships libedit.so.2).
+"brew:libedit" = { version = "latest", os = "linux" }
 "brew:pkgconf" = "latest"
 "brew:readline" = "latest"
 "pacman:btop" = "latest"
