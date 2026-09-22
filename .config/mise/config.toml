@@ -179,6 +179,10 @@ variants = [
 [settings.npm]
 shell_out = true
 
+[settings.status]
+show_env = true
+truncate = false
+
 [bootstrap.repos]
 "~/.config/nvim" = { url = "https://github.com/joshuadavidthomas/nvim" }
 "~/.tmux/plugins/tpm" = { url = "https://github.com/tmux-plugins/tpm.git" }
