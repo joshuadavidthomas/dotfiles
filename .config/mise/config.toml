@@ -125,27 +125,28 @@ exclude = [
 [dotfiles]
 "~/.config/herdr/config.toml" = { mode = "track" }
 "~/.config/opencode/plugins/atuin.ts" = { mode = "track" }
-"~/.config/jj/config.toml" = { mode = "track" }
-"~/.local/bin/git-sclone" = { mode = "track" }
-"~/.local/bin/git-rebase-feature-branch" = { mode = "track" }
-"~/.local/bin/video2gif" = { mode = "track" }
-"~/.tmux.conf" = { mode = "track" }
-"~/.config/wezterm" = { mode = "track" }
-"~/.config/lazydocker/config.yml" = { mode = "track" }
-"~/.config/posting/config.yaml" = { mode = "track" }
-"~/.config/glow/glow.yml" = { mode = "track" }
+"~/.claude/settings.json" = { mode = "track" }
+"~/.config/atuin/config.toml" = { mode = "track" }
+"~/.config/bat/config" = { mode = "track" }
+"~/.config/bat/themes" = { mode = "track" }
 "~/.config/btop/btop.conf" = { mode = "track" }
 "~/.config/eza/theme.yml" = { mode = "track" }
-"~/.config/bat/themes" = { mode = "track" }
-"~/.config/bat/config" = { mode = "track" }
-"~/.config/atuin/config.toml" = { mode = "track" }
 "~/.config/fish" = { mode = "track" }
 "~/.config/ghostty" = { mode = "track" }
+"~/.config/glow/glow.yml" = { mode = "track" }
+"~/.config/jj/config.toml" = { mode = "track" }
+"~/.config/lazydocker/config.yml" = { mode = "track" }
 "~/.config/mise/config.toml" = { mode = "track" }
 "~/.config/mise/fonts/monolisa" = { mode = "track" }
 "~/.config/mise/plugins/layouts" = { mode = "track" }
+"~/.config/posting/config.yaml" = { mode = "track" }
 "~/.config/starship.toml" = { mode = "track" }
+"~/.config/wezterm" = { mode = "track" }
 "~/.hushlogin" = { mode = "track", variants = [{ os = "macos" }] }
+"~/.local/bin/git-rebase-feature-branch" = { mode = "track" }
+"~/.local/bin/git-sclone" = { mode = "track" }
+"~/.local/bin/video2gif" = { mode = "track" }
+"~/.tmux.conf" = { mode = "track" }
 
 [tasks.bootstrap]
 description = "Configure shell utilities, Rust, and agent history hooks"
