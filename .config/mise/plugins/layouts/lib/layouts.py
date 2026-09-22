@@ -24,6 +24,14 @@ from packaging.specifiers import SpecifierSet
 from dotenv import dotenv_values
 
 
+def log_status(message):
+    """Match mise's dim prefix without putting terminal escapes in JSON or logs."""
+    styled = (sys.stderr.isatty() and os.environ.get("TERM") != "dumb"
+              and not os.environ.get("NO_COLOR") and os.environ.get("CLICOLOR") != "0")
+    prefix = "\033[2mmise\033[0m" if styled else "mise"
+    print(f"{prefix} {message}", file=sys.stderr, flush=True)
+
+
 def run(argv, cwd, env=None):
     return subprocess.run(argv, cwd=cwd, env=env, stdin=subprocess.DEVNULL,
                           stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
@@ -99,7 +107,7 @@ class Layout:
         message = f"{prefix}: {message}"
         self.messages.append(message)
         if not self.path_pass:
-            print(message, file=sys.stderr, flush=True)
+            log_status(message)
 
     def check_message(self, root, kind, cached):
         if kind == "uv":
@@ -477,6 +485,6 @@ if __name__ == "__main__":
         # Avoid dumping environment values or command output into the prompt.
         message = f"layout: setup failed ({type(exc).__name__}); run the helper directly to diagnose"
         if not args.path_pass:
-            print(message, file=sys.stderr, flush=True)
+            log_status(message)
         result = {"env": [], "paths": [], "watch_files": [], "messages": [message]}
     print(json.dumps(result))
