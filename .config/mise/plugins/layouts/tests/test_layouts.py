@@ -35,19 +35,20 @@ class LayoutTests(unittest.TestCase):
     def layout(self, cwd=None):
         return mod.Layout(cwd or self.root)
 
-    def test_watches_detect_creation_and_deletion_without_missing_paths(self):
+    def test_watches_only_existing_files_without_directory_fallbacks(self):
         layout = self.layout()
         target = self.root / 'nested' / 'project' / 'uv.lock'
-        layout.watch.add(target)
-        self.assertIn(str(self.root), layout.watch_files())
-        self.assertTrue(all(Path(p).exists() for p in layout.watch_files()))
+        layout.watch.update([self.root, target])
+        self.assertNotIn(str(self.root), layout.watch_files())
+        self.assertNotIn(str(target), layout.watch_files())
         target.parent.mkdir(parents=True)
-        self.assertIn(str(target.parent), layout.watch_files())
+        self.assertNotIn(str(target.parent), layout.watch_files())
         target.touch()
         self.assertIn(str(target), layout.watch_files())
+        self.assertTrue(all(Path(p).is_file() for p in layout.watch_files()))
         target.unlink()
-        self.assertIn(str(target.parent), layout.watch_files())
-        self.assertTrue(all(Path(p).exists() for p in layout.watch_files()))
+        self.assertNotIn(str(target), layout.watch_files())
+        self.assertNotIn(str(target.parent), layout.watch_files())
 
     def test_dotenv_order_interpolation_and_lint(self):
         (self.root / '.env').write_text('LAYOUT_TEST=project\nPROJECT_ONLY=yes\n')
@@ -66,43 +67,6 @@ class LayoutTests(unittest.TestCase):
             (self.root / '.env').write_text('LAYOUT_TEST=changed\n')
             self.layout().dotenv()
             self.assertEqual(len(self.calls), 3)
-
-    def test_status_ignores_unrelated_renames_but_reports_inputs_and_reentry(self):
-        dotenv = self.root / '.env'
-        dotenv.write_text('LAYOUT_TEST=initial\n')
-        def evaluate(cwd=None):
-            layout = self.layout(cwd)
-            layout.watch.update([self.root, dotenv, self.root / 'package.json'])
-            layout.log('dotenv', 'Lint check unchanged')
-            layout.finish_status()
-        with patch.dict(os.environ, {'MISE_LAYOUTS_SESSION': 'test-shell'}), \
-                patch.object(mod, 'log_status') as output:
-            evaluate()
-            self.assertEqual(output.call_count, 1)
-            output.reset_mock()
-            (self.root / 'production.dump').write_text('unrelated')
-            (self.root / 'production.dump').rename(self.root / 'db.dump')
-            evaluate()
-            output.assert_not_called()
-            dotenv.write_text('LAYOUT_TEST=changed-value\n')
-            evaluate()
-            self.assertEqual(output.call_count, 1)
-            output.reset_mock()
-            (self.root / 'package.json').write_text('{}')
-            evaluate()
-            self.assertEqual(output.call_count, 1)
-            output.reset_mock()
-            dotenv.unlink()
-            evaluate()
-            self.assertEqual(output.call_count, 1)
-            output.reset_mock()
-            evaluate(self.home)
-            evaluate()
-            self.assertEqual(output.call_count, 2)
-            output.reset_mock()
-            with patch.dict(os.environ, {'MISE_LAYOUTS_SESSION': 'another-shell'}):
-                evaluate()
-            self.assertEqual(output.call_count, 1)
 
     def test_git_exclusions_preserve_and_remove(self):
         target = self.root / '.git/info/exclude'

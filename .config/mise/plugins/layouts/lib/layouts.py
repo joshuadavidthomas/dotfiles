@@ -93,8 +93,6 @@ class Layout:
         self.paths = []
         self.watch = set()
         self.messages = []
-        self.live_status = False
-        self.printed_messages = 0
         self.base_env = os.environ.copy()
         # uv run's helper environment must never become the target environment.
         self.base_env.pop("VIRTUAL_ENV", None)
@@ -108,41 +106,8 @@ class Layout:
     def log(self, prefix, message):
         message = f"{prefix}: {message}"
         self.messages.append(message)
-        if self.live_status:
-            self.flush_messages()
-
-    def flush_messages(self):
-        if self.path_pass:
-            return
-        self.live_status = True
-        for message in self.messages[self.printed_messages:]:
+        if not self.path_pass:
             log_status(message)
-        self.printed_messages = len(self.messages)
-
-    def finish_status(self):
-        # Directory mtimes detect new inputs, but also unrelated renames. Keep
-        # checking them without replaying the whole status block on every wakeup.
-        # Store metadata only, never exported environment values.
-        session = os.environ.get("MISE_LAYOUTS_SESSION")
-        if not session:
-            self.flush_messages()
-            return
-        if self.path_pass:
-            return
-        watched = []
-        for path in sorted(self.watch):
-            try:
-                stat = path.stat()
-                stamp = ("directory",) if path.is_dir() else (stat.st_mtime_ns, stat.st_size)
-            except FileNotFoundError:
-                stamp = ("missing",)
-            watched.append((str(path), stamp))
-        scripts = [str(p) for root in self.chain for p in sorted(root.glob("*.py"))]
-        signature = hashlib.sha256(json.dumps([str(self.cwd), watched, scripts]).encode()).hexdigest()
-        state = self.bucket(Path(session), "shell-status") / "state.json"
-        if load_json(state).get("signature") != signature:
-            self.flush_messages()
-        write_json(state, {"signature": signature})
 
     def check_message(self, root, kind, cached):
         if kind == "uv":
@@ -189,9 +154,6 @@ class Layout:
                 self.check_message(root, kind, cached=True)
                 return True
             self.check_message(root, kind, cached=False)
-            # Announce real work before running it, even if the input files have
-            # not changed (for example after a previous installation failed).
-            self.flush_messages()
             try:
                 action()
             except (OSError, RuntimeError) as exc:
@@ -409,7 +371,6 @@ class Layout:
         if not roots:
             return
         root, scripts = roots[0]
-        self.watch.add(root)
         site_paths = []
         pythons = {}
         for script in scripts:
@@ -489,25 +450,19 @@ exec uv pip install --python "$python" "$@"
             self.log("layout uvscript", f"  Reference: {reference}")
 
     def watch_files(self):
-        # mise treats missing watched paths as deletions on every prompt.
-        # Watch their nearest existing parent to detect creation instead.
-        paths = set()
-        for path in self.watch:
-            while not path.exists() and path != path.parent:
-                path = path.parent
-            paths.add(str(path))
-        return sorted(paths)
+        # Watch actual inputs, not directory mtimes. Missing inputs must not be
+        # returned: mise interprets them as deletions on every prompt. Its native
+        # config discovery already detects file creation in cwd and its parents.
+        return sorted(str(path) for path in self.watch if path.is_file())
 
     def result(self):
         for parent in self.chain:
-            self.watch.add(parent)
             self.watch.update(parent / name for name in ["uv.lock", "requirements.txt", "package.json"])
         self.dotenv()
         self.exclusions()
         self.python()
         self.javascript()
         self.scripts()
-        self.finish_status()
         return {"env": [{"key": k, "value": v} for k, v in self.env.items()],
                 "paths": list(dict.fromkeys(self.paths)), "watch_files": self.watch_files(),
                 "messages": self.messages}
