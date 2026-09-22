@@ -67,6 +67,43 @@ class LayoutTests(unittest.TestCase):
             self.layout().dotenv()
             self.assertEqual(len(self.calls), 3)
 
+    def test_status_ignores_unrelated_renames_but_reports_inputs_and_reentry(self):
+        dotenv = self.root / '.env'
+        dotenv.write_text('LAYOUT_TEST=initial\n')
+        def evaluate(cwd=None):
+            layout = self.layout(cwd)
+            layout.watch.update([self.root, dotenv, self.root / 'package.json'])
+            layout.log('dotenv', 'Lint check unchanged')
+            layout.finish_status()
+        with patch.dict(os.environ, {'MISE_LAYOUTS_SESSION': 'test-shell'}), \
+                patch.object(mod, 'log_status') as output:
+            evaluate()
+            self.assertEqual(output.call_count, 1)
+            output.reset_mock()
+            (self.root / 'production.dump').write_text('unrelated')
+            (self.root / 'production.dump').rename(self.root / 'db.dump')
+            evaluate()
+            output.assert_not_called()
+            dotenv.write_text('LAYOUT_TEST=changed-value\n')
+            evaluate()
+            self.assertEqual(output.call_count, 1)
+            output.reset_mock()
+            (self.root / 'package.json').write_text('{}')
+            evaluate()
+            self.assertEqual(output.call_count, 1)
+            output.reset_mock()
+            dotenv.unlink()
+            evaluate()
+            self.assertEqual(output.call_count, 1)
+            output.reset_mock()
+            evaluate(self.home)
+            evaluate()
+            self.assertEqual(output.call_count, 2)
+            output.reset_mock()
+            with patch.dict(os.environ, {'MISE_LAYOUTS_SESSION': 'another-shell'}):
+                evaluate()
+            self.assertEqual(output.call_count, 1)
+
     def test_git_exclusions_preserve_and_remove(self):
         target = self.root / '.git/info/exclude'
         target.write_text('existing-rule\n')
