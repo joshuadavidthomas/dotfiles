@@ -1,6 +1,5 @@
 [tools]
 1password-cli = "latest"
-"npm:@ampcode/cli" = { version = "latest", allow_builds = ["@ampcode/cli"], prerelease = true }
 atuin = "latest"
 bat = "latest"
 bun = "latest"
@@ -65,6 +64,7 @@ layouts = "~/.config/mise/plugins/layouts"
 "pacman:fish" = "latest"
 "pacman:ghostty" = "latest"
 
+"brew:ampcode/tap/ampcode" = "latest"
 "brew:btop" = "latest"
 "brew:ffmpeg" = "latest"
 "brew:wget" = "latest"
