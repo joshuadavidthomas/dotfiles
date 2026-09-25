@@ -1,6 +1,6 @@
 [tools]
 1password-cli = "latest"
-amp = { version = "0.0.1789660852-g000545", allow_builds = ["@ampcode/cli"] }
+"npm:@ampcode/cli" = { version = "latest", allow_builds = ["@ampcode/cli"] }
 atuin = "latest"
 bat = "latest"
 bun = "latest"
