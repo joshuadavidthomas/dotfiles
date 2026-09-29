@@ -49,6 +49,7 @@ zoxide = "latest"
 "jjui" = "latest"
 "lisette" = { version = "latest", version_prefix = "lisette-v" }
 "zig" = "latest"
+"npm:cf" = "latest"
 
 [env]
 _.layouts = { tools = true }
