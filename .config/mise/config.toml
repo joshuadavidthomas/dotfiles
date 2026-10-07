@@ -52,7 +52,7 @@ zoxide = "latest"
 "npm:cf" = "latest"
 
 [env]
-_.layouts = { tools = true }
+_.layouts = { tools = true, dotenv = ["~/projects"], gitignore_local = true }
 
 [plugins]
 layouts = "~/.config/mise/plugins/layouts"
@@ -118,8 +118,6 @@ builtin = "history-watch"
 exclude = [
   "~/.config/fish/fish_variables",
   "~/.config/fish/**/*.local.fish",
-  "~/.config/mise/plugins/layouts/**/__pycache__/**",
-  "~/.config/mise/plugins/layouts/**/*.pyc",
   "~/.config/fish/completions/{docker,kubectl,orbctl}.fish",
 ]
 
